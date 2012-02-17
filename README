@@ -5,6 +5,12 @@ WARNING: Work in progress. This project is not in a workable state!
 System Requirements
 -------------------
 Java Developers Kit version 1.6
+ACR122 RFID reader
+
+Testing
+-------
+Start class: org.iotope.node.NodeTest
+Take your browser to : http://localhost:4242/ui
 
 License
 -------
