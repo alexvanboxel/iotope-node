@@ -1,0 +1,38 @@
+<html>
+<head>
+<!-- link rel="stylesheet" type="text/css" href="iotope.css" -->
+<script type="text/javascript" src="js/org/cometd.js"></script>
+<script type="text/javascript" src="js/org/cometd/AckExtension.js"></script>
+<script type="text/javascript" src="js/org/cometd/ReloadExtension.js"></script>
+<script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jquery/json2.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.cometd.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.cometd-reload.js"></script>
+<script type="text/javascript">
+$(function() {
+var subscription1 = $.cometd.addListener('/meta/connect', function() { 
+	var subscription2 = $.cometd.subscribe('/tag', function(message) { 
+	    $("#reader").css("border","3px solid red");
+	    $("#reader").text(message.data.data);
+	});
+});
+$.cometd.configure({
+    url: 'http://localhost:4242/cometd',
+    logLevel: 'DEBUG'
+});
+$.cometd.handshake();
+});
+</script>
+<style type="text/css">
+</style>
+</head>
+<body>
+
+	<img src="img/iotope.png" />
+
+	<pre id="reader">
+		No tag yet?!
+	</pre>
+
+</body>
+</html>
