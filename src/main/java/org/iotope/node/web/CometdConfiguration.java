@@ -9,28 +9,23 @@ import javax.servlet.ServletResponse;
 
 import org.cometd.bayeux.server.BayeuxServer;
 
+import com.google.common.eventbus.EventBus;
+
 public class CometdConfiguration extends GenericServlet {
-    
-    public BayeuxServer cometD;
+        
+    public CometdConfiguration(EventBus bus) {
+        this.bus = bus;
+    }
     
     public void init() throws ServletException {
-        // Grab the Bayeux object
         BayeuxServer bayeux = (BayeuxServer) getServletContext().getAttribute(BayeuxServer.ATTRIBUTE);
-        new NFCTagService(bayeux);
-        // Create other services here
-        
-        // This is also the place where you can configure the Bayeux object
-        // by adding extensions or specifying a SecurityPolicy
-        
-        cometD = bayeux;
+        new NFCTagService(bus,bayeux);
     }
     
     public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
         throw new ServletException();
     }
     
-    public BayeuxServer getCometD() {
-        return cometD;
-        
-    }
+    private static final long serialVersionUID = 1L;
+    private EventBus bus;
 }

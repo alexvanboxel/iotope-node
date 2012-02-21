@@ -22,6 +22,12 @@ $.cometd.configure({
 });
 $.cometd.handshake();
 });
+
+function test() {
+	var x = $(".readertemplate").html();
+ $("#readers").append(x);
+ 	
+}
 </script>
 <style type="text/css">
 </style>
@@ -30,9 +36,32 @@ $.cometd.handshake();
 
 	<img src="img/iotope.png" />
 
+<a href="javascript:test();">test</a>
+
 	<pre id="reader">
 		No tag yet?!
 	</pre>
+	
+	<div id="readers">
+	</div>
+	
+
+	<div class="readertemplate">
+		<div class="reader">
+			<div class="readerid">Ghost Reader 007</div> 
+			<div class="tagtype">MiFrace Classic</div> 
+			<span class="tagid">01020304050607</span>
+			<ul class="ndef">
+				<li>http://www.iotope.com</li>
+				<li>text</li>
+				<li>signature</li>
+			</ul>
+			<span><a href="">Change...</a></span>
+		</div>
+		<div class="app">
+			<a href="">Change...</a>
+		</div>
+	</div>
 
 </body>
 </html>
