@@ -39,23 +39,33 @@ public class Readers implements Runnable {
         
     }
     
-    private void addTerminal(CardTerminal terminal) throws CardException {
+    private Reader addTerminal(CardTerminal terminal) throws CardException {
         //                        ReaderConnection connection = new ReaderConnection();
         //                        ReaderChannel channel = new ReaderChannel(connection, t.connect("T=0").getBasicChannel());
         //                        channel.transmit(new PN532GetFirmwareVersion());
-        Reader reader = new Reader(String.valueOf(terminal.hashCode()));
+        Reader reader = new Reader(String.valueOf(terminal.hashCode()), //
+                terminal.getName(),2);
         knownTerminals.put(terminal, reader);
         poll(terminal, reader);
+        return reader;
     }
     
-    private void removeTerminal(CardTerminal terminal) {
-        knownTerminals.remove(terminal);
+    private Reader removeTerminal(CardTerminal terminal) {
+        return knownTerminals.remove(terminal);
+    }
+    
+    public List<Reader> getReaders() {
+        List<Reader> readers = new ArrayList<Reader>();
+        for(Reader r : knownTerminals.values()) {
+            readers.add(r);
+        }
+        return readers;
     }
     
     private void removeAll(List<CardTerminal> toRemove) {
         for (CardTerminal t : toRemove) {
-            removeTerminal(t);
-            bus.post(new ReaderChange(Event.REMOVED));
+            Reader removed = removeTerminal(t);
+            bus.post(new ReaderChange(Event.REMOVED,removed));
         }
     }
     
@@ -70,8 +80,7 @@ public class Readers implements Runnable {
                 for (CardTerminal t : tlist) {
                     System.out.println(t.getName());
                     if (!knownTerminals.containsKey(t)) {
-                        addTerminal(t);
-                        bus.post(new ReaderChange(Event.ADDED));
+                        bus.post(new ReaderChange(Event.ADDED,addTerminal(t)));
                         System.out.println("NEW = " + t.getName());
                     }
                 }

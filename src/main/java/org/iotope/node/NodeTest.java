@@ -52,7 +52,7 @@ public class NodeTest {
         
         ServletHolder holderCometd = new ServletHolder(new CometdServlet());
         holderCometd.setInitOrder(1);
-        ServletHolder holderCometdConfig = new ServletHolder(new CometdConfiguration(bus));
+        ServletHolder holderCometdConfig = new ServletHolder(new CometdConfiguration(bus,readers));
         holderCometdConfig.setInitOrder(2);
         ServletHolder holderUI = new ServletHolder(new UIServlet());
         
