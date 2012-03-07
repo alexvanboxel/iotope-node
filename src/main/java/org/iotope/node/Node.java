@@ -1,17 +1,5 @@
 package org.iotope.node;
 
-import java.awt.AWTException;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.imageio.ImageIO;
-
 import org.cometd.server.CometdServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -29,10 +17,10 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-public class NodeTest {
+public class Node {
     
     public static void main(String[] args) throws Exception {
-        new NodeTest();
+        new Node();
     }
     
     @Subscribe
@@ -50,7 +38,7 @@ public class NodeTest {
     /**
      * @param args
      */
-    public NodeTest() throws Exception {
+    public Node() throws Exception {
                 
         EventBus bus = new EventBus();
         bus.register(this);
