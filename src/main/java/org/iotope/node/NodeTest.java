@@ -1,5 +1,17 @@
 package org.iotope.node;
 
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.MenuItem;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.TrayIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.imageio.ImageIO;
+
 import org.cometd.server.CometdServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -23,24 +35,28 @@ public class NodeTest {
         new NodeTest();
     }
     
-    @Subscribe public void test(ReaderChange e) {
+    @Subscribe
+    public void test(ReaderChange e) {
         System.err.println(e);
-      }
-
+    }
     
-    @Subscribe public void dead(DeadEvent e) {
+    
+    @Subscribe
+    public void dead(DeadEvent e) {
         System.err.println(e);
-      }
-
+    }
+    
     
     /**
      * @param args
      */
     public NodeTest() throws Exception {
-        
+                
         EventBus bus = new EventBus();
         bus.register(this);
         
+        NodeTray tray = new NodeTray(bus);
+
         Readers readers = new Readers(bus);
         Thread readerThread = new Thread(readers, "Readers Monitor");
         readerThread.start();
@@ -52,7 +68,7 @@ public class NodeTest {
         
         ServletHolder holderCometd = new ServletHolder(new CometdServlet());
         holderCometd.setInitOrder(1);
-        ServletHolder holderCometdConfig = new ServletHolder(new CometdConfiguration(bus,readers));
+        ServletHolder holderCometdConfig = new ServletHolder(new CometdConfiguration(bus, readers));
         holderCometdConfig.setInitOrder(2);
         ServletHolder holderUI = new ServletHolder(new UIServlet());
         
@@ -68,8 +84,6 @@ public class NodeTest {
         server.setHandler(handlers);
         
         server.start();
-        
-        readers.pollAll();
         server.join();
     }
     

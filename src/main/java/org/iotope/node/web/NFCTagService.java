@@ -8,6 +8,7 @@ import org.cometd.bayeux.server.BayeuxServer;
 import org.cometd.bayeux.server.LocalSession;
 import org.cometd.bayeux.server.ServerSession;
 import org.cometd.server.AbstractService;
+import org.iotope.node.apps.Correlation;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.reader.TagChange;
@@ -22,10 +23,12 @@ public class NFCTagService extends AbstractService {
         this.readers = readers;
         bus.register(this);
         addService("/info", "processInfoRequest");
+        addService("/service/action", "processActionRequest");
         LocalSession session = bayeuxServer.newLocalSession("poll");
         session.handshake();
         tagChannel = session.getChannel("/tag");
         readerChannel = session.getChannel("/reader");
+        correlation = new Correlation(bus);
     }
     
     public void processInfoRequest(ServerSession remote, String channelName, Map<String, Object> data, String messageId) {
@@ -36,10 +39,18 @@ public class NFCTagService extends AbstractService {
             map.put("readers", readers.getReaders());
             remote.deliver(getServerSession(), "/info", map, null);
         }
-//        for (Map.Entry<String, Object> o : data.entrySet()) {
-//            System.err.println(o.getKey() + " = " + o.getValue());
-//        }
-        //                remote.deliver(getServerSession(), "/tag", data, null);
+    }
+    
+    public void processActionRequest(ServerSession remote, String channelName, Map<String, Object> data, String messageId) {
+        String type = (String) data.get("type");
+        if("LearnMode".equals(type)) {
+            if("true".equals(data.get("active"))) {
+                correlation.setLearn(true);
+            }
+            else {
+                correlation.setLearn(false);
+            }
+        }
     }
     
     @Subscribe
@@ -50,9 +61,11 @@ public class NFCTagService extends AbstractService {
     @Subscribe
     public void publishTagChange(TagChange e) {
         tagChannel.publish(e);
+        correlation.tagChange(e);
     }
     
     private ClientSessionChannel readerChannel;
     private ClientSessionChannel tagChannel;
     private Readers readers;
+    private Correlation correlation;
 }

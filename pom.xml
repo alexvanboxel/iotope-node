@@ -69,12 +69,41 @@
 			<version>2.4.0</version>
 		</dependency>
 		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.weld.se</groupId>
+			<artifactId>weld-se-core</artifactId>
+			<version>1.1.1.Final</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>javax.persistence</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<version>2.2.1</version>
+		</dependency>
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>EclipseLink Repo</id>
+			<!-- EclipseLink doesn't publish it's artifacts to Maven Central, but 
+				for the time being it's Nexus doesn't work either. So we're using a working 
+				mirror for now. -->
+			<url>http://linorg.usp.br/eclipse/rt/eclipselink/maven.repo/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<pluginManagement>

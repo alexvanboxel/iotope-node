@@ -7,7 +7,7 @@ import org.eclipse.jetty.util.ajax.JSON.Output;
 
 public class TagChange implements JSON.Convertible {
     
-    enum Event {
+    public enum Event {
         ADDED, REMOVED
     };
     
@@ -24,6 +24,10 @@ public class TagChange implements JSON.Convertible {
         return raw;
     }
     
+    public Event getEvent() {
+        return event;
+    }
+
     @Override
     @SuppressWarnings("rawtypes")
     public void fromJSON(Map map) {
@@ -37,7 +41,6 @@ public class TagChange implements JSON.Convertible {
         out.add("slot", slot);
         out.add("tag", raw);
     }
-
     
     private Event event;
     private Reader reader;

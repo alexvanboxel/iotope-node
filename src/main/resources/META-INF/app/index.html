@@ -17,6 +17,13 @@
 					for ( var i = 0; i < readers.length; i++)
 						addReader(readers[i]);
 				}
+				else if (message.data.type == "CorrelationMode") {
+					var mode = message.data.mode;
+
+				
+				
+				
+				}
 			});
 			var tagChannel = $.cometd.subscribe('/tag', function(message) {
 				var tagChange = message.data;
@@ -127,6 +134,10 @@ padding:5px;
 <body>
 
 	<img src="img/iotope.png" />
+
+	<div>
+	<input type="checkbox" name="correlationMode" value="learn"> Learn Mode
+	</div>
 
 	<div id="readers"></div>
 

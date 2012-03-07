@@ -29,20 +29,9 @@ public class Readers implements Runnable {
         terminals = factory.terminals();
         knownTerminals = Collections.synchronizedMap(new HashMap<CardTerminal, Reader>());
         this.bus = bus;
-        
-        try {
-            for (CardTerminal t : terminals.list()) {
-                addTerminal(t);
-            }
-        } catch (CardException ce) {
-        }
-        
     }
     
     private Reader addTerminal(CardTerminal terminal) throws CardException {
-        //                        ReaderConnection connection = new ReaderConnection();
-        //                        ReaderChannel channel = new ReaderChannel(connection, t.connect("T=0").getBasicChannel());
-        //                        channel.transmit(new PN532GetFirmwareVersion());
         Reader reader = new Reader(String.valueOf(terminal.hashCode()), //
                 terminal.getName(),2);
         knownTerminals.put(terminal, reader);
