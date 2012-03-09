@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.smartcardio.CardException;
 import javax.smartcardio.CardTerminal;
 import javax.smartcardio.CardTerminals;
@@ -14,21 +16,20 @@ import javax.smartcardio.TerminalFactory;
 
 import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.ReaderConnection;
+import org.iotope.node.NodeBus;
 import org.iotope.node.reader.ReaderChange.Event;
-
-import com.google.common.eventbus.EventBus;
 
 /**
  *  
  */
+@Singleton
 @SuppressWarnings("restriction")
 public class Readers implements Runnable {
     
-    public Readers(EventBus bus) throws Exception {
+    public Readers() throws Exception {
         TerminalFactory factory = TerminalFactory.getDefault();
         terminals = factory.terminals();
         knownTerminals = Collections.synchronizedMap(new HashMap<CardTerminal, Reader>());
-        this.bus = bus;
     }
     
     private Reader addTerminal(CardTerminal terminal) throws CardException {
@@ -111,5 +112,7 @@ public class Readers implements Runnable {
     private AtomicBoolean running = new AtomicBoolean(true);
     private CardTerminals terminals;
     private Map<CardTerminal, Reader> knownTerminals;
-    private EventBus bus;
+
+    @Inject
+    private NodeBus bus;
 }

@@ -17,13 +17,15 @@ import java.io.IOException;
 import java.net.URI;
 
 import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.google.common.eventbus.EventBus;
 
+@Singleton
 public class NodeTray {
     
-    public NodeTray(EventBus bus) {
-        this.bus = bus;
+    public NodeTray() {
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
             Dimension trayIconSize = tray.getTrayIconSize();
@@ -133,5 +135,6 @@ public class NodeTray {
     
     private MouseListener mouseListener;
     
-    private EventBus bus;
+    @Inject
+    private NodeBus bus;
 }
