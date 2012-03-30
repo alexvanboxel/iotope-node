@@ -1,175 +1,136 @@
 <html>
-<head>
-<!-- link rel="stylesheet" type="text/css" href="iotope.css" -->
-<script type="text/javascript" src="js/org/cometd.js"></script>
-<script type="text/javascript" src="js/org/cometd/AckExtension.js"></script>
-<script type="text/javascript" src="js/org/cometd/ReloadExtension.js"></script>
-<script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="js/jquery/json2.js"></script>
-<script type="text/javascript" src="js/jquery/jquery.cometd.js"></script>
-<script type="text/javascript" src="js/jquery/jquery.cometd-reload.js"></script>
-<script type="text/javascript">
-	$(function() {
-		var subscription1 = $.cometd.addListener('/meta/connect', function() {
-			var info = $.cometd.subscribe('/info', function(message) {
-				if (message.data.type == "ReadersInfo") {
-					var readers = message.data.readers;
-					for ( var i = 0; i < readers.length; i++)
-						addReader(readers[i]);
-				}
-				else if (message.data.type == "CorrelationMode") {
-					var mode = message.data.mode;
-
-				
-				
-				
-				}
-			});
-			var tagChannel = $.cometd.subscribe('/tag', function(message) {
-				var tagChange = message.data;
-				if (tagChange.event == "REMOVED") {
-					removeTag(tagChange.reader, tagChange.slot);
-				} else if (tagChange.event == "ADDED") {
-					addTag(tagChange.reader, tagChange.slot, tagChange.tag);
-				}
-			});
-			var readerChannel = $.cometd.subscribe('/reader',
-					function(message) {
-						var readerChange = message.data;
-						if (readerChange.event == "REMOVED") {
-							removeReader(readerChange.reader);
-						} else if (readerChange.event == "ADDED") {
-							addReader(readerChange.reader);
-						}
-					});
-			$.cometd.publish("/info", {
-				type : "ReadersInfo"
-			});
-		});
-		$.cometd.configure({
-			url : 'http://localhost:4242/cometd',
-			logLevel : 'DEBUG'
-		});
-		$.cometd.handshake();
-	});
-
-	function test() {
-		var reader = {
-			terminalId : "1",
-			pcscName : "READER 0",
-			slots : 2
-		};
-		addReader(reader);
-
-		//var x = $(".readertemplate").html();
-		//$("#readers").append(x);
-	}
-
-	function removeReader(reader) {
-		var tid = "#R" + reader.terminalId;
-		if ($(tid) != undefined) {
-			$(tid).remove();
-		}
-	}
-
-	function addReader(reader) {
-		var tid = "#R" + reader.terminalId;
-		var t = $(tid);
-		if ($(tid).size() == 0) {
-			var row = $(".readerrow", ".template").clone().attr("id",
-					"R" + reader.terminalId);
-			row.find(".readername").text(reader.pcscName);
-			for ( var s = 0; s < reader.slots; s++) {
-				var slot = $(".readerslot", ".template").clone();
-				slot.attr("id", "R" + reader.terminalId + "S" + s);
-				row.find(".readerslots").append(slot);
+	<head>
+		<!-- link rel="stylesheet" type="text/css" href="iotope.css" -->
+		<link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.8.17.custom.css"/>
+		<script type="text/javascript" src="js/org/cometd.js"></script>
+		<script type="text/javascript" src="js/org/cometd/AckExtension.js"></script>
+		<script type="text/javascript" src="js/org/cometd/ReloadExtension.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery/json2.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.cometd.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.cometd-reload.js"></script>
+		<script type="text/javascript" src="js/jquery-ui/jquery-ui-1.8.17.custom.min.js"></script>
+		<script type="text/javascript" src="js/tagapp.js"></script>
+		<style type="text/css">
+			.readerrow {
+				display: table-row;
+				padding: 0px;
 			}
-			$("#readers").append(row);
-		}
-	}
+			.reader {
+				display: table-cell;
+				margin: 5px;
+				border-width: 0px;
+				padding: 5px;
+			}
+			.tagapp {
+				display: table-cell;
+				margin: 10px;
+				border-width: 0px;
+				padding: 5px;
+			}
+			.readerslots {
+				display: block;
+				margin: 10px;
+				border-style: solid;
+				border-width: 1px;
+				padding: 5px;
+			}
+			.readerslot {
+				display: block;
+				margin: 10px;
+				border-style: dotted;
+				border-width: 1px;
+				padding: 5px;
+			}			a.appLink {
+				display: block;
+				margin: 10px;
+				border-style: dotted;
+				border-width: 1px;
+				padding: 5px;
+			}
+			a.appSelected {
+				display: block;
+				margin: 10px;
+				border-style: solid;
+				border-width: 2px;
+				padding: 5px;
+			}
 
-	function addTag(reader, slot, tag) {
-		var sid = "#R" + reader.terminalId + "S" + slot;
-		$(sid).text(tag);
-	}
-
-	function removeTag(reader, slot) {
-		var sid = "#R" + reader.terminalId + "S" + slot;
-		$(sid).text("");
-	}
-</script>
-<style type="text/css">
-.readerrow {
-display:table-row;
-padding:0px;
-}
-.reader {
-display:table-cell;
-margin:5px;
-border-width:0px;
-padding:5px;
-}
-.tagapp {
-display:table-cell;
-margin:10px;
-border-width:0px;
-padding:5px;
-}
-.readerslots {
-display:block;
-margin:10px;
-border-style:solid;
-border-width:1px;
-padding:5px;
-}
-.readerslot {
-display:block;
-margin:10px;
-border-style:dotted;
-border-width:1px;
-padding:5px;
-}
-</style>
-</head>
-<body>
-
-	<img src="img/iotope.png" />
-
-	<div>
-	<input type="checkbox" name="correlationMode" value="learn"> Learn Mode
-	</div>
-
-	<div id="readers"></div>
-
-	<div class="template" style="display:none">
-		<div class="readerrow">
-			<div class="reader">
-				<div class="readername">Ghost Reader 007</div>
-				<div class="readerslots"></div>
+		</style>
+	</head>
+	<body>
+		<img src="img/iotope.png" />
+		<div>
+			<input type="checkbox" id="learn" name="correlationMode" value="learn">
+			Learn Mode
+		</div>
+		<div id="readers"></div>
+		<!-- style="display:none" -->
+		<div id="context" style="display:none" >
+			<span id="tagId"></span>
+			<span id="readerId"></span>
+			<span id="appId"></span>
+		</div>
+		<div class="template" style="display:none" >
+			<div id="app-dialog">
+				<div>
+					Select an application
+				</div>
+				<ul>
+					<li>
+						<a class="appLink" appId="1">WebLink</a>
+					</li>
+					<li>
+						<a class="appLink" appId="2">Simple HTTP Call</a>
+					</li>
+				</ul>
 			</div>
-			<div class="tagapp">
-				<a href="">Change...</a>
+			<div class="readerrow">
+				<div class="reader">
+					<div class="readername">
+						Ghost Reader 007
+					</div>
+					<div class="readerslots"></div>
+				</div>
+				<div class="cnt_app"></div>
+			</div>
+			<div class="readerslot">
+				<span class="tagslottype"></span>
+				<div class="tag"></div>
+			</div>
+			<div class="tag">
+				<div class="tagtype">
+					<span class="tagtypeid"></span><span class="tagtypename">NXP
+						Classic</span>
+				</div>
+				<span class="tagid">01020304050607</span>
+				<ul class="ndef">
+					<li>
+						http://www.iotope.com
+					</li>
+					<li>
+						text
+					</li>
+					<li>
+						signature
+					</li>
+				</ul>
+			</div>
+			<div class="app">
+				<a class="tagaction">Change Application...</a>
+				<span class="">WebLink</span>
+				<table class="parameters">
+					<thead>
+						<tr>
+							<td> Name </td>
+							<td> Value </td>
+							<td> Description </td>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<a class="tagsave">Save Values...</a>
 			</div>
 		</div>
-
-		<div class="readerslot">
-			<span class="tagslottype"></span>
-			<div class="tag"></div>
-		</div>
-
-		<div class="tag">
-			<div class="tagtype">
-				<span class="tagtypeid"></span> <span class="tagtypename">NXP
-					Classic</span>
-			</div>
-			<span class="tagid">01020304050607</span>
-			<ul class="ndef">
-				<li>http://www.iotope.com</li>
-				<li>text</li>
-				<li>signature</li>
-			</ul>
-			<a class="tagaction" href="">Change...</a>
-		</div>
-	</div>
-</body>
+	</body>
 </html>

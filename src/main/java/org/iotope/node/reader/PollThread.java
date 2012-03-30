@@ -54,7 +54,7 @@ public class PollThread implements Runnable {
                     int r=0;
                     for(TargetData tag : tags) {
                             bus.post(new TagChange(TagChange.Event.REMOVED,reader,r,""));
-                            bus.post(new TagChange(TagChange.Event.ADDED,reader,r,IOUtil.hex(tag.getTargetData())));
+                            bus.post(new TagChange(TagChange.Event.ADDED,reader,r,IOUtil.hexbin(tag.getTargetData())));
                             oldTags[r++] = tag.getTargetData();
                     }
                 }

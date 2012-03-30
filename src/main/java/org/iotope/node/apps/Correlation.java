@@ -24,28 +24,26 @@ public class Correlation {
     }
     
     public void tagChange(TagChange e) {
-        //        Query query = em.createQuery("SELECT wl FROM WebLink wl");
-        //        List<WebLink> resultList = query.getResultList();
-        //        for(WebLink l : resultList) {
-        //            System.out.println(l.tagId);
-        //        }
-        
-        if (TagChange.Event.ADDED == e.getEvent()) {
-            WebLink link = em.find(WebLink.class, e.getRaw());
-            if (link != null) {
-                Desktop desktop = Desktop.getDesktop();
-                try {
-                    desktop.browse(URI.create(link.url));
-                } catch (IOException e1) {
-                    e1.printStackTrace();
+        if (!learn) {
+            if (TagChange.Event.ADDED == e.getEvent()) {
+                WebLink link = em.find(WebLink.class, e.getRaw());
+                if (link != null) {
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(URI.create(link.url));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         }
     }
     
     public void setLearn(boolean b) {
-        
+        learn = b;
     }
+    
+    
     
     private EntityManager em;
     
