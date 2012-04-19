@@ -108,8 +108,9 @@ public class CometdNFCTagService extends AbstractService {
             String tagId = (String) data.get("tagId");
             String readerId = (String) data.get("readerId");
             String appId = (String) data.get("appId");
-            Map<String, ?>[] fields = (Map<String, ?>[]) data.get("fields");
-            
+            Object[] fields = (Object[]) data.get("fields");
+            correlation.associate(tagId, appId, fields);
+            //correlation.associate(tagId, appId, fields);
             //            Map<String,String> fields = Map<String,String> 
             //          if (Boolean.TRUE.equals(data.get("learn"))) {
             //              correlation.setLearn(true);
@@ -126,8 +127,8 @@ public class CometdNFCTagService extends AbstractService {
     
     @Subscribe
     public void publishTagChange(TagChange e) {
+        e = correlation.tagChange(e);
         tagChannel.publish(e);
-        correlation.tagChange(e);
     }
     
     private ClientSessionChannel readerChannel;

@@ -43,7 +43,7 @@ public class Node {
     }
 
     /**
-     * Wiress the application together
+     * Wire the application together
      */
     public void wire() throws Exception {
         bus.register(this);
