@@ -34,6 +34,16 @@
 			<version>1.3.164</version>
 		</dependency>
 		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.3.164</version>
+		</dependency>
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>5.1.19</version>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 			<version>${slf4j.version}</version>
@@ -85,25 +95,16 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>javax.persistence</artifactId>
-			<version>2.0.0</version>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>4.1.2.Final</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.jpa</artifactId>
-			<version>2.2.1</version>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-entitymanager</artifactId>
+		    <version>4.1.2</version>
 		</dependency>
 	</dependencies>
-	<repositories>
-		<repository>
-			<id>EclipseLink Repo</id>
-			<!-- EclipseLink doesn't publish it's artifacts to Maven Central, but 
-				for the time being it's Nexus doesn't work either. So we're using a working 
-				mirror for now. -->
-			<url>http://linorg.usp.br/eclipse/rt/eclipselink/maven.repo/</url>
-		</repository>
-	</repositories>
 
 	<build>
 		<pluginManagement>

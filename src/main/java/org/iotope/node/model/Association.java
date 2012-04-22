@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
@@ -22,9 +23,12 @@ public class Association {
     private long id;
     
 //    @JoinColumn(name = "APP_APP_ID",referencedColumnName="ASS_ID")
+    @ManyToOne
+    @JoinColumn(name="APP_ID")
     Application app;
     
 //    @JoinColumn(name = "TAG",referencedColumnName="TAG_RAW")
+    @ManyToOne
     private Tag tag;
     
     @OneToMany(mappedBy = "association", cascade = ALL)

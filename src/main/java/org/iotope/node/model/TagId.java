@@ -1,12 +1,18 @@
 package org.iotope.node.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Id;
 
 @Embeddable
-public class TagId {
+public class TagId implements Serializable {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     public TagId() {
     }
     

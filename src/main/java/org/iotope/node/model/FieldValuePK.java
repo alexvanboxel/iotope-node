@@ -1,13 +1,15 @@
 package org.iotope.node.model;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
 
-public class FieldValuePK {
+public class FieldValuePK implements Serializable{
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private Long association;
     
     private String field;
