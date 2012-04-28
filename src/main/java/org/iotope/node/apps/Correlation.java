@@ -1,8 +1,5 @@
 package org.iotope.node.apps;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +20,6 @@ import org.iotope.node.model.Association;
 import org.iotope.node.model.FieldValue;
 import org.iotope.node.model.Tag;
 import org.iotope.node.model.TagId;
-import org.iotope.node.model.WebLink;
 import org.iotope.node.reader.TagChange;
 
 @Singleton
@@ -53,6 +49,9 @@ public class Correlation {
         em.getTransaction().commit();
         em.close();
     }
+
+    //public TagChange tagChange(TagChange e) {
+    //}
     
     public TagChange tagChange(TagChange e) {
         if (!learn) {
@@ -61,7 +60,7 @@ public class Correlation {
                 ///////
                 EntityManager em = emf.createEntityManager();
                 
-                TagId tid = new TagId(e.getRaw());
+                TagId tid = new TagId(e.toString());
                 Tag tag = em.find(Tag.class, tid);
                 if (tag == null) {
                     tag = new Tag(tid);

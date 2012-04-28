@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.jetty.util.ajax.JSON;
 import org.eclipse.jetty.util.ajax.JSON.Output;
+import org.iotope.nfc.tag.NfcTarget;
 
 public class TagChange implements JSON.Convertible {
     
@@ -12,16 +13,12 @@ public class TagChange implements JSON.Convertible {
     };
     
     
-    public TagChange(Event event,Reader reader, int slot,String raw) {
+    public TagChange(Event event,Reader reader, int slot,NfcTarget target) {
         super();
         this.event = event;
         this.reader = reader;
         this.slot = slot;
-        this.raw = raw;
-    }
-    
-    public String getRaw() {
-        return raw;
+        this.target = target;
     }
     
     public Event getEvent() {
@@ -39,11 +36,11 @@ public class TagChange implements JSON.Convertible {
         out.add("event", event);
         out.add("reader", reader);
         out.add("slot", slot);
-        out.add("tag", raw);
+        out.add("tag", target);
     }
     
     private Event event;
     private Reader reader;
     private int slot;
-    private String raw;
+    private NfcTarget target;
 }
