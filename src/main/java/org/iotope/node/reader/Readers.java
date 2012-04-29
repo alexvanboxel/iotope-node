@@ -18,6 +18,8 @@ import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.ReaderConnection;
 import org.iotope.node.NodeBus;
 import org.iotope.node.reader.ReaderChange.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *  
@@ -25,6 +27,7 @@ import org.iotope.node.reader.ReaderChange.Event;
 @Singleton
 @SuppressWarnings("restriction")
 public class Readers implements Runnable {
+    private static Logger Log = LoggerFactory.getLogger(Readers.class);
     
     public Readers() throws Exception {
         TerminalFactory factory = TerminalFactory.getDefault();
@@ -34,7 +37,7 @@ public class Readers implements Runnable {
     
     private Reader addTerminal(CardTerminal terminal) throws CardException {
         Reader reader = new Reader(String.valueOf(terminal.hashCode()), //
-                terminal.getName(),2);
+                terminal.getName(), 2);
         knownTerminals.put(terminal, reader);
         poll(terminal, reader);
         return reader;
@@ -46,7 +49,7 @@ public class Readers implements Runnable {
     
     public List<Reader> getReaders() {
         List<Reader> readers = new ArrayList<Reader>();
-        for(Reader r : knownTerminals.values()) {
+        for (Reader r : knownTerminals.values()) {
             readers.add(r);
         }
         return readers;
@@ -55,7 +58,7 @@ public class Readers implements Runnable {
     private void removeAll(List<CardTerminal> toRemove) {
         for (CardTerminal t : toRemove) {
             Reader removed = removeTerminal(t);
-            bus.post(new ReaderChange(Event.REMOVED,removed));
+            bus.post(new ReaderChange(Event.REMOVED, removed));
         }
     }
     
@@ -65,13 +68,13 @@ public class Readers implements Runnable {
         
         while (true) {
             try {
-                System.out.println(".");
+                Log.trace("Start sync to search for new Readers");
                 tlist = terminals.list();
                 for (CardTerminal t : tlist) {
-                    System.out.println(t.getName());
+                    Log.trace("Card API returns the current reader: "+t.getName());
                     if (!knownTerminals.containsKey(t)) {
-                        bus.post(new ReaderChange(Event.ADDED,addTerminal(t)));
-                        System.out.println("NEW = " + t.getName());
+                        bus.post(new ReaderChange(Event.ADDED, addTerminal(t)));
+                        Log.info("Found new reader: "+t.getName());
                     }
                 }
                 List<CardTerminal> toRemove = new ArrayList<CardTerminal>();
@@ -112,7 +115,7 @@ public class Readers implements Runnable {
     private AtomicBoolean running = new AtomicBoolean(true);
     private CardTerminals terminals;
     private Map<CardTerminal, Reader> knownTerminals;
-
+    
     @Inject
     private NodeBus bus;
 }

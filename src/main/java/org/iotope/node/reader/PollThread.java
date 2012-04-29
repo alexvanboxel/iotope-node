@@ -9,15 +9,18 @@ import org.iotope.nfc.reader.pn532.PN532RFConfiguration;
 import org.iotope.nfc.reader.pn532.PN532RFConfigurationResponse;
 import org.iotope.nfc.tag.NfcTarget;
 import org.iotope.nfc.tech.NfcType2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.eventbus.EventBus;
 
 public class PollThread implements Runnable {
+    private static Logger Log = LoggerFactory.getLogger(PollThread.class);
     
     private ReaderChannel channel;
     private Reader reader;
     private EventBus bus;
-        
+    
     ClientSessionChannel cometdChannel;
     NfcTarget[] previousTargets = new NfcTarget[2];
     
@@ -47,42 +50,45 @@ public class PollThread implements Runnable {
             throw new RuntimeException(e);
         }
     }
-
+    
     private void handleNewTargets(NfcTarget[] currentTargets) {
         // 
         for (int ix = 0; ix < currentTargets.length; ix++) {
             if (previousTargets[ix] == null) {
-                NfcTarget nfcTag = currentTargets[ix];
-                if (nfcTag.isDEP()) {
-                    // DEP
-                } else {
-                    // TAG
-                    if (nfcTag != null) {
-                        System.out.println(nfcTag.toString());
+                NfcTarget nfcTarget = currentTargets[ix];
+                if (nfcTarget != null) {
+                    if (nfcTarget.isDEP()) {
+                        // DEP
+                        Log.trace("Handling new DEP target: " + nfcTarget.toString());
+                    } else {
+                        // TAG
+                        Log.trace("Handling new TAG target: " + nfcTarget.toString());
                         try {
-                            switch (nfcTag.getType()) {
+                            switch (nfcTarget.getType()) {
                             case MIFARE_1K:
                                 //                            readClassicAll(nfcTag);
                                 break;
                             case MIFARE_ULTRALIGHT:
                                 NfcType2 ultraLight = new NfcType2(channel);
-                                ultraLight.readNDEF(nfcTag);
+                                ultraLight.readNDEF(nfcTarget);
                                 //writeTest(nfcTag);
                                 break;
+                            default:
+                                Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else {
-                        System.out.println("Unsupported Protocol");
                     }
+                    bus.post(new TagChange(TagChange.Event.ADDED, reader, ix, nfcTarget));
+                    previousTargets[ix] = nfcTarget;
+                } else {
+                    Log.error("Trying to handle nfcTarget but it has NULL");
                 }
-                bus.post(new TagChange(TagChange.Event.ADDED, reader, ix, currentTargets[ix]));
-                previousTargets[ix] = currentTargets[ix];
             }
         }
     }
-
+    
     private void removeTargetsFromSlots(NfcTarget[] currentTargets) {
         // remove previously different tags slots
         for (int ix = 0; ix < previousTargets.length; ix++) {

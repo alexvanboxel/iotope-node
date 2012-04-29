@@ -20,10 +20,12 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.eventbus.EventBus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class NodeTray {
+    private static Logger Log = LoggerFactory.getLogger(NodeTray.class);
     
     public NodeTray() {
         if (SystemTray.isSupported()) {
@@ -80,7 +82,7 @@ public class NodeTray {
     private void initListeners() {
         exitListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Exiting...");
+                Log.info("Exiting IOTOPE Node... BYE");
                 System.exit(0);
             }
         };

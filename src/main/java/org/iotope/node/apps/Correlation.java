@@ -21,9 +21,12 @@ import org.iotope.node.model.FieldValue;
 import org.iotope.node.model.Tag;
 import org.iotope.node.model.TagId;
 import org.iotope.node.reader.TagChange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Correlation {
+    private static Logger Log = LoggerFactory.getLogger(Correlation.class);
     
     EntityManagerFactory emf;
     

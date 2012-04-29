@@ -14,11 +14,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.iotope.nfc.reader.ReaderChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Monitor of the gateway.
  */
 public class UIServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    private static Logger Log = LoggerFactory.getLogger(UIServlet.class);
     
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,7 +43,7 @@ public class UIServlet extends HttpServlet {
     }
     
     protected URI getResource(URI base, List<String> path) {
-        System.out.println(">>> " + base.toString());
+        Log.trace("Loading resource >>> " + base.toString());
         if (path.size() == 0)
             return base;
         
