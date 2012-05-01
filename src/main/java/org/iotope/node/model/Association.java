@@ -22,23 +22,15 @@ public class Association {
     @Column(name = "ASS_ID")
     private long id;
     
-//    @JoinColumn(name = "APP_APP_ID",referencedColumnName="ASS_ID")
     @ManyToOne
-    @JoinColumn(name="APP_ID")
+    @JoinColumn(name = "APP_ID")
     Application app;
     
-//    @JoinColumn(name = "TAG",referencedColumnName="TAG_RAW")
     @ManyToOne
     private Tag tag;
     
     @OneToMany(mappedBy = "association", cascade = ALL)
-    private//    @ElementCollection(targetClass=FieldValue.class)
-    //    @CollectionTable(name="FIELDS",joinColumns=
-    //            {
-    //                @JoinColumn(name="ASS_ID",referencedColumnName="id"),
-    //            }
-    //    )
-    Collection<FieldValue> fields;
+    private Collection<FieldValue> fields;
     
     public long getId() {
         return id;
@@ -56,23 +48,11 @@ public class Association {
         return this.app;
     }
     
-    public//    @ElementCollection(targetClass=FieldValue.class)
-    //    @CollectionTable(name="FIELDS",joinColumns=
-    //            {
-    //                @JoinColumn(name="ASS_ID",referencedColumnName="id"),
-    //            }
-    //    )
-    Collection<FieldValue> getFields() {
+    public Collection<FieldValue> getFields() {
         return fields;
     }
     
-    public void setFields(//    @ElementCollection(targetClass=FieldValue.class)
-            //    @CollectionTable(name="FIELDS",joinColumns=
-            //            {
-            //                @JoinColumn(name="ASS_ID",referencedColumnName="id"),
-            //            }
-            //    )
-            Collection<FieldValue> fields) {
+    public void setFields(Collection<FieldValue> fields) {
         this.fields = fields;
     }
     
@@ -82,6 +62,23 @@ public class Association {
     
     public void setTag(Tag tag) {
         this.tag = tag;
+    }
+
+    public FieldValue getFieldValueByName(String name) {
+        for (FieldValue fieldValue : fields) {
+            if (fieldValue.getField().equals(name)) {
+                return fieldValue;
+            }
+        }
+        return null;
+    }
+
+    public void addValue(FieldDefinition definition, String value) {
+        FieldValue fieldValue = new FieldValue();
+        fieldValue.setAssociation(this);
+        fieldValue.setField(definition);
+        fieldValue.setValue(value);
+        fields.add(fieldValue);
     }
     
     

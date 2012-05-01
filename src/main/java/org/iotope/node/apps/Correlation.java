@@ -1,5 +1,6 @@
 package org.iotope.node.apps;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import javax.persistence.TypedQuery;
 import org.iotope.node.NodeBus;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.Association;
+import org.iotope.node.model.FieldDefinition;
 import org.iotope.node.model.FieldValue;
 import org.iotope.node.model.Tag;
 import org.iotope.node.model.TagId;
@@ -39,70 +41,85 @@ public class Correlation {
         
         Application app = em.find(Application.class, Integer.valueOf("1"));
         if (app == null) {
-            app = new Application();
-            app.setAppId(Integer.valueOf("1"));
+            app = new Application(1);
+            app.addDefinition("url", "URL", "xs:string", "The URL to jump to.");
             em.persist(app);
         }
         app = em.find(Application.class, Integer.valueOf("2"));
         if (app == null) {
-            app = new Application();
-            app.setAppId(Integer.valueOf("2"));
+            app = new Application(2);
+            app.addDefinition("url", "URL", "xs:string", "The URL to jump to.");
+            app.addDefinition("method", "Method", "xs:string", "How to call (GET, POST, PUT, ...).");
+            app.addDefinition("accept", "Accept", "xs:string", "The Accept header.");
             em.persist(app);
         }
         em.getTransaction().commit();
         em.close();
     }
-
-    //public TagChange tagChange(TagChange e) {
-    //}
     
-    public TagChange tagChange(TagChange e) {
+    /**
+     * 
+     * 
+     * @param e
+     * @return
+     */
+    public TagChange getAssociateDataForTag(TagChange e) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TagId tid = new TagId(e.getNfcId());
+            Tag tag = em.find(Tag.class, tid);
+            if (tag == null) {
+                return e;
+            }
+            
+            TypedQuery<Association> query = em.createNamedQuery("findAssociationByTag", Association.class);
+            query.setParameter("tag", tag);
+            Association ass;
+            try {
+                ass = query.getSingleResult();
+            } catch (NoResultException nre) {
+                return e;
+            }
+            
+            e.setApplication(ass.getApplication());
+            for (FieldValue value : ass.getFields()) {
+                e.addField(value);
+            }
+        } catch (Throwable ex) {
+        }
+        return e;
+    }
+    
+    public void tagChange(TagChange e) {
         if (!learn) {
             if (TagChange.Event.ADDED == e.getEvent()) {
                 
                 ///////
                 EntityManager em = emf.createEntityManager();
                 
-                TagId tid = new TagId(e.toString());
+                TagId tid = new TagId(e.getNfcId());
                 Tag tag = em.find(Tag.class, tid);
                 if (tag == null) {
-                    tag = new Tag(tid);
-                    em.getTransaction().begin();
-                    em.persist(tag);
-                    em.getTransaction().commit();
+                    Log.info("Tag " + tid + " not found in the database.");
+                    return;
                 }
+                Log.debug("Tag " + tid + " found in the database.");
                 
-                //TypedQuery<Association> query = em.createQuery("select ass from Association ass where ass.tag = :tag", Association.class);
                 TypedQuery<Association> query = em.createNamedQuery("findAssociationByTag", Association.class);
                 query.setParameter("tag", tag);
                 try {
                     Association ass = query.getSingleResult();
-                    Tag t = ass.getTag();
-                    if(ass.getApplication().getAppId() == 1) {
+                    Log.info("Tag " + tid + " associated with an application.");
+                    if (ass.getApplication().getAppId() == 1) {
                         new WebLinkApp(em).execute(ass.getFields());
                     }
                     
                 } catch (NoResultException nre) {
+                    Log.info("Tag " + tid + " not associate with a specific application.");
                 }
                 em.close();
-                
-                
-                /////         //                Association ass = 
-                
-                
-                //                WebLink link = em.find(WebLink.class, e.getRaw());
-                //                if (link != null) {
-                //                    Desktop desktop = Desktop.getDesktop();
-                //                    try {
-                //                        desktop.browse(URI.create(link.getUrl()));
-                //                    } catch (IOException e1) {
-                //                        e1.printStackTrace();
-                //                    }
-                //                }
             }
         }
-        
-        return e;
     }
     
     public void setLearn(boolean b) {
@@ -140,59 +157,31 @@ public class Correlation {
                 ass = new Association();
                 ass.setApplication(app);
                 ass.setTag(tag);
+                ass.setFields(new ArrayList<FieldValue>());
                 em.persist(ass);
             }
             // UPDATE AND ADD
-            Set<FieldValue> handle = new HashSet<FieldValue>();
-            Collection<FieldValue> fields = ass.getFields();
             for (Object of : ofs) {
+                @SuppressWarnings("unchecked")
                 HashMap<String, String> f = (HashMap<String, String>) of;
                 String name = f.get("name");
                 String value = f.get("value");
-                boolean handled = false;
-                for (FieldValue fieldValue : fields) {
-                    if (fieldValue.getField().equals(name)) {
-                        handled = true;
-                        if (!fieldValue.getValue().equals(value)) {
-                            fieldValue.setValue(value);
-                        }
-                    }
+                FieldValue fieldValue = ass.getFieldValueByName(name);
+                if (fieldValue == null) {
+                    FieldDefinition definition = app.getFieldDefinitionByName(name);
+                    ass.addValue(definition, value);
+                } else {
+                    fieldValue.setValue(value);
                 }
-                if (!handled) {
-                    handle.add(new FieldValue(ass, name, value));
-                }
-            }
-            for (FieldValue add : handle) {
-                fields.add(add);
-            }
-            // DELETE
-            handle = new HashSet<FieldValue>();
-            for (FieldValue field : ass.getFields()) {
-                boolean exist = false;
-                for (Object of : ofs) {
-                    HashMap<String, String> f = (HashMap<String, String>) of;
-                    String name = f.get("name");
-                    if (field.getField().equals(name)) {
-                        exist = true;
-                    }
-                }
-                if (!exist) {
-                    handle.add(field);
-                }
-            }
-            for (FieldValue field : handle) {
-                ass.getFields().remove(field);
             }
             em.persist(ass);
             em.getTransaction().commit();
             em.close();
         } catch (Throwable e) {
+            Log.error(e.getMessage());
             em.getTransaction().rollback();
         }
     }
-    
-    @Inject
-    private NodeBus bus;
     
     private boolean learn;
 }

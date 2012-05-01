@@ -11,31 +11,22 @@ import javax.persistence.ManyToOne;
 @IdClass(FieldValuePK.class)
 public class FieldValue {
     
-    //    @Id
-    //    //@JoinColumn(name = "TAG_RAW")
-    //    @ManyToOne
-    //    public Application appId;
-    
-    //    @Id
-    //    @ManyToOne
-    //    public Tag tag;
-    
-    
     @Id
     @JoinColumn(name = "ASS_ID")
     @ManyToOne(optional = false)
     private Association association;
     
     @Id
-    @Column(name = "FIELD_NAME", length = 25)
-    private String field;
+    @ManyToOne
+//    @Column(name = "DEF_ID", length = 250)
+    private FieldDefinition definition;
     
-    @Column(name = "FIELD_VALUE", length = 250)
+    @Column(name = "VAL_VALUE", length = 250)
     private String value;
 
-    public FieldValue(Association ass,String field, String value) {
+    public FieldValue(Association ass,FieldDefinition field, String value) {
         this.association = ass;
-        this.field = field;
+        this.definition = field;
         this.value = value;
     }
 
@@ -50,12 +41,12 @@ public class FieldValue {
         this.association = association;
     }
 
-    public String getField() {
-        return field;
+    public FieldDefinition getField() {
+        return definition;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public void setField(FieldDefinition definition) {
+        this.definition = definition;
     }
 
     public String getValue() {

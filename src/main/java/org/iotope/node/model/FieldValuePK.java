@@ -12,14 +12,14 @@ public class FieldValuePK implements Serializable{
 
     private Long association;
     
-    private String field;
-
+    private Long definition;
+    
     public Long getAssociation() {
         return association;
     }
 
-    public String getField() {
-        return field;
+    public Long getField() {
+        return definition;
     }
 
 //    

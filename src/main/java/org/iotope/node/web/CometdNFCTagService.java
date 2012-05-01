@@ -127,7 +127,7 @@ public class CometdNFCTagService extends AbstractService {
     
     @Subscribe
     public void publishTagChange(TagChange e) {
-        e = correlation.tagChange(e);
+        correlation.tagChange(e);
         tagChannel.publish(e);
     }
     

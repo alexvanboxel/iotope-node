@@ -1,6 +1,8 @@
 package org.iotope.node.reader;
 
 
+import javax.inject.Inject;
+
 import org.cometd.bayeux.client.ClientSessionChannel;
 import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.pn532.PN532InAutoPoll;
@@ -9,6 +11,8 @@ import org.iotope.nfc.reader.pn532.PN532RFConfiguration;
 import org.iotope.nfc.reader.pn532.PN532RFConfigurationResponse;
 import org.iotope.nfc.tag.NfcTarget;
 import org.iotope.nfc.tech.NfcType2;
+import org.iotope.node.Node;
+import org.iotope.node.apps.Correlation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +24,8 @@ public class PollThread implements Runnable {
     private ReaderChannel channel;
     private Reader reader;
     private EventBus bus;
+    
+    Correlation correlation = Node.instance(Correlation.class);
     
     ClientSessionChannel cometdChannel;
     NfcTarget[] previousTargets = new NfcTarget[2];
@@ -57,6 +63,7 @@ public class PollThread implements Runnable {
             if (previousTargets[ix] == null) {
                 NfcTarget nfcTarget = currentTargets[ix];
                 if (nfcTarget != null) {
+                    TagChange tagChange = new TagChange(TagChange.Event.ADDED, reader, ix, nfcTarget);
                     if (nfcTarget.isDEP()) {
                         // DEP
                         Log.trace("Handling new DEP target: " + nfcTarget.toString());
@@ -70,7 +77,7 @@ public class PollThread implements Runnable {
                                 break;
                             case MIFARE_ULTRALIGHT:
                                 NfcType2 ultraLight = new NfcType2(channel);
-                                ultraLight.readNDEF(nfcTarget);
+                                tagChange.addTagContent(ultraLight.readNDEF(nfcTarget));
                                 //writeTest(nfcTag);
                                 break;
                             default:
@@ -80,7 +87,8 @@ public class PollThread implements Runnable {
                             e.printStackTrace();
                         }
                     }
-                    bus.post(new TagChange(TagChange.Event.ADDED, reader, ix, nfcTarget));
+                    tagChange = correlation.getAssociateDataForTag(tagChange);
+                    bus.post(tagChange);
                     previousTargets[ix] = nfcTarget;
                 } else {
                     Log.error("Trying to handle nfcTarget but it has NULL");

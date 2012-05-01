@@ -70,7 +70,7 @@ $(function() {
 			if(tagChange.event == "REMOVED") {
 				removeTag(tagChange.reader, tagChange.slot);
 			} else if(tagChange.event == "ADDED") {
-				addTag(tagChange.reader, tagChange.slot, tagChange.tag);
+				addTag(tagChange);
 			}
 		});
 		readerChannel = $.cometd.subscribe('/reader', function(message) {
@@ -139,22 +139,27 @@ function addReader(reader) {
 /**
  * Add the tag to the reader slot, and display application
  */
-function addTag(reader, slot, tag, tagapp) {
+function addTag(tagChange) {
+	var reader = tagChange.reader;
+	var slot = tagChange.slot;
+	var nfcid = tagChange.nfcid;
+	
 	var sid = "#R" + reader.terminalId + "S" + slot;
-	$(sid).text(tag);
+	$(sid).text(nfcid);
 	// for now only support slot 1
 	if(slot == 0) {
 		var app = $(".app", ".template").clone();
 		$(".tagaction", app).click(function() {
-			$("#tagId", "#context").text(tag);
+			$("#tagId", "#context").text(nfcid);
 			$("#readerId", "#context").text(reader.terminalId);
 			$("#app-dialog").dialog('open');
 			loadDialog();
 		});
-		$("table", app).attr("id", "A" + tag);
+		$("table", app).attr("id", "A" + nfcid);
 		var cnt_app = $(".cnt_app", "#R" + reader.terminalId);
 		cnt_app.html(app);
 	}
+	showAppData(reader.terminalId,nfcid,tagChange.application,tagChange.fields);
 }
 
 /**
@@ -200,4 +205,23 @@ function assignApp(message) {
 	savelink.attr("appId", message.appId);
 	savelink.attr("readerId", message.readerId);
 	savelink.click(saveApp);
+}
+
+function showAppData(readerId,nfcid,application,fields) {
+	if (application) {
+		appId = application.appId;
+		var tableBody = $("tbody", "#A" + nfcid);
+		tableBody.text("");
+		for (field in fields) {
+			var field = fields[field];
+			tableBody.append('<tr><td>' + field.displayName
+					+ '</td><td><input name="' + field.name
+					+ '" value="'+field.value+'"></input></td><td>' + field.description + '</td></tr>');
+		}
+		var savelink = $(".tagsave", "#R" + readerId);
+		savelink.attr("tagId", nfcid);
+		savelink.attr("appId", appId);
+		savelink.attr("readerId", readerId);
+		savelink.click(saveApp);
+	}
 }

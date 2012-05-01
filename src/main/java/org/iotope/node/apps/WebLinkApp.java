@@ -32,7 +32,7 @@ public class WebLinkApp {
     public void execute(Collection<FieldValue> values) {
         Map<String, FieldValue> map = new HashMap<String, FieldValue>();
         for (FieldValue value : values) {
-            map.put(value.getField(), value);
+            map.put(value.getField().getName(), value);
         }
         execute(map);
     }
