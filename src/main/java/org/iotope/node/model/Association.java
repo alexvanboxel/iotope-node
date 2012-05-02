@@ -66,7 +66,7 @@ public class Association {
 
     public FieldValue getFieldValueByName(String name) {
         for (FieldValue fieldValue : fields) {
-            if (fieldValue.getField().equals(name)) {
+            if (fieldValue.getField().getName().equals(name)) {
                 return fieldValue;
             }
         }

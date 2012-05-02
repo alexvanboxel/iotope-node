@@ -12,6 +12,20 @@
 		<script type="text/javascript" src="js/jquery-ui/jquery-ui-1.8.17.custom.min.js"></script>
 		<script type="text/javascript" src="js/tagapp.js"></script>
 		<style type="text/css">
+			body {
+				background-color: f9f9f9;
+			}
+			.head {
+				display: block;
+				margin: 5px;
+				background-color: ffffff;
+			}
+			.control {
+				display: block;
+				margin: 5px;
+				background-color: ffffff;
+			}
+			
 			.readerrow {
 				display: table-row;
 				padding: 0px;
@@ -59,8 +73,13 @@
 		</style>
 	</head>
 	<body>
-		<img src="img/iotope.png" />
-		<div>
+		<div class="head">
+		<table><tr><td>
+		<img src="img/iotope.png"/></td><td>
+		<i><b>IOTOPE Node</b> Control Center</i>. On this page you can control your node.
+		</td></tr></table>
+		</div>
+		<div class="control">
 			<input type="checkbox" id="learn" name="correlationMode" value="learn">
 			Learn Mode
 		</div>

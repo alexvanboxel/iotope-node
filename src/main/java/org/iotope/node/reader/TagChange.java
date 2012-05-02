@@ -96,7 +96,8 @@ public class TagChange implements JSON.Convertible {
                     for(int nx = 0;nx<message.size();nx++) {
                         NdefRecord record = message.getRecord(nx);
                         msg[nx] = new HashMap<String, Object>();
-                        //msg[nx].put("type", "ndef");
+                        msg[nx].put("type", "ndef");
+                        msg[nx].put("content", record.getContent());
                     }
                     cnt[ix].put("content", msg);
                     break;

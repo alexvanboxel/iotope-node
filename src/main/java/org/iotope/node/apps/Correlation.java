@@ -1,12 +1,8 @@
 package org.iotope.node.apps;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,7 +11,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import org.iotope.node.NodeBus;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.Association;
 import org.iotope.node.model.FieldDefinition;

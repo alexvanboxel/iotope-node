@@ -10,6 +10,7 @@
 		<class>org.iotope.node.model.Tag</class>
 		<class>org.iotope.node.model.WebLink</class>
 		<class>org.iotope.node.model.TagId</class>
+		<class>org.iotope.node.model.FieldDefinition</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 <!-- 
@@ -28,10 +29,10 @@ drop-and-create-tables -->
 			<property name="javax.persistence.jdbc.schema" value="PUBLIC" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
                         <property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
-<!-- 			<property name="hbm2ddl.auto" value="update" /> -->
+<!-- 			<property name="hbm2ddl.auto" value="update"  value="create-drop"/> -->
 		</properties>
 	</persistence-unit>
 </persistence>

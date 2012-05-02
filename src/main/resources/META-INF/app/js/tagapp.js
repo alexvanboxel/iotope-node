@@ -136,6 +136,67 @@ function addReader(reader) {
 	}
 }
 
+
+function tagContentNdef(tc) {
+	var html = '<li>';
+	html += '<span>' + tc.type + '</span>'
+	html += '<span><ul>';
+	for(c in tc.content) {
+		var ndef = tc.content[c];
+		html += '<li>' +ndef.content + '<li>'; 
+	}
+	html += '</ul></span>'
+	html += '</li>';
+	return html;		
+}
+
+function tagContent(tc) {
+	if("NDEF" == tc.type) {
+		return tagContentNdef(tc);
+	}
+	var html = '<li>';
+	html += '<span>' + tc.type + '</span>'
+	html += '<span>' + tc.content + '</span>'
+	html += '</li>';
+	return html;		
+}
+
+function tagRepresentation(tagChange) {
+	var  html = '<div class="tag">' +
+	
+	'<span class="tagid">' +tagChange.nfcid + '</span>';
+	
+	
+	for(c in tagChange.content) {
+		html += tagContent(tagChange.content[c]);
+	}
+
+	
+	html += '</div>';
+	return html;
+	
+//	<div class="tag">
+//	<div class="tagtype">
+//		<span class="tagtypeid"></span><span class="tagtypename">NXP
+//			Classic</span>
+//	</div>
+//	<span class="tagid">01020304050607</span>
+//	<ul class="ndef">
+//		<li>
+//			http://www.iotope.com
+//		</li>
+//		<li>
+//			text
+//		</li>
+//		<li>
+//			signature
+//		</li>
+//	</ul>
+//</div>
+
+}
+
+
 /**
  * Add the tag to the reader slot, and display application
  */
@@ -145,7 +206,12 @@ function addTag(tagChange) {
 	var nfcid = tagChange.nfcid;
 	
 	var sid = "#R" + reader.terminalId + "S" + slot;
-	$(sid).text(nfcid);
+	//$(sid).text(nfcid);
+	
+	
+	$(sid).html(tagRepresentation(tagChange));
+	
+	
 	// for now only support slot 1
 	if(slot == 0) {
 		var app = $(".app", ".template").clone();
@@ -207,6 +273,7 @@ function assignApp(message) {
 	savelink.click(saveApp);
 }
 
+// TODO: JOIN assignApp and showAppData!
 function showAppData(readerId,nfcid,application,fields) {
 	if (application) {
 		appId = application.appId;

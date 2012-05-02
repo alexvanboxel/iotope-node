@@ -10,8 +10,11 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 
 import org.iotope.node.model.FieldValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WebLinkApp {
+    private static Logger Log = LoggerFactory.getLogger(WebLinkApp.class);
     
     private EntityManager em;
     
@@ -19,13 +22,13 @@ public class WebLinkApp {
         this.em = em;
     }
     
-    public void execute(Map<String, FieldValue> values)  {
+    public void execute(Map<String, FieldValue> values) {
         Desktop desktop = Desktop.getDesktop();
         try {
             desktop.browse(URI.create(values.get("url").getValue()));
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            Log.error(e.getMessage());
         }
     }
     
