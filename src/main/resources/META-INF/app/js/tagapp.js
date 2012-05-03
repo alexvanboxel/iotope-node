@@ -139,13 +139,21 @@ function addReader(reader) {
 
 function tagContentNdef(tc) {
 	var html = '<li>';
-	html += '<span>' + tc.type + '</span>'
+	html += '<span>NDEF <span class="explain">Messages formatted following the NFC spec.</span></span>'
 	html += '<span><ul>';
 	for(c in tc.content) {
 		var ndef = tc.content[c];
-		html += '<li>' +ndef.content + '<li>'; 
+		html += '<li>' +ndef.content + '</li>'; 
 	}
 	html += '</ul></span>'
+	html += '</li>';
+	return html;		
+}
+
+function tagContentBlock(tc,type,explain) {
+	var html = '<li>';
+	html += '<span>' + type + ' <span class="explain">'+explain+'</span></span><br/>'
+	html += '<span class="binhex">' + tc.content + '</span>'
 	html += '</li>';
 	return html;		
 }
@@ -154,9 +162,15 @@ function tagContent(tc) {
 	if("NDEF" == tc.type) {
 		return tagContentNdef(tc);
 	}
+	else if("LEGACY_HASH" == tc.type) {
+		return tagContentBlock(tc,"Touchatag Signature Hash","A recognized Touchatag signature.");
+	}
+	else if("MEMORY_RW_BLOCK" == tc.type) {
+		return tagContentBlock(tc,"RW Memory","Current content of a writable block of memory in the tag.");
+	}
 	var html = '<li>';
 	html += '<span>' + tc.type + '</span>'
-	html += '<span>' + tc.content + '</span>'
+	html += '<span class="binhex">' + tc.content + '</span>'
 	html += '</li>';
 	return html;		
 }
