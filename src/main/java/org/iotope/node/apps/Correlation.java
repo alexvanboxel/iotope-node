@@ -2,7 +2,9 @@ package org.iotope.node.apps;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +13,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import org.iotope.node.conf.Configuration;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.Association;
 import org.iotope.node.model.FieldDefinition;
@@ -26,6 +29,9 @@ public class Correlation {
     private static Logger Log = LoggerFactory.getLogger(Correlation.class);
     
     EntityManagerFactory emf;
+    
+    @Inject
+    Configuration configuration;
     
     public Correlation() {
         super();
@@ -86,41 +92,21 @@ public class Correlation {
     }
     
     public void tagChange(TagChange e) {
-        if (!learn) {
+        if (!configuration.isLearnMode() && configuration.isExecuteAssociated()) {
             if (TagChange.Event.ADDED == e.getEvent()) {
                 
-                ///////
-                EntityManager em = emf.createEntityManager();
+                Application application = e.getApplication();
+                List<FieldValue> fields = e.getFields();
                 
-                TagId tid = new TagId(e.getNfcId());
-                Tag tag = em.find(Tag.class, tid);
-                if (tag == null) {
-                    Log.info("Tag " + tid + " not found in the database.");
-                    return;
+                switch (application.getAppId()) {
+                case 1:
+                    new WebLinkApp().execute(fields);
+                    break;
+                default:
                 }
-                Log.debug("Tag " + tid + " found in the database.");
-                
-                TypedQuery<Association> query = em.createNamedQuery("findAssociationByTag", Association.class);
-                query.setParameter("tag", tag);
-                try {
-                    Association ass = query.getSingleResult();
-                    Log.info("Tag " + tid + " associated with an application.");
-                    if (ass.getApplication().getAppId() == 1) {
-                        new WebLinkApp(em).execute(ass.getFields());
-                    }
-                    
-                } catch (NoResultException nre) {
-                    Log.info("Tag " + tid + " not associate with a specific application.");
-                }
-                em.close();
             }
         }
     }
-    
-    public void setLearn(boolean b) {
-        learn = b;
-    }
-    
     
     /**
      * Prototype: Need to be moved
@@ -177,6 +163,4 @@ public class Correlation {
             em.getTransaction().rollback();
         }
     }
-    
-    private boolean learn;
 }

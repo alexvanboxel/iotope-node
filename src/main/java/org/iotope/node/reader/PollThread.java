@@ -1,8 +1,6 @@
 package org.iotope.node.reader;
 
 
-import javax.inject.Inject;
-
 import org.cometd.bayeux.client.ClientSessionChannel;
 import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.pn532.PN532InAutoPoll;
@@ -13,6 +11,7 @@ import org.iotope.nfc.tag.NfcTarget;
 import org.iotope.nfc.tech.NfcType2;
 import org.iotope.node.Node;
 import org.iotope.node.apps.Correlation;
+import org.iotope.node.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +25,7 @@ public class PollThread implements Runnable {
     private EventBus bus;
     
     Correlation correlation = Node.instance(Correlation.class);
+    Configuration configuration = Node.instance(Configuration.class);
     
     ClientSessionChannel cometdChannel;
     NfcTarget[] previousTargets = new NfcTarget[2];
@@ -87,7 +87,9 @@ public class PollThread implements Runnable {
                             e.printStackTrace();
                         }
                     }
-                    tagChange = correlation.getAssociateDataForTag(tagChange);
+                    if (configuration.isExecuteAssociated()) {
+                        tagChange = correlation.getAssociateDataForTag(tagChange);
+                    }
                     bus.post(tagChange);
                     previousTargets[ix] = nfcTarget;
                 } else {

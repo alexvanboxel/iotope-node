@@ -5,13 +5,13 @@ import javax.inject.Singleton;
 @Singleton
 public class Configuration {
     
-    private boolean readTagContent;
+    private boolean readTagContent = true;
     
-    private String nodeName;
+    private String nodeName = "";
     
-    private boolean learnMode;
+    private boolean learnMode = false;
     
-    private String nodeGroup;
+    private String nodeGroup = "";
     
     private String server;
     
@@ -19,7 +19,7 @@ public class Configuration {
     
     private boolean cacheTagContent;
     
-    private boolean executeAssociated;
+    private boolean executeAssociated = true;
     
     private String nodeToken;
     

@@ -1,6 +1,7 @@
 package org.iotope.node.reader;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,6 +117,14 @@ public class TagChange implements JSON.Convertible {
         this.tagContent = tagContent;
     }
     
+    public List<FieldValue> getFields() {
+        return Collections.unmodifiableList(fields);
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
     private Event event;
     private Reader reader;
     private int slot;

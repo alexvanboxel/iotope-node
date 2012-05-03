@@ -11,6 +11,7 @@ import org.cometd.server.AbstractService;
 import org.iotope.node.Node;
 import org.iotope.node.NodeBus;
 import org.iotope.node.apps.Correlation;
+import org.iotope.node.conf.Configuration;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.reader.TagChange;
@@ -26,8 +27,7 @@ public class CometdNFCTagService extends AbstractService {
         this.readers = Node.instance(Readers.class);
         this.bus = Node.instance(NodeBus.class);
         this.correlation = Node.instance(Correlation.class);
-        
-        this.controllerUI = Node.instance(CometdUIController.class);
+        this.configuration = Node.instance(Configuration.class);
         
         bus.register(this);
         addService("/info", "processInfoRequest");
@@ -61,9 +61,9 @@ public class CometdNFCTagService extends AbstractService {
         String type = (String) data.get("type");
         if ("setLearnMode".equals(type)) {
             if (Boolean.TRUE.equals(data.get("learn"))) {
-                correlation.setLearn(true);
+                configuration.setLearnMode(true);
             } else {
-                correlation.setLearn(false);
+                configuration.setLearnMode(false);
             }
         } else if ("assignApplication".equals(type)) {
             String tagId = (String) data.get("tagId");
@@ -134,9 +134,8 @@ public class CometdNFCTagService extends AbstractService {
     private ClientSessionChannel readerChannel;
     private ClientSessionChannel tagChannel;
     
-    private CometdUIController controllerUI;
-    
     private Correlation correlation;
+    private Configuration configuration;
     private Readers readers;
     private EventBus bus;
 }
