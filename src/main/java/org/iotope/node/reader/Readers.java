@@ -18,6 +18,7 @@ import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.ReaderConnection;
 import org.iotope.node.NodeBus;
 import org.iotope.node.reader.ReaderChange.Event;
+import org.iotope.pipeline.model.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

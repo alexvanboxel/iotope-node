@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.jetty.util.ajax.JSON;
 import org.eclipse.jetty.util.ajax.JSON.Output;
+import org.iotope.pipeline.model.Reader;
 
 public class ReaderChange implements JSON.Convertible {
     

@@ -15,6 +15,7 @@ import org.iotope.nfc.tag.TagContent;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.FieldDefinition;
 import org.iotope.node.model.FieldValue;
+import org.iotope.pipeline.model.Reader;
 import org.iotope.util.IOUtil;
 
 public class TagChange implements JSON.Convertible {

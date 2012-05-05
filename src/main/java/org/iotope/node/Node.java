@@ -2,6 +2,7 @@ package org.iotope.node;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.servlet.ServletConfig;
 
 import org.cometd.server.CometdServlet;
 import org.eclipse.jetty.server.Handler;
@@ -11,7 +12,6 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.iotope.node.reader.Reader;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.web.CometdConfiguration;
@@ -58,6 +58,8 @@ public class Node {
         
         ServletHolder holderCometd = new ServletHolder(new CometdServlet());
         holderCometd.setInitOrder(1);
+        holderCometd.setInitParameter("jsonContext", "org.cometd.server.JacksonJSONContextServer");
+//        holderCometd.getServlet().init(servletConfig);
         ServletHolder holderCometdConfig = new ServletHolder(servletCometDConfig);
         holderCometdConfig.setInitOrder(2);
         ServletHolder holderUI = new ServletHolder(servletUI);
@@ -67,7 +69,6 @@ public class Node {
         context.addServlet(holderCometd, "/cometd/*");
         context.addServlet(holderCometdConfig, "/config");
         context.addServlet(holderUI, "/ui/*");
-        
         
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[] { context, new DefaultHandler() });

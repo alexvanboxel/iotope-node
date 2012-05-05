@@ -12,6 +12,7 @@ import org.iotope.nfc.tech.NfcType2;
 import org.iotope.node.Node;
 import org.iotope.node.apps.Correlation;
 import org.iotope.node.conf.Configuration;
+import org.iotope.pipeline.model.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
