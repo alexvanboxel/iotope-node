@@ -96,13 +96,15 @@ public class Correlation {
             if (TagChange.Event.ADDED == e.getEvent()) {
                 
                 Application application = e.getApplication();
-                List<FieldValue> fields = e.getFields();
-                
-                switch (application.getAppId()) {
-                case 1:
-                    new WebLink().execute(fields);
-                    break;
-                default:
+                if(application!=null) {
+                    List<FieldValue> fields = e.getFields();
+                    
+                    switch (application.getAppId()) {
+                    case 1:
+                        new WebLink().execute(fields);
+                        break;
+                    default:
+                    }
                 }
             }
         }

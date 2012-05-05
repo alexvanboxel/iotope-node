@@ -149,9 +149,10 @@ function tagContentNdef(tc) {
 	var html = '<li>';
 	html += '<span>NDEF <span class="explain">Messages formatted following the NFC spec.</span></span>'
 	html += '<span><ul>';
-	for(c in tc.content) {
-		var ndef = tc.content[c];
-		html += '<li>' +ndef.content + '</li>'; 
+	for(c in tc.ndef.records) {
+		var ndef = tc.ndef.records[c];
+		
+		html += '<li>' +ndef.representation + '</li>'; 
 	}
 	html += '</ul></span>'
 	html += '</li>';
@@ -161,7 +162,7 @@ function tagContentNdef(tc) {
 function tagContentBlock(tc,type,explain) {
 	var html = '<li>';
 	html += '<span>' + type + ' <span class="explain">'+explain+'</span></span><br/>'
-	html += '<span class="binhex">' + tc.content + '</span>'
+	html += '<span class="binhex">' + tc.block + '</span>'
 	html += '</li>';
 	return html;		
 }
@@ -185,37 +186,12 @@ function tagContent(tc) {
 
 function tagRepresentation(tagChange) {
 	var  html = '<div class="tag">' +
-	
-	'<span class="tagid">' +tagChange.nfcid + '</span>';
-	
-	
-	for(c in tagChange.content) {
-		html += tagContent(tagChange.content[c]);
+	'<span class="tagid">' +tagChange.nfcId + '</span>';
+	for(c in tagChange.content.blocks) {
+		html += tagContent(tagChange.content.blocks[c]);
 	}
-
-	
 	html += '</div>';
 	return html;
-	
-//	<div class="tag">
-//	<div class="tagtype">
-//		<span class="tagtypeid"></span><span class="tagtypename">NXP
-//			Classic</span>
-//	</div>
-//	<span class="tagid">01020304050607</span>
-//	<ul class="ndef">
-//		<li>
-//			http://www.iotope.com
-//		</li>
-//		<li>
-//			text
-//		</li>
-//		<li>
-//			signature
-//		</li>
-//	</ul>
-//</div>
-
 }
 
 
@@ -225,29 +201,25 @@ function tagRepresentation(tagChange) {
 function addTag(tagChange) {
 	var reader = tagChange.reader;
 	var slot = tagChange.slot;
-	var nfcid = tagChange.nfcid;
+	var nfcId = tagChange.nfcId;
 	
 	var sid = "#R" + reader.terminalId + "S" + slot;
-	//$(sid).text(nfcid);
-	
-	
 	$(sid).html(tagRepresentation(tagChange));
-	
 	
 	// for now only support slot 1
 	if(slot == 0) {
 		var app = $(".app", ".template").clone();
 		$(".tagaction", app).click(function() {
-			$("#tagId", "#context").text(nfcid);
+			$("#tagId", "#context").text(nfcId);
 			$("#readerId", "#context").text(reader.terminalId);
 			$("#app-dialog").dialog('open');
 			loadDialog();
 		});
-		$("table", app).attr("id", "A" + nfcid);
+		$("table", app).attr("id", "A" + nfcId);
 		var cnt_app = $(".cnt_app", "#R" + reader.terminalId);
 		cnt_app.html(app);
 	}
-	showAppData(reader.terminalId,nfcid,tagChange.application,tagChange.fields);
+	showAppData(reader.terminalId,nfcId,tagChange.application,tagChange.fields);
 }
 
 /**
@@ -296,10 +268,10 @@ function assignApp(message) {
 }
 
 // TODO: JOIN assignApp and showAppData!
-function showAppData(readerId,nfcid,application,fields) {
+function showAppData(readerId,nfcId,application,fields) {
 	if (application) {
 		appId = application.appId;
-		var tableBody = $("tbody", "#A" + nfcid);
+		var tableBody = $("tbody", "#A" + nfcId);
 		tableBody.text("");
 		for (field in fields) {
 			var field = fields[field];
@@ -308,7 +280,7 @@ function showAppData(readerId,nfcid,application,fields) {
 					+ '" value="'+field.value+'"></input></td><td>' + field.description + '</td></tr>');
 		}
 		var savelink = $(".tagsave", "#R" + readerId);
-		savelink.attr("tagId", nfcid);
+		savelink.attr("tagId", nfcId);
 		savelink.attr("appId", appId);
 		savelink.attr("readerId", readerId);
 		savelink.click(saveApp);

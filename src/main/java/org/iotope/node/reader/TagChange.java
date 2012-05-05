@@ -18,7 +18,7 @@ import org.iotope.node.model.FieldValue;
 import org.iotope.pipeline.model.Reader;
 import org.iotope.util.IOUtil;
 
-public class TagChange implements JSON.Convertible {
+public class TagChange /*implements JSON.Convertible*/ {
     
     public enum Event {
         ADDED, REMOVED
@@ -51,7 +51,7 @@ public class TagChange implements JSON.Convertible {
     public void addField(FieldValue value) {
         fields.add(value);
     }
-    
+    /*
     @Override
     @SuppressWarnings("rawtypes")
     public void fromJSON(Map map) {
@@ -113,7 +113,7 @@ public class TagChange implements JSON.Convertible {
             out.add("content", cnt);
         }
     }
-    
+*/    
     public void addTagContent(TagContent tagContent) {
         this.tagContent = tagContent;
     }
@@ -126,6 +126,18 @@ public class TagChange implements JSON.Convertible {
         return application;
     }
 
+    public Reader getReader() {
+        return reader;
+    }
+
+    public int getSlot() {
+        return slot;
+    }
+    
+    public TagContent getContent() {
+        return tagContent;
+    }
+    
     private Event event;
     private Reader reader;
     private int slot;
