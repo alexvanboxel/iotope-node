@@ -8,15 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.iotope.IotopeApplication;
+import org.iotope.context.Application;
+import org.iotope.context.ExecutionContext;
 import org.iotope.node.model.FieldValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @IotopeApplication("nfc:iotope.app:iotope.org:weblink")
-public class WebLinkApp {
-    private static Logger Log = LoggerFactory.getLogger(WebLinkApp.class);
+public class WebLink implements Application {
+    private static Logger Log = LoggerFactory.getLogger(WebLink.class);
     
-    public WebLinkApp() {
+    public WebLink() {
     }
     
     public void execute(Map<String, FieldValue> values) {
@@ -34,6 +36,12 @@ public class WebLinkApp {
             map.put(value.getField().getName(), value);
         }
         execute(map);
+    }
+
+    @Override
+    public void execute(ExecutionContext context) {
+        // TODO Auto-generated method stub
+        
     }
     
     

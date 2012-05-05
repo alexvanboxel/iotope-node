@@ -100,7 +100,7 @@ public class Correlation {
                 
                 switch (application.getAppId()) {
                 case 1:
-                    new WebLinkApp().execute(fields);
+                    new WebLink().execute(fields);
                     break;
                 default:
                 }
