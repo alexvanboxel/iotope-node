@@ -125,13 +125,13 @@
 				<span class="explain">Friendly name of the node within the group.</span>
 			</div>
 			<div class="controlblock" id="ctrlearn">
-				<input type="checkbox" id="learn" name="correlationMode" value="learn">
+				<input type="checkbox" class="optchkbox" name="learnMode" value="true">
 				Learn Mode
 				<span class="explain">When learn mode is enabled, it will suppress all
 				action associated (default or explicit) with the target.</span>
 			</div>
 			<div class="controlblock" id="ctrread">
-				<input type="checkbox" name="readTag" value="true">
+				<input type="checkbox" name="readTagContent" class="optchkbox" value="true">
 				Read Content.
 				<span class="explain">When reading content is enabled the node will read
 				all the content from the target. This will enable richer information, but
@@ -147,13 +147,13 @@
 				<span class="explain">A group can inf.</span>
 			</div>
 			<div class="controlblock" id="ctrread">
-				<input type="checkbox" name="readTag" value="true">
+				<input type="checkbox" class="optchkbox" name="cacheTagContent" value="true">
 				Cache Content.
 				<span class="explain">Caching information will enable faster reads,
 				but should not be enabled when the content of a target can change.</span>
 			</div>
 			<div class="controlblock" id="ctrread">
-				<input type="checkbox" name="readTag" value="true">
+				<input type="checkbox" class="optchkbox" name="executeAssociated" value="true">
 				Execute associated applications.
 				<span class="explain">Execute the associated applications with specific
 				targets. If this is disabled, the default application will be executed.</span>

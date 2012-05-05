@@ -113,6 +113,14 @@ $(function() {
 			learn : $(this)[0].checked
 		});
 	});
+	$(".optchkbox").click("dat", function(eventObject) {
+		$.cometd.publish("/service/rest/bla", {
+			method : "PUT",
+			type : "setBooleanOption",
+			name: $(this)[0].name,
+			value : $(this)[0].checked
+		});
+	});
 });
 function removeReader(reader) {
 	var tid = "#R" + reader.terminalId;

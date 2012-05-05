@@ -69,22 +69,27 @@ public class PollThread implements Runnable {
                         Log.trace("Handling new DEP target: " + nfcTarget.toString());
                     } else {
                         // TAG
-                        Log.trace("Handling new TAG target: " + nfcTarget.toString());
-                        try {
-                            switch (nfcTarget.getType()) {
-                            case MIFARE_1K:
-                                //                            readClassicAll(nfcTag);
-                                break;
-                            case MIFARE_ULTRALIGHT:
-                                NfcType2 ultraLight = new NfcType2(channel);
-                                tagChange.addTagContent(ultraLight.readNDEF(nfcTarget));
-                                //writeTest(nfcTag);
-                                break;
-                            default:
-                                Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
+                        if(configuration.isReadTagContent()) {
+                            Log.debug("Handling new TAG target: " + nfcTarget.toString());
+                            try {
+                                switch (nfcTarget.getType()) {
+                                case MIFARE_1K:
+                                    //readClassicAll(nfcTag);
+                                    break;
+                                case MIFARE_ULTRALIGHT:
+                                    NfcType2 ultraLight = new NfcType2(channel);
+                                    tagChange.addTagContent(ultraLight.readNDEF(nfcTarget));
+                                    //writeTest(nfcTag);
+                                    break;
+                                default:
+                                    Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        }
+                        else {
+                            Log.debug("New TAG target: " + nfcTarget.toString() + " but content is not read due to configuration.");
                         }
                     }
                     if (configuration.isExecuteAssociated()) {

@@ -59,12 +59,8 @@ public class CometdNFCTagService extends AbstractService {
     public void processRESTRequest(ServerSession remote, String channelName, Map<String, Object> data, String messageId) {
         String[] path = channelName.split("/");
         String type = (String) data.get("type");
-        if ("setLearnMode".equals(type)) {
-            if (Boolean.TRUE.equals(data.get("learn"))) {
-                configuration.setLearnMode(true);
-            } else {
-                configuration.setLearnMode(false);
-            }
+        if ("setBooleanOption".equals(type)) {
+            configuration.set((String)data.get("name"), ((Boolean)data.get("value")).toString());
         } else if ("assignApplication".equals(type)) {
             String tagId = (String) data.get("tagId");
             String readerId = (String) data.get("readerId");

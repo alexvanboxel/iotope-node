@@ -7,10 +7,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.iotope.IotopeApplication;
 import org.iotope.node.model.FieldValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@IotopeApplication("nfc:iotope.app:iotope.org:weblink")
 public class WebLinkApp {
     private static Logger Log = LoggerFactory.getLogger(WebLinkApp.class);
     
@@ -22,7 +24,6 @@ public class WebLinkApp {
         try {
             desktop.browse(URI.create(values.get("url").getValue()));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             Log.error(e.getMessage());
         }
     }

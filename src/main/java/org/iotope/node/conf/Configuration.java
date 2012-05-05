@@ -1,6 +1,22 @@
 package org.iotope.node.conf;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.inject.Singleton;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.transform.stream.StreamSource;
+
+import nu.xom.Builder;
+import nu.xom.Document;
+import nu.xom.Element;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
 
 @Singleton
 public class Configuration {
@@ -142,5 +158,27 @@ public class Configuration {
     public void setNodeToken(String nodeToken) {
         this.nodeToken = nodeToken;
     }
+
+    private void onLoaded() {
+        
+    }
     
+    public void load(String name) throws ValidityException, ParsingException, IOException {
+        load(getClass().getResourceAsStream(name));
+    }
+    
+    public void load(InputStream in) throws ValidityException, ParsingException, IOException {
+        Builder parser = new Builder(false);
+        try {
+            xom = parser.build(in);
+            onLoaded();
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+        }
+    }
+    
+    protected Document xom;
+    protected Element element;
 }
