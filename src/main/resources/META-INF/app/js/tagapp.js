@@ -43,16 +43,10 @@ function selectApp(obj) {
 
 function loadDialog() {
 	var dialog = $("#app-dialog");
-	var links = $("a", dialog);
-	for( i = 0; i < links.length; i++) {
-		$(links[i]).click(selectApp);
-		if( i == 0) {
-			$(links[i]).attr("class", "appSelected");
-		} else {
-			$(links[i]).attr("class", "appLink");
-		}
-	}
-	$("#appId", "#context").text("1");
+	$.cometd.publish("/service/rest/applications", {
+		method : "PUT",
+		type : "getApplications"
+	});
 }
 
 $(function() {
@@ -82,6 +76,26 @@ $(function() {
 			}
 		});
 		actionChannel = $.cometd.subscribe("/service/rest/**", function(message) {
+			if(message.channel == "/service/rest/applications") {
+				// add apps
+				html = "";
+				for(c in message.data) {
+					app = message.data[c]
+					html += '<li><a class="appLink" appId="'+ app.appId + '">' + app.displayName + '</a></li>';
+				}
+				$("#app-links").html(html);
+				// link and select current
+				var links = $("a", "#app-dialog");
+				for( i = 0; i < links.length; i++) {
+					$(links[i]).click(selectApp);
+					if( i == 0) {
+						$(links[i]).attr("class", "appSelected");
+					} else {
+						$(links[i]).attr("class", "appLink");
+					}
+				}
+				$("#appId", "#context").text("1");
+			}
 			var messageData = message.data;
 			if(messageData.type == "assignApplication") {
 				assignApp(messageData);

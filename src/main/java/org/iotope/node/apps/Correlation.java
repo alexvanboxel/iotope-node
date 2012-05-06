@@ -1,6 +1,7 @@
 package org.iotope.node.apps;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.iotope.node.model.FieldValue;
 import org.iotope.node.model.Tag;
 import org.iotope.node.model.TagId;
 import org.iotope.pipeline.ExecutionContextImpl;
+import org.iotope.pipeline.model.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,22 +38,24 @@ public class Correlation {
     public Correlation() {
         super();
         emf = Persistence.createEntityManagerFactory("iotope-node");
+    }
+    
+    public void addApplication(String domain, String name, String displayName, String description, Collection<Field> fields) {
         EntityManager em = emf.createEntityManager();
         em.setFlushMode(FlushModeType.COMMIT);
         em.getTransaction().begin();
         
-        Application app = em.find(Application.class, Integer.valueOf("1"));
-        if (app == null) {
-            app = new Application(1,"iotope.org","weblink");
-            app.addDefinition("url", "URL", "xs:string", "The URL to jump to.");
-            em.persist(app);
-        }
-        app = em.find(Application.class, Integer.valueOf("2"));
-        if (app == null) {
-            app = new Application(2,"iotope.org","test");
-            app.addDefinition("url", "URL", "xs:string", "The URL to jump to.");
-            app.addDefinition("method", "Method", "xs:string", "How to call (GET, POST, PUT, ...).");
-            app.addDefinition("accept", "Accept", "xs:string", "The Accept header.");
+        TypedQuery<Application> query = em.createNamedQuery("findApplicationByName", Application.class);
+        query.setParameter("domain", domain);
+        query.setParameter("name", name);
+        Application app;
+        try {
+            app = query.getSingleResult();
+        } catch (NoResultException nre) {
+            app = new Application(domain, name, displayName, description);
+            for (Field field : fields) {
+                app.addDefinition(field.getName(), field.getType(), field.getDisplayName(), field.getDescription());
+            }
             em.persist(app);
         }
         em.getTransaction().commit();
@@ -87,24 +91,6 @@ public class Correlation {
         } catch (Throwable ex) {
         }
     }
-    
-    //    public void tagChange(TagChange e) {
-    //        if (!configuration.isLearnMode() && configuration.isExecuteAssociated()) {
-    //            if (TagChange.Event.ADDED == e.getEvent()) {
-    //                
-    //                Application application = e.getApplication();
-    //                if(application!=null) {
-    //                    List<FieldValue> fields = e.getFields();
-    //                    switch (application.getAppId()) {
-    //                    case 1:
-    //                        new WebLink().execute(fields);
-    //                        break;
-    //                    default:
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
     
     /**
      * Prototype: Need to be moved
@@ -159,6 +145,17 @@ public class Correlation {
         } catch (Throwable e) {
             Log.error(e.getMessage());
             em.getTransaction().rollback();
+        }
+    }
+    
+    public List<Application> getApplications() {        
+        EntityManager em = emf.createEntityManager();
+        em.setFlushMode(FlushModeType.COMMIT);
+        TypedQuery<Application> query = em.createQuery("select app from Application app", Application.class);
+        try {
+            return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 }

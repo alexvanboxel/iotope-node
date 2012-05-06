@@ -5,12 +5,12 @@ import org.iotope.node.model.FieldDefinition;
 import org.iotope.node.model.FieldValue;
 
 public class Field {
-
-    private Field(String name, String displayName, String type, String description) {
-        this(name,displayName,type,description,null);
+    
+    public Field(String name, String type, String displayName, String description) {
+        this(name, type, displayName, description, null);
     }
     
-    private Field(String name, String displayName, String type, String description, String value) {
+    public Field(String name, String type, String displayName, String description, String value) {
         super();
         this.name = name;
         this.displayName = displayName;
@@ -18,7 +18,7 @@ public class Field {
         this.description = description;
         this.value = value;
     }
-
+    
     public Field(FieldValue val) {
         Application app = val.getAssociation().getApplication();
         FieldDefinition def = val.getField();
@@ -28,7 +28,7 @@ public class Field {
         type = def.getType();
         value = val.getValue();
     }
-
+    
     public String getValue() {
         return value;
     }
@@ -44,7 +44,7 @@ public class Field {
     public String getDisplayName() {
         return displayName;
     }
-
+    
     public String getType() {
         return type;
     }
@@ -52,11 +52,11 @@ public class Field {
     public String getDescription() {
         return description;
     }
-
+    
     private String name;
     private String displayName;
     private String type;
     private String description;
-
+    
     private String value;
 }

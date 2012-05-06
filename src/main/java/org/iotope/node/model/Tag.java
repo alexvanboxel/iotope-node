@@ -1,15 +1,10 @@
 package org.iotope.node.model;
 
-import java.util.Map;
-
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
-import org.eclipse.jetty.util.ajax.JSON;
-import org.eclipse.jetty.util.ajax.JSON.Output;
-
 @Entity
-public class Tag implements JSON.Convertible {
+public class Tag {
 
     @EmbeddedId
     private TagId id;
@@ -20,14 +15,6 @@ public class Tag implements JSON.Convertible {
 
     public Tag(TagId id) {
         this.id = id;
-    }
-
-    @Override
-    public void fromJSON(Map arg0) {
-    }
-
-    @Override
-    public void toJSON(Output arg0) {
     }
 
     public TagId getId() {

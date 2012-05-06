@@ -2,15 +2,8 @@ package org.iotope.node.conf;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.inject.Singleton;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.transform.stream.StreamSource;
 
 import nu.xom.Builder;
 import nu.xom.Document;

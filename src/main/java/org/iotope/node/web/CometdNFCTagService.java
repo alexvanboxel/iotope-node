@@ -107,13 +107,12 @@ public class CometdNFCTagService extends AbstractService {
             String appId = (String) data.get("appId");
             List<?> fields = (List<?>) data.get("fields");
             correlation.associate(tagId, appId, fields);
-            //correlation.associate(tagId, appId, fields);
-            //            Map<String,String> fields = Map<String,String> 
-            //          if (Boolean.TRUE.equals(data.get("learn"))) {
-            //              correlation.setLearn(true);
-            //          } else {
-            //              correlation.setLearn(false);
-            //          }
+        } else if ("getApplications".equals(type)) {
+//            String tagId = (String) data.get("tagId");
+//            String readerId = (String) data.get("readerId");
+//            String appId = (String) data.get("appId");
+//            List<?> fields = (List<?>) data.get("fields");
+            remote.deliver(getServerSession(), channelName, correlation.getApplications(), messageId);
         }
     }
     
