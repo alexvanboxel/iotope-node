@@ -17,15 +17,23 @@ public class Application {
         super();
     }
 
-    public Application(int appId) {
+    public Application(int appId,String domain,String name) {
         super();
         this.appId = appId;
+        this.domain = domain;
+        this.name = name;
         this.definitions = new ArrayList<FieldDefinition>();
     }
 
     @Id
     @Column(name = "APP_ID", length = 100)
     private int appId;
+    
+    @Column(name = "APP_DOMAIN", length = 100)
+    private String domain;
+    
+    @Column(name = "APP_NAME", length = 100)
+    private String name;
     
     @OneToMany(mappedBy = "app", cascade = ALL)
     Collection<FieldDefinition> definitions;
@@ -55,6 +63,14 @@ public class Application {
             }
         }
         return null;
+    }
+
+    public String getDomain() {
+        return this.domain;
+    }
+    
+    public String getName() {
+        return this.name;
     }
     
 }

@@ -20,7 +20,7 @@ import org.iotope.node.model.FieldDefinition;
 import org.iotope.node.model.FieldValue;
 import org.iotope.node.model.Tag;
 import org.iotope.node.model.TagId;
-import org.iotope.node.reader.TagChange;
+import org.iotope.pipeline.ExecutionContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,13 +42,13 @@ public class Correlation {
         
         Application app = em.find(Application.class, Integer.valueOf("1"));
         if (app == null) {
-            app = new Application(1);
+            app = new Application(1,"iotope.org","weblink");
             app.addDefinition("url", "URL", "xs:string", "The URL to jump to.");
             em.persist(app);
         }
         app = em.find(Application.class, Integer.valueOf("2"));
         if (app == null) {
-            app = new Application(2);
+            app = new Application(2,"iotope.org","test");
             app.addDefinition("url", "URL", "xs:string", "The URL to jump to.");
             app.addDefinition("method", "Method", "xs:string", "How to call (GET, POST, PUT, ...).");
             app.addDefinition("accept", "Accept", "xs:string", "The Accept header.");
@@ -61,16 +61,17 @@ public class Correlation {
     /**
      * 
      * 
+     * @param string 
      * @param e
      * @return
      */
-    public TagChange getAssociateDataForTag(TagChange e) {
+    public void getAssociateDataForTag(String nfcid, ExecutionContextImpl ec) {
         EntityManager em = emf.createEntityManager();
         try {
-            TagId tid = new TagId(e.getNfcId());
+            TagId tid = new TagId(nfcid);
             Tag tag = em.find(Tag.class, tid);
             if (tag == null) {
-                return e;
+                return;
             }
             
             TypedQuery<Association> query = em.createNamedQuery("findAssociationByTag", Association.class);
@@ -79,36 +80,31 @@ public class Correlation {
             try {
                 ass = query.getSingleResult();
             } catch (NoResultException nre) {
-                return e;
+                return;
             }
             
-            e.setApplication(ass.getApplication());
-            for (FieldValue value : ass.getFields()) {
-                e.addField(value);
-            }
+            ec.setFields(ass.getApplication(), ass.getFields());
         } catch (Throwable ex) {
         }
-        return e;
     }
     
-    public void tagChange(TagChange e) {
-        if (!configuration.isLearnMode() && configuration.isExecuteAssociated()) {
-            if (TagChange.Event.ADDED == e.getEvent()) {
-                
-                Application application = e.getApplication();
-                if(application!=null) {
-                    List<FieldValue> fields = e.getFields();
-                    
-                    switch (application.getAppId()) {
-                    case 1:
-                        new WebLink().execute(fields);
-                        break;
-                    default:
-                    }
-                }
-            }
-        }
-    }
+    //    public void tagChange(TagChange e) {
+    //        if (!configuration.isLearnMode() && configuration.isExecuteAssociated()) {
+    //            if (TagChange.Event.ADDED == e.getEvent()) {
+    //                
+    //                Application application = e.getApplication();
+    //                if(application!=null) {
+    //                    List<FieldValue> fields = e.getFields();
+    //                    switch (application.getAppId()) {
+    //                    case 1:
+    //                        new WebLink().execute(fields);
+    //                        break;
+    //                    default:
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     
     /**
      * Prototype: Need to be moved
@@ -116,7 +112,7 @@ public class Correlation {
      * @param tagId
      * @param fields
      */
-    public void associate(String tagId, String appId, Object[] ofs) {
+    public void associate(String tagId, String appId, List<?> fields) {
         
         EntityManager em = emf.createEntityManager();
         try {
@@ -144,7 +140,7 @@ public class Correlation {
                 em.persist(ass);
             }
             // UPDATE AND ADD
-            for (Object of : ofs) {
+            for (Object of : fields) {
                 @SuppressWarnings("unchecked")
                 HashMap<String, String> f = (HashMap<String, String>) of;
                 String name = f.get("name");

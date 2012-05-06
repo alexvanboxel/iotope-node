@@ -1,6 +1,7 @@
 package org.iotope.node.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.cometd.bayeux.client.ClientSessionChannel;
@@ -104,7 +105,7 @@ public class CometdNFCTagService extends AbstractService {
             String tagId = (String) data.get("tagId");
             String readerId = (String) data.get("readerId");
             String appId = (String) data.get("appId");
-            Object[] fields = (Object[]) data.get("fields");
+            List<?> fields = (List<?>) data.get("fields");
             correlation.associate(tagId, appId, fields);
             //correlation.associate(tagId, appId, fields);
             //            Map<String,String> fields = Map<String,String> 
@@ -123,7 +124,7 @@ public class CometdNFCTagService extends AbstractService {
     
     @Subscribe
     public void publishTagChange(TagChange e) {
-        correlation.tagChange(e);
+//        correlation.tagChange(e);
         tagChannel.publish(e);
     }
     

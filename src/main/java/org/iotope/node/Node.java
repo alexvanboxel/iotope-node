@@ -2,7 +2,6 @@ package org.iotope.node;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.ServletConfig;
 
 import org.cometd.server.CometdServlet;
 import org.eclipse.jetty.server.Handler;
@@ -16,6 +15,7 @@ import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.web.CometdConfiguration;
 import org.iotope.node.web.UIServlet;
+import org.iotope.pipeline.ExecutionPipeline;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 
@@ -89,6 +89,9 @@ public class Node {
 
     @Inject
     private Readers readers;
+    
+    @Inject
+    private ExecutionPipeline pipe;
     
     @Inject
     private CometdConfiguration servletCometDConfig;

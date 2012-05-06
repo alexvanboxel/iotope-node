@@ -4,7 +4,7 @@ import org.iotope.IotopeApplication;
 import org.iotope.context.Application;
 import org.iotope.context.ExecutionContext;
 
-@IotopeApplication("nfc:iotope.app:iotope.org:ndef")
+@IotopeApplication(domain="iotope.org",name="ndef")
 public class NdefActions implements Application {
 
     @Override

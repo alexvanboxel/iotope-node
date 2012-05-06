@@ -12,6 +12,9 @@ import org.iotope.nfc.tech.NfcType2;
 import org.iotope.node.Node;
 import org.iotope.node.apps.Correlation;
 import org.iotope.node.conf.Configuration;
+import org.iotope.pipeline.ExecutionContextImpl;
+import org.iotope.pipeline.ExecutionPipeline;
+import org.iotope.pipeline.model.Field;
 import org.iotope.pipeline.model.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,7 @@ public class PollThread implements Runnable {
     
     Correlation correlation = Node.instance(Correlation.class);
     Configuration configuration = Node.instance(Configuration.class);
+    ExecutionPipeline executionPipeline = Node.instance(ExecutionPipeline.class);
     
     ClientSessionChannel cometdChannel;
     NfcTarget[] previousTargets = new NfcTarget[2];
@@ -64,39 +68,7 @@ public class PollThread implements Runnable {
             if (previousTargets[ix] == null) {
                 NfcTarget nfcTarget = currentTargets[ix];
                 if (nfcTarget != null) {
-                    TagChange tagChange = new TagChange(TagChange.Event.ADDED, reader, ix, nfcTarget);
-                    if (nfcTarget.isDEP()) {
-                        // DEP
-                        Log.trace("Handling new DEP target: " + nfcTarget.toString());
-                    } else {
-                        // TAG
-                        if(configuration.isReadTagContent()) {
-                            Log.debug("Handling new TAG target: " + nfcTarget.toString());
-                            try {
-                                switch (nfcTarget.getType()) {
-                                case MIFARE_1K:
-                                    //readClassicAll(nfcTag);
-                                    break;
-                                case MIFARE_ULTRALIGHT:
-                                    NfcType2 ultraLight = new NfcType2(channel);
-                                    tagChange.addTagContent(ultraLight.readNDEF(nfcTarget));
-                                    //writeTest(nfcTag);
-                                    break;
-                                default:
-                                    Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else {
-                            Log.debug("New TAG target: " + nfcTarget.toString() + " but content is not read due to configuration.");
-                        }
-                    }
-                    if (configuration.isExecuteAssociated()) {
-                        tagChange = correlation.getAssociateDataForTag(tagChange);
-                    }
-                    bus.post(tagChange);
+                    startPipeline(ix, nfcTarget);
                     previousTargets[ix] = nfcTarget;
                 } else {
                     Log.error("Trying to handle nfcTarget but it has NULL");
@@ -119,4 +91,51 @@ public class PollThread implements Runnable {
         }
     }
     
+    private void startPipeline(int ix, NfcTarget nfcTarget) {
+        TagChange tagChange = new TagChange(TagChange.Event.ADDED, reader, ix, nfcTarget);
+        
+        ExecutionPipeline pipeline = Node.instance(ExecutionPipeline.class);
+        ExecutionContextImpl executionContext = new ExecutionContextImpl();
+        
+        if (nfcTarget.isDEP()) {
+            // DEP
+            Log.trace("Handling new DEP target: " + nfcTarget.toString());
+        } else {
+            // TAG
+            if (configuration.isReadTagContent()) {
+                Log.debug("Handling new TAG target: " + nfcTarget.toString());
+                try {
+                    switch (nfcTarget.getType()) {
+                    case MIFARE_1K:
+                        //readClassicAll(nfcTag);
+                        break;
+                    case MIFARE_ULTRALIGHT:
+                        NfcType2 ultraLight = new NfcType2(channel);
+                        tagChange.addTagContent(ultraLight.readNDEF(nfcTarget));
+                        //writeTest(nfcTag);
+                        break;
+                    default:
+                        Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.debug("New TAG target: " + nfcTarget.toString() + " but content is not read due to configuration.");
+            }
+        }
+        if (configuration.isExecuteAssociated()) {
+            correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
+        }
+        
+        pipeline.initPipeline(executionContext);
+        tagChange.setApplication(executionContext.getApplication());
+        if (executionContext.getFields() != null) {
+            for (Field field : executionContext.getFields()) {
+                tagChange.addField(field);
+            }
+        }
+        pipeline.startPipeline();
+        bus.post(tagChange);
+    }
 }
