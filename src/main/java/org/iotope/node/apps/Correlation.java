@@ -117,8 +117,12 @@ public class Correlation {
                 throw new RuntimeException();
             }
             
-            Association ass = em.find(Association.class, Long.valueOf(appId));
-            if (ass == null) {
+            TypedQuery<Association> query = em.createNamedQuery("findAssociationByTag", Association.class);
+            query.setParameter("tag", tag);
+            Association ass;
+            try {
+                ass = query.getSingleResult();
+            } catch (NoResultException nre) {
                 ass = new Association();
                 ass.setApplication(app);
                 ass.setTag(tag);
