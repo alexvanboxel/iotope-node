@@ -43,15 +43,15 @@ public class NodeTray {
                 throw new RuntimeException(e);
             }
             
-            TrayIcon trayIcon = new TrayIcon(image, "IOTOPE Node", popup);
-//            ActionListener actionListener = new ActionListener() {
-//                public void actionPerformed(ActionEvent e) {
-//                    trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
-//                }
-//            };
+            trayIcon = new TrayIcon(image, "IOTOPE Node", popup);
+            //            ActionListener actionListener = new ActionListener() {
+            //                public void actionPerformed(ActionEvent e) {
+            //                    trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
+            //                }
+            //            };
             
             trayIcon.setImageAutoSize(true);
-//            trayIcon.addActionListener(actionListener);
+            //            trayIcon.addActionListener(actionListener);
             trayIcon.addMouseListener(mouseListener);
             
             try {
@@ -64,31 +64,33 @@ public class NodeTray {
     
     private PopupMenu popupMenu() {
         PopupMenu popup = new PopupMenu();
-
+        
         MenuItem consoleItem = new MenuItem("Node Console");
         consoleItem.addActionListener(consoleListener);
         popup.add(consoleItem);
-
+        
         CheckboxMenuItem learnItem = new CheckboxMenuItem("Learn Mode");
         consoleItem.addActionListener(learnListener);
         popup.add(learnItem);
-
+        
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.addActionListener(exitListener);
         popup.add(exitItem);
         return popup;
     }
     
-    public void message(String caption,String message,String type) {
-        trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
-        //      ERROR,
-//      /** A warning message */
-//      WARNING,
-//      /** An information message */
-//      INFO,
-//      /** Simple message */
-//      NONE
-
+    public void message(String caption, String message, String type) {
+        try {
+            TrayIcon.MessageType messageType = TrayIcon.MessageType.NONE;
+            if (type != null && type.length() != 0) {
+                // Allowed: ERROR | WARNING | INFO | NONE
+                messageType = TrayIcon.MessageType.valueOf(type);
+            }
+            trayIcon.displayMessage(caption, message, messageType);
+        }
+        catch(IllegalArgumentException e) {
+            Log.error(e.getMessage());
+        }
     }
     
     private void initListeners() {
@@ -98,15 +100,15 @@ public class NodeTray {
                 System.exit(0);
             }
         };
-
+        
         learnListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-             }
+            }
         };
-
+        
         consoleListener = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(Desktop.isDesktopSupported()) {
+                if (Desktop.isDesktopSupported()) {
                     try {
                         Desktop.getDesktop().browse(URI.create("http://localhost:4242/ui/"));
                     } catch (IOException e1) {
@@ -115,7 +117,7 @@ public class NodeTray {
                 }
             }
         };
-
+        
         mouseListener = new MouseListener() {
             
             @Override

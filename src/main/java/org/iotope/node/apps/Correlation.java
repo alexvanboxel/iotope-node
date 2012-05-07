@@ -129,6 +129,17 @@ public class Correlation {
                 ass.setFields(new ArrayList<FieldValue>());
                 em.persist(ass);
             }
+            // Remove old
+            List<FieldValue> toRemove = new ArrayList<FieldValue>();
+            for(FieldValue val : ass.getFields()) {
+                if(!val.getField().getApp().equals(app)) {
+                    toRemove.add(val);
+                }
+            }
+            for(FieldValue val : toRemove) {
+                em.remove(val);
+                ass.getFields().remove(val);
+            }
             // UPDATE AND ADD
             for (Object of : fields) {
                 @SuppressWarnings("unchecked")
@@ -158,6 +169,23 @@ public class Correlation {
         TypedQuery<Application> query = em.createQuery("select app from Application app", Application.class);
         try {
             return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Field> getFieldsForApplications(String appId) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            Application app = em.find(Application.class, Integer.valueOf(appId));
+            if (app == null) {
+                throw new RuntimeException();
+            }
+            List<Field> fields = new ArrayList<Field>();
+            for(FieldDefinition def : app.getFieldDefinitions()) {
+                fields.add(new Field(def));
+            }
+            return fields;
         } finally {
             em.close();
         }

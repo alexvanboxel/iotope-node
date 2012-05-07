@@ -29,6 +29,15 @@ public class Field {
         value = val.getValue();
     }
     
+    public Field(FieldDefinition def) {
+        Application app = def.getApp();
+        name = def.getName();
+        displayName = def.getDisplayName();
+        description = def.getDescription();
+        type = def.getType();
+        value = null;
+    }
+
     public String getValue() {
         return value;
     }

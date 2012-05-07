@@ -8,7 +8,6 @@
 		<class>org.iotope.node.model.Association</class>
 		<class>org.iotope.node.model.FieldValue</class>
 		<class>org.iotope.node.model.Tag</class>
-		<class>org.iotope.node.model.WebLink</class>
 		<class>org.iotope.node.model.TagId</class>
 		<class>org.iotope.node.model.FieldDefinition</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>

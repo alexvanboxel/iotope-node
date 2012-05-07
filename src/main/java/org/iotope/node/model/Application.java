@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @NamedQuery(name = "findApplicationByName", query = "select app from Application app where app.domain = :domain and app.name = :name")
 public class Application {
@@ -90,6 +92,11 @@ public class Application {
     
     public String getName() {
         return this.name;
+    }
+
+    @JsonIgnore
+    public Collection<FieldDefinition> getFieldDefinitions() {
+        return definitions;
     }
     
 }
