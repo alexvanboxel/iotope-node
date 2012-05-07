@@ -56,13 +56,11 @@ public class Applications {
     }
     
     public Application getApplication(String urn) throws InstantiationException, IllegalAccessException {
-        Class<? extends Application> clazz = applications.get(urn);
-        return clazz.newInstance();
+        return Node.instance(applications.get(urn));
     }
     
     public Application getAction(String urn) throws InstantiationException, IllegalAccessException {
-        Class<? extends Application> clazz = action.get(urn);
-        return clazz.newInstance();
+        return Node.instance(applications.get(urn));
     }
     
     Map<String,Class<? extends Application>> applications = new HashMap<String,Class<? extends Application>>();

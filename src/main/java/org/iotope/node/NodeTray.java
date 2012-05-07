@@ -43,15 +43,15 @@ public class NodeTray {
                 throw new RuntimeException(e);
             }
             
-            final TrayIcon trayIcon = new TrayIcon(image, "IOTOPE Node", popup);
-            ActionListener actionListener = new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
-                }
-            };
+            TrayIcon trayIcon = new TrayIcon(image, "IOTOPE Node", popup);
+//            ActionListener actionListener = new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
+//                }
+//            };
             
             trayIcon.setImageAutoSize(true);
-            trayIcon.addActionListener(actionListener);
+//            trayIcon.addActionListener(actionListener);
             trayIcon.addMouseListener(mouseListener);
             
             try {
@@ -77,6 +77,18 @@ public class NodeTray {
         exitItem.addActionListener(exitListener);
         popup.add(exitItem);
         return popup;
+    }
+    
+    public void message(String caption,String message,String type) {
+        trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
+        //      ERROR,
+//      /** A warning message */
+//      WARNING,
+//      /** An information message */
+//      INFO,
+//      /** Simple message */
+//      NONE
+
     }
     
     private void initListeners() {
@@ -136,6 +148,8 @@ public class NodeTray {
     private ActionListener exitListener;
     
     private MouseListener mouseListener;
+    
+    TrayIcon trayIcon;
     
     @Inject
     private NodeBus bus;

@@ -16,6 +16,7 @@ public class ExecutionPipeline {
         // Fake a pipeline
         try {
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:weblink"));
+            plan.add(applications.getApplication("urn:iotope.app:iotope.org:notify"));
         } catch (InstantiationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
