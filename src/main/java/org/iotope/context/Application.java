@@ -1,8 +1,5 @@
 package org.iotope.context;
 
-import java.util.Collection;
-
-import org.iotope.pipeline.model.Field;
 
 public interface Application {
 

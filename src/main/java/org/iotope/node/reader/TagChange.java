@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.iotope.nfc.tag.NfcTarget;
-import org.iotope.nfc.tag.TagContent;
+import org.iotope.nfc.target.TargetContent;
 import org.iotope.pipeline.model.App;
 import org.iotope.pipeline.model.Field;
 import org.iotope.pipeline.model.Reader;
@@ -45,7 +45,7 @@ public class TagChange /*implements JSON.Convertible*/ {
         fields.add(field);
     }
 
-    public void addTagContent(TagContent tagContent) {
+    public void addTagContent(TargetContent tagContent) {
         this.tagContent = tagContent;
     }
     
@@ -65,7 +65,7 @@ public class TagChange /*implements JSON.Convertible*/ {
         return slot;
     }
     
-    public TagContent getContent() {
+    public TargetContent getContent() {
         return tagContent;
     }
     
@@ -75,5 +75,5 @@ public class TagChange /*implements JSON.Convertible*/ {
     private NfcTarget target;
     private List<Field> fields;
     private App application;
-    private TagContent tagContent;
+    private TargetContent tagContent;
 }

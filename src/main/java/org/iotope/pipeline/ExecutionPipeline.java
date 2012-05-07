@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import org.iotope.context.Application;
 import org.iotope.node.apps.Applications;
-import org.iotope.pipeline.model.Field;
 
 public class ExecutionPipeline {
     
@@ -15,6 +14,7 @@ public class ExecutionPipeline {
         this.executionContext = executionContext;
         // Fake a pipeline
         try {
+            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ndef"));
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:weblink"));
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:notify"));
         } catch (InstantiationException e) {

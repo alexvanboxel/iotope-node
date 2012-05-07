@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.iotope.context.ExecutionContext;
+import org.iotope.nfc.target.TargetContent;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.FieldValue;
 import org.iotope.pipeline.model.App;
@@ -16,18 +17,22 @@ public class ExecutionContextImpl implements ExecutionContext {
     
     public void setFields(Application application, Collection<FieldValue> collection) {
         this.entityApplication = new App(application);
-        switchContext(application.getDomain(),application.getName());
+        switchContext(application.getDomain(), application.getName());
         this.fieldMeta = new ArrayList<Field>();
         for (FieldValue val : collection) {
             Field field = new Field(val);
             this.fieldMeta.add(field);
-            setField(field.getName(),field.getValue());
+            setField(field.getName(), field.getValue());
         }
     }
     
-    void switchContext(String domain,String application) {
+    public void setTargetContent(TargetContent targetContent) {
+        this.targetContent = targetContent;
+    }
+    
+    void switchContext(String domain, String application) {
         this.domain = domain;
-        this.application = application; 
+        this.application = application;
     }
     
     public Collection<Field> getFields() {
@@ -80,6 +85,11 @@ public class ExecutionContextImpl implements ExecutionContext {
         executeLast(domain, application);
     }
     
+    @Override
+    public TargetContent getTargetContent() {
+        return targetContent;
+    }
+    
     private String urn(String domain, String application) {
         return "urn:iotope.app:" + domain + ":" + application;
     }
@@ -94,4 +104,5 @@ public class ExecutionContextImpl implements ExecutionContext {
     private App entityApplication;
     private List<Field> fieldMeta;
     private Map<String, Object> fields = new HashMap<String, Object>();
+    private TargetContent targetContent;
 }

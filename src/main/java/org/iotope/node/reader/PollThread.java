@@ -8,6 +8,7 @@ import org.iotope.nfc.reader.pn532.PN532InAutoPollResponse;
 import org.iotope.nfc.reader.pn532.PN532RFConfiguration;
 import org.iotope.nfc.reader.pn532.PN532RFConfigurationResponse;
 import org.iotope.nfc.tag.NfcTarget;
+import org.iotope.nfc.target.TargetContent;
 import org.iotope.nfc.tech.NfcType2;
 import org.iotope.node.Node;
 import org.iotope.node.apps.Correlation;
@@ -96,6 +97,7 @@ public class PollThread implements Runnable {
         
         ExecutionPipeline pipeline = Node.instance(ExecutionPipeline.class);
         ExecutionContextImpl executionContext = new ExecutionContextImpl();
+        TargetContent targetContent = null;
         
         if (nfcTarget.isDEP()) {
             // DEP
@@ -111,7 +113,8 @@ public class PollThread implements Runnable {
                         break;
                     case MIFARE_ULTRALIGHT:
                         NfcType2 ultraLight = new NfcType2(channel);
-                        tagChange.addTagContent(ultraLight.readNDEF(nfcTarget));
+                        targetContent = ultraLight.readNDEF(nfcTarget);
+                        tagChange.addTagContent(targetContent);
                         //writeTest(nfcTag);
                         break;
                     default:
@@ -127,7 +130,7 @@ public class PollThread implements Runnable {
         if (configuration.isExecuteAssociated()) {
             correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
         }
-        
+        executionContext.setTargetContent(targetContent);
         pipeline.initPipeline(executionContext);
         tagChange.setApplication(executionContext.getApplication());
         if (executionContext.getFields() != null) {

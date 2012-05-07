@@ -59,9 +59,9 @@ public class Applications {
         return Node.instance(applications.get(urn));
     }
     
-    public Application getAction(String urn) throws InstantiationException, IllegalAccessException {
-        return Node.instance(applications.get(urn));
-    }
+//    public Application getAction(String urn) throws InstantiationException, IllegalAccessException {
+//        return Node.instance(applications.get(urn));
+//    }
     
     Map<String,Class<? extends Application>> applications = new HashMap<String,Class<? extends Application>>();
     Map<String,Class<? extends Application>> action = new HashMap<String,Class<? extends Application>>();
