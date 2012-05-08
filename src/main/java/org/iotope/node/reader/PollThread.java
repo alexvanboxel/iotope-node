@@ -138,7 +138,9 @@ public class PollThread implements Runnable {
                 tagChange.addField(field);
             }
         }
-        pipeline.startPipeline();
+        if (!configuration.isLearnMode()) {
+            pipeline.startPipeline();
+        }
         bus.post(tagChange);
     }
 }
