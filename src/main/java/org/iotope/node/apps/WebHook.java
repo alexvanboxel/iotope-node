@@ -16,5 +16,4 @@ public class WebHook implements Application {
     public MetaData getMetaData() {
         return null;
     }
-    
 }

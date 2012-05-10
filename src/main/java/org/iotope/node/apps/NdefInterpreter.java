@@ -41,8 +41,6 @@ public class NdefInterpreter implements Application {
 
     @Override
     public MetaData getMetaData() {
-        // TODO Auto-generated method stub
         return null;
     }
-    
 }
