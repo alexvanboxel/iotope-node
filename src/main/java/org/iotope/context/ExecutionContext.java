@@ -1,5 +1,6 @@
 package org.iotope.context;
 
+import org.iotope.nfc.tag.NfcTarget;
 import org.iotope.nfc.target.TargetContent;
 
 
@@ -22,4 +23,6 @@ public interface ExecutionContext {
     public void executeLast(String domain, String application, String variable, String value);
 
     public TargetContent getTargetContent();
+    
+    public NfcTarget getNfcTarget();
 }

@@ -12,17 +12,21 @@ import org.iotope.context.Application;
 import org.iotope.context.MetaData;
 import org.iotope.node.Node;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class Applications {
+    private static Logger Log = LoggerFactory.getLogger(Applications.class);
     
     @SuppressWarnings("unchecked")
     public Applications() {
-        Reflections reflections = new Reflections("org.iotope");
+        Reflections reflections = new Reflections("");
         Set<Class<?>> applicationClasses = reflections.getTypesAnnotatedWith(IotopeApplication.class);
         for(Class<?> applicationClass : applicationClasses) {
             IotopeApplication info = applicationClass.getAnnotation(IotopeApplication.class);
             String urn = "urn:iotope.app:"+info.domain() + ":" + info.name();
+            Log.info("Registered application: "+urn);
             persistApplication(info.domain(),info.name(),(Class<? extends Application>)applicationClass);
             applications.put(urn, (Class<? extends Application>) applicationClass);
         }
@@ -31,6 +35,7 @@ public class Applications {
         for(Class<?> applicationClass : applicationClasses) {
             IotopeAction info = applicationClass.getAnnotation(IotopeAction.class);
             String urn = "urn:iotope.app:"+info.domain() + ":" + info.name();
+            Log.info("Registered action: "+urn);
             persistApplication(info.domain(),info.name(),(Class<? extends Application>)applicationClass);
             applications.put(urn, (Class<? extends Application>) applicationClass);
         }

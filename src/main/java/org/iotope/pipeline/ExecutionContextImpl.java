@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.iotope.context.ExecutionContext;
+import org.iotope.nfc.tag.NfcTarget;
 import org.iotope.nfc.target.TargetContent;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.FieldValue;
@@ -90,6 +91,16 @@ public class ExecutionContextImpl implements ExecutionContext {
         return targetContent;
     }
     
+    
+    @Override
+    public NfcTarget getNfcTarget() {
+        return target;
+    }
+
+    public void setNfcTarget(NfcTarget target) {
+        this.target = target;
+    }
+
     private String urn(String domain, String application) {
         return "urn:iotope.app:" + domain + ":" + application;
     }
@@ -105,4 +116,5 @@ public class ExecutionContextImpl implements ExecutionContext {
     private List<Field> fieldMeta;
     private Map<String, Object> fields = new HashMap<String, Object>();
     private TargetContent targetContent;
+    private NfcTarget target;
 }

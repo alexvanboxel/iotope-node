@@ -131,6 +131,7 @@ public class PollThread implements Runnable {
             correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
         }
         executionContext.setTargetContent(targetContent);
+        executionContext.setNfcTarget(nfcTarget);
         pipeline.initPipeline(executionContext);
         tagChange.setApplication(executionContext.getApplication());
         if (executionContext.getFields() != null) {
