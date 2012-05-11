@@ -11,6 +11,7 @@ import org.iotope.IotopeApplication;
 import org.iotope.context.Application;
 import org.iotope.context.MetaData;
 import org.iotope.node.Node;
+import org.iotope.pipeline.ExecutionWrapper;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class Applications {
             String urn = "urn:iotope.app:"+info.domain() + ":" + info.name();
             Log.info("Registered application: "+urn);
             persistApplication(info.domain(),info.name(),(Class<? extends Application>)applicationClass);
-            applications.put(urn, (Class<? extends Application>) applicationClass);
+            applications.put(urn, new ExecutionWrapper(info.domain(),info.name(),(Class<? extends Application>) applicationClass));
         }
         
         applicationClasses = reflections.getTypesAnnotatedWith(IotopeAction.class);
@@ -37,7 +38,7 @@ public class Applications {
             String urn = "urn:iotope.app:"+info.domain() + ":" + info.name();
             Log.info("Registered action: "+urn);
             persistApplication(info.domain(),info.name(),(Class<? extends Application>)applicationClass);
-            applications.put(urn, (Class<? extends Application>) applicationClass);
+            applications.put(urn, new ExecutionWrapper(info.domain(),info.name(),(Class<? extends Application>) applicationClass));
         }
         
         System.out.println();
@@ -60,15 +61,15 @@ public class Applications {
         }
     }
     
-    public Application getApplication(String urn) throws InstantiationException, IllegalAccessException {
-        return Node.instance(applications.get(urn));
+    public ExecutionWrapper getApplication(String urn) throws InstantiationException, IllegalAccessException {
+        return applications.get(urn);
     }
     
 //    public Application getAction(String urn) throws InstantiationException, IllegalAccessException {
 //        return Node.instance(applications.get(urn));
 //    }
     
-    Map<String,Class<? extends Application>> applications = new HashMap<String,Class<? extends Application>>();
-    Map<String,Class<? extends Application>> action = new HashMap<String,Class<? extends Application>>();
+    Map<String,ExecutionWrapper> applications = new HashMap<String,ExecutionWrapper>();
+    Map<String,ExecutionWrapper> action = new HashMap<String,ExecutionWrapper>();
 }
 

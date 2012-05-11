@@ -56,7 +56,7 @@ public class PollThread implements Runnable {
                 // targets
                 handleNewTargets(currentTargets);
                 // Wait for next auto poll request
-                Thread.sleep(500);
+                Thread.sleep(250);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

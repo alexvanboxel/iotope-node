@@ -15,7 +15,8 @@ public class ExecutionPipeline {
         // Fake a pipeline
         try {
 //            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ndef"));
-            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ttag.c12"));
+//            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ttag.c12"));
+            plan.add(applications.getApplication("urn:iotope.app:iotope.org:webhook"));
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:weblink"));
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:notify"));
         } catch (InstantiationException e) {
@@ -28,7 +29,9 @@ public class ExecutionPipeline {
     }
     
     public void startPipeline() {
-        for(Application app : plan) {
+        for(ExecutionWrapper app : plan) {
+            
+            
             app.execute(executionContext);
         }
         
@@ -40,5 +43,5 @@ public class ExecutionPipeline {
     @Inject
     Applications applications;
     
-    List<Application> plan = new ArrayList<Application>();
+    List<ExecutionWrapper> plan = new ArrayList<ExecutionWrapper>();
 }
