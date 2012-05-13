@@ -1,0 +1,35 @@
+<iotope-node name="nameless" group="default" iotope="public">
+<!-- 
+	<discovery policy="ordered|balansed|broadcast">
+		<server>http://localhost:4242/test/1</server>
+		<server>http://localhost:4242/test/2</server>
+	</discovery>
+	-->
+	<tech type="2" protocol="mifare-ultralight" detect="true" ndef="true"
+		cache="false" meta="true" />
+	<tech type="2" protocol="mifare-classic" detect="false" ndef="false"
+		cache="false" meta="true" />
+	<pipeline>
+		<application urn="urn:iotope.app:iotope.org:touchatag">
+			<filter urn="urn:iotope.filter:iotope.org:legacy">
+			</filter>
+		</application>
+		<application urn="urn:iotope.app:iotope.org:mws">
+			<filter urn="urn:iotope.filter:iotope.org:legacy">
+			</filter>
+		</application>
+		<application urn="urn:iotope.app:iotope.org:ndef">
+			<filter urn="urn:iotope.filter:iotope.org:ndef">
+			</filter>
+		</application>
+		<application urn="urn:iotope.app:iotope.org:associated">
+		</application>
+		<application urn="urn:iotope.app:iotope.org:webhook">
+		</application>
+	</pipeline>
+	<reader name="other" inherit="default">
+		<hardware>
+			<property name="serial">1234567</property>
+		</hardware>
+	</reader>
+</iotope-node>

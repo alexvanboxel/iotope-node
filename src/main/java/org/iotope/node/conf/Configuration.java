@@ -1,15 +1,10 @@
 package org.iotope.node.conf;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 
 import javax.inject.Singleton;
-
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 @Singleton
 public class Configuration {
@@ -31,6 +26,13 @@ public class Configuration {
     private boolean executeAssociated = true;
     
     private String nodeToken;
+
+    private Cfg configuration;
+    
+    public Configuration() {
+        
+        
+    }
     
     public void set(String key, String value) {
         if ("readTagContent".equals(key)) {
@@ -156,22 +158,13 @@ public class Configuration {
         
     }
     
-    public void load(String name) throws ValidityException, ParsingException, IOException {
-        load(getClass().getResourceAsStream(name));
+    public void load(String name) throws Exception {
+        URL url = getClass().getResource(name);
+        URI uri = url.toURI();
+        InputStream stream = url.openStream();
+        
+        ConfigReader reader = new ConfigReader(uri, stream);
+        Cfg cfg = reader.read();
+
     }
-    
-    public void load(InputStream in) throws ValidityException, ParsingException, IOException {
-        Builder parser = new Builder(false);
-        try {
-            xom = parser.build(in);
-            onLoaded();
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-        }
-    }
-    
-    protected Document xom;
-    protected Element element;
 }
