@@ -3,8 +3,6 @@ package org.iotope.node.conf;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.h2.value.Value;
-
 public class CfgTech {
     
     public enum Protocol {

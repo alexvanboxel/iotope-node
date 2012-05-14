@@ -30,7 +30,7 @@ public class ConfigReader extends ConfigIO {
                 } else if (PIPELINE.equals(name)) {
                     CfgPipeline pipeline = readPipeline();
                 } else if (TECH.equals(name)) {
-                    CfgTech tech = readTech();
+                    config.addTechnology(readTech());
                 } else if (READER.equals(name)) {
                     readReader();
                 } else {
