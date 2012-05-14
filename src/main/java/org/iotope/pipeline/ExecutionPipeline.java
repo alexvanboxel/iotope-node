@@ -14,9 +14,9 @@ public class ExecutionPipeline {
         this.executionContext = executionContext;
         // Fake a pipeline
         try {
-//            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ndef"));
+            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ndef"));
 //            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ttag.c12"));
-            plan.add(applications.getApplication("urn:iotope.app:iotope.org:webhook"));
+//            plan.add(applications.getApplication("urn:iotope.app:iotope.org:webhook"));
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:weblink"));
             plan.add(applications.getApplication("urn:iotope.app:iotope.org:notify"));
         } catch (InstantiationException e) {

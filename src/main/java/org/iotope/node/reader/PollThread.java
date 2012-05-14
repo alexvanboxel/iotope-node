@@ -12,6 +12,9 @@ import org.iotope.nfc.target.TargetContent;
 import org.iotope.nfc.tech.NfcType2;
 import org.iotope.node.Node;
 import org.iotope.node.apps.Correlation;
+import org.iotope.node.conf.Cfg;
+import org.iotope.node.conf.CfgTech;
+import org.iotope.node.conf.CfgTech.Protocol;
 import org.iotope.node.conf.Configuration;
 import org.iotope.pipeline.ExecutionContextImpl;
 import org.iotope.pipeline.ExecutionPipeline;
@@ -45,8 +48,14 @@ public class PollThread implements Runnable {
     @Override
     public void run() {
         try {
+            Cfg prevCfg = null;
             PN532RFConfigurationResponse initResponse = channel.transmit(new PN532RFConfiguration());
             while (true) {
+                Cfg cfg = configuration.getConfig();
+                if (prevCfg != cfg) {
+                    // config change
+                    prevCfg = cfg;
+                }
                 PN532InAutoPollResponse response = channel.transmit(new PN532InAutoPoll());
                 NfcTarget[] currentTargets = response.getTags();
                 // After detection, remove all the old targets from our list
@@ -54,7 +63,7 @@ public class PollThread implements Runnable {
                 removeTargetsFromSlots(currentTargets);
                 // Handle new targets that are detected as well as broadcast the new 
                 // targets
-                handleNewTargets(currentTargets);
+                handleNewTargets(cfg, currentTargets);
                 // Wait for next auto poll request
                 Thread.sleep(250);
             }
@@ -63,13 +72,13 @@ public class PollThread implements Runnable {
         }
     }
     
-    private void handleNewTargets(NfcTarget[] currentTargets) {
+    private void handleNewTargets(Cfg cfg, NfcTarget[] currentTargets) {
         // 
         for (int ix = 0; ix < currentTargets.length; ix++) {
             if (previousTargets[ix] == null) {
                 NfcTarget nfcTarget = currentTargets[ix];
                 if (nfcTarget != null) {
-                    startPipeline(ix, nfcTarget);
+                    startPipeline(cfg, ix, nfcTarget);
                     previousTargets[ix] = nfcTarget;
                 } else {
                     Log.error("Trying to handle nfcTarget but it has NULL");
@@ -92,7 +101,7 @@ public class PollThread implements Runnable {
         }
     }
     
-    private void startPipeline(int ix, NfcTarget nfcTarget) {
+    private void startPipeline(Cfg cfg, int ix, NfcTarget nfcTarget) {
         TagChange tagChange = new TagChange(TagChange.Event.ADDED, reader, ix, nfcTarget);
         
         ExecutionPipeline pipeline = Node.instance(ExecutionPipeline.class);
@@ -107,15 +116,27 @@ public class PollThread implements Runnable {
             if (configuration.isReadTagContent()) {
                 Log.debug("Handling new TAG target: " + nfcTarget.toString());
                 try {
+                    CfgTech cfgTech;
                     switch (nfcTarget.getType()) {
                     case MIFARE_1K:
-                        //readClassicAll(nfcTag);
+                        cfgTech = cfg.getTechnology(Protocol.MIFARE_CLASSIC);
+                        if (cfgTech != null) {
+                            //readClassicAll(nfcTag);
+                        }
                         break;
                     case MIFARE_ULTRALIGHT:
-                        NfcType2 ultraLight = new NfcType2(channel);
-                        targetContent = ultraLight.readNDEF(nfcTarget);
-                        tagChange.addTagContent(targetContent);
-                        //writeTest(nfcTag);
+                        cfgTech = cfg.getTechnology(Protocol.MIFARE_ULTRALIGHT);
+                        if (cfgTech != null) {
+                            if(cfgTech.isNdef()) {
+                                NfcType2 ultraLight = new NfcType2(channel);
+                                targetContent = ultraLight.readNDEF(nfcTarget);
+                                tagChange.addTagContent(targetContent);
+                            }
+                            if(cfgTech.isMeta()) {
+                                correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
+                            }
+                            //writeTest(nfcTag);
+                        }
                         break;
                     default:
                         Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
@@ -127,9 +148,7 @@ public class PollThread implements Runnable {
                 Log.debug("New TAG target: " + nfcTarget.toString() + " but content is not read due to configuration.");
             }
         }
-        if (configuration.isExecuteAssociated()) {
-            correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
-        }
+
         executionContext.setTargetContent(targetContent);
         executionContext.setNfcTarget(nfcTarget);
         pipeline.initPipeline(executionContext);

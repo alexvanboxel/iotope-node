@@ -30,6 +30,12 @@ public class Configuration {
     private Cfg configuration;
     
     public Configuration() {
+        try {
+            load("/META-INF/config.xml");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     
     public void set(String key, String value) {

@@ -25,13 +25,19 @@ public class DefaultConfigurationTest {
     @Test
     public void techMifareUltralight() throws Exception {
         CfgTech tech = cfg.getTechnology(CfgTech.Protocol.MIFARE_ULTRALIGHT);
+        Assert.assertNotNull(tech);
         Assert.assertTrue(tech.isDetect());
     }
     
     @Test
     public void techMifareClassic() throws Exception {
         CfgTech tech = cfg.getTechnology(CfgTech.Protocol.MIFARE_CLASSIC);
+        Assert.assertNotNull(tech);
         Assert.assertTrue(tech.isDetect());
     }
     
+    @Test
+    public void pipeline() throws Exception {
+        
+    }
 }
