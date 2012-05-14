@@ -8,6 +8,10 @@ public class ConfigurationTest {
     public void configtest1() throws Exception {
         Configuration c = new Configuration();
         c.load("configtest1.xml");
+
+        Cfg cfg = c.getConfig();
+        
+        CfgTech tech = cfg.getTechnology(CfgTech.Protocol.MIFARE_CLASSIC);
         
         System.out.println(c);
     }

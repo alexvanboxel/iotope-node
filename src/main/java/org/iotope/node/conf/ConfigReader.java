@@ -157,7 +157,7 @@ public class ConfigReader extends ConfigIO {
     }
     
     private CfgTech readTech() throws Exception {
-        return new CfgTech(getAttr("tech"), getAttr("protocol"), getAttr("detect"), getAttr("ndef"), getAttr("cache"), getAttr("meta"));
+        return new CfgTech(getAttr("type"), getAttr("protocol"), getAttr("detect"), getAttr("ndef"), getAttr("cache"), getAttr("meta"));
     }
     
     private CfgProperty readProperty() throws Exception {

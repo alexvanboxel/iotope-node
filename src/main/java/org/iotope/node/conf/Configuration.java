@@ -26,12 +26,10 @@ public class Configuration {
     private boolean executeAssociated = true;
     
     private String nodeToken;
-
+    
     private Cfg configuration;
     
     public Configuration() {
-        
-        
     }
     
     public void set(String key, String value) {
@@ -153,7 +151,7 @@ public class Configuration {
     public void setNodeToken(String nodeToken) {
         this.nodeToken = nodeToken;
     }
-
+    
     private void onLoaded() {
         
     }
@@ -164,7 +162,15 @@ public class Configuration {
         InputStream stream = url.openStream();
         
         ConfigReader reader = new ConfigReader(uri, stream);
-        Cfg cfg = reader.read();
-
+        setConfig(reader.read());
+        
+    }
+    
+    synchronized public void setConfig(Cfg configuration) {
+        this.configuration = configuration;
+    }
+    
+    synchronized public Cfg getConfig() {
+        return configuration;
     }
 }

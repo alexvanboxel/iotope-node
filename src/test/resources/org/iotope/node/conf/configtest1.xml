@@ -14,10 +14,6 @@
 			<filter urn="urn:iotope.filter:iotope.org:legacy">
 			</filter>
 		</application>
-		<application urn="urn:iotope.app:iotope.org:mws">
-			<filter urn="urn:iotope.filter:iotope.org:legacy">
-			</filter>
-		</application>
 		<application urn="urn:iotope.app:iotope.org:ndef">
 			<filter urn="urn:iotope.filter:iotope.org:ndef">
 			</filter>
