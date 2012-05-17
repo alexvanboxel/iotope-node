@@ -5,20 +5,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.iotope.context.Application;
 import org.iotope.node.apps.Applications;
+import org.iotope.node.conf.Cfg;
+import org.iotope.node.conf.CfgApplication;
 
 public class ExecutionPipeline {
     
-    public void initPipeline(ExecutionContextImpl executionContext) {
+    public void initPipeline(Cfg cfg, ExecutionContextImpl executionContext) {
         this.executionContext = executionContext;
         // Fake a pipeline
         try {
-            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ndef"));
-//            plan.add(applications.getApplication("urn:iotope.app:iotope.org:ttag.c12"));
-//            plan.add(applications.getApplication("urn:iotope.app:iotope.org:webhook"));
-            plan.add(applications.getApplication("urn:iotope.app:iotope.org:weblink"));
-            plan.add(applications.getApplication("urn:iotope.app:iotope.org:notify"));
+            List<CfgApplication> cfgApps = cfg.getPipeline().getApplications();
+            for(CfgApplication cfgApp : cfgApps) {
+                plan.add(applications.getApplication(cfgApp.getURN()));
+            }
         } catch (InstantiationException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

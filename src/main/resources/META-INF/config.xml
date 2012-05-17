@@ -10,17 +10,23 @@
 	<tech type="2" protocol="mifare-classic" detect="true" ndef="false"
 		cache="false" meta="true" />
 	<pipeline>
-		<application urn="urn:iotope.app:iotope.org:touchatag">
+		<!-- 
+		<application urn="urn:iotope.app:iotope.org:ttag.c12">
 			<filter urn="urn:iotope.filter:iotope.org:legacy">
 			</filter>
 		</application>
+		 -->
 		<application urn="urn:iotope.app:iotope.org:ndef">
-			<filter urn="urn:iotope.filter:iotope.org:ndef">
+			<filter urn="urn:iotope.filter:iotope.org:ndef" type="inclusive">
 			</filter>
 		</application>
-		<application urn="urn:iotope.app:iotope.org:associated">
-		</application>
+		<!-- 
 		<application urn="urn:iotope.app:iotope.org:webhook">
+		</application>
+		 -->
+		<application urn="urn:iotope.app:iotope.org:weblink">
+		</application>
+		<application urn="urn:iotope.app:iotope.org:notify">
 		</application>
 	</pipeline>
 </iotope-node>

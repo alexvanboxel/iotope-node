@@ -28,7 +28,7 @@ public class ConfigReader extends ConfigIO {
                 QName name = reader.getName();
                 if (IOTOPE_NODE.equals(name)) {
                 } else if (PIPELINE.equals(name)) {
-                    CfgPipeline pipeline = readPipeline();
+                    config.setPipeline(readPipeline());
                 } else if (TECH.equals(name)) {
                     config.addTechnology(readTech());
                 } else if (READER.equals(name)) {
@@ -54,7 +54,7 @@ public class ConfigReader extends ConfigIO {
             if (event == XMLStreamReader.START_ELEMENT) {
                 QName name = reader.getName();
                 if (APPLICATION.equals(name)) {
-                    readApplication();
+                    cfg.addApplications(readApplication());
                 } else if (PLACEHOLDER2.equals(name)) {
                 } else {
                     throwUnexpectedElement(name);
@@ -70,13 +70,13 @@ public class ConfigReader extends ConfigIO {
     
     private CfgApplication readApplication() throws Exception {
         String inherit = reader.getAttributeValue(null, "inherit");
-        CfgApplication cfg = new CfgApplication();
+        CfgApplication cfg = new CfgApplication(getAttr("urn"));
         while (reader.hasNext()) {
             int event = reader.next();
             if (event == XMLStreamReader.START_ELEMENT) {
                 QName name = reader.getName();
                 if (FILTER.equals(name)) {
-                    readFilter();
+                    cfg.addFilter(readFilter());
                 } else if (PLACEHOLDER2.equals(name)) {
                 } else {
                     throwUnexpectedElement(name);
@@ -93,7 +93,7 @@ public class ConfigReader extends ConfigIO {
     
     private CfgFilter readFilter() throws Exception {
         String inherit = reader.getAttributeValue(null, "inherit");
-        CfgFilter cfg = new CfgFilter();
+        CfgFilter cfg = new CfgFilter(getAttr("urn"));
         while (reader.hasNext()) {
             int event = reader.next();
             if (event == XMLStreamReader.START_ELEMENT) {
@@ -134,9 +134,9 @@ public class ConfigReader extends ConfigIO {
         throw new RuntimeException("Unexpected end");
     }
     
-    private CfgFilter readHardware() throws Exception {
+    private CfgHardware readHardware() throws Exception {
         String inherit = reader.getAttributeValue(null, "inherit");
-        CfgFilter cfg = new CfgFilter();
+        CfgHardware cfg = new CfgHardware();
         while (reader.hasNext()) {
             int event = reader.next();
             if (event == XMLStreamReader.START_ELEMENT) {

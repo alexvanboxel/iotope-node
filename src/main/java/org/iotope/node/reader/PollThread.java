@@ -151,7 +151,7 @@ public class PollThread implements Runnable {
 
         executionContext.setTargetContent(targetContent);
         executionContext.setNfcTarget(nfcTarget);
-        pipeline.initPipeline(executionContext);
+        pipeline.initPipeline(cfg,executionContext);
         tagChange.setApplication(executionContext.getApplication());
         if (executionContext.getFields() != null) {
             for (Field field : executionContext.getFields()) {
