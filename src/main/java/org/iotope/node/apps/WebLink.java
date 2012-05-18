@@ -6,6 +6,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.iotope.IotopeAction;
 import org.iotope.context.Application;
@@ -58,5 +59,10 @@ public class WebLink implements Application {
     @Override
     public MetaData getMetaData() {
         return new WebLinkMetaData();
+    }
+
+    @Override
+    public void configure(Map<String, String> properties) {
+        // Nothing to configure
     }
 }

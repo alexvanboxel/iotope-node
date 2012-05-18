@@ -1,6 +1,7 @@
 package org.iotope.node.apps;
 
 import java.util.List;
+import java.util.Map;
 
 import org.iotope.IotopeApplication;
 import org.iotope.context.Application;
@@ -43,5 +44,10 @@ public class NdefInterpreter implements Application {
     @Override
     public MetaData getMetaData() {
         return null;
+    }
+
+    @Override
+    public void configure(Map<String, String> properties) {
+        // Nothing to configure
     }
 }

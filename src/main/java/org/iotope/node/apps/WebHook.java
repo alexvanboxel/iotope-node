@@ -3,6 +3,7 @@ package org.iotope.node.apps;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.inject.Inject;
@@ -28,6 +29,7 @@ public class WebHook implements Application {
     @Inject
     HttpGateway http;
     
+    private String url;
 
     @Override
     public void execute(ExecutionContext context) {
@@ -38,7 +40,7 @@ public class WebHook implements Application {
 
             System.out.println(json);
 
-            URI uri = URI.create("http://localhost:8811/iotopehook");
+            URI uri = URI.create(url);
             
             HttpPost post = new HttpPost(uri);
             post.setHeader("Accept", "application/vnd.iotope-0.1+json");
@@ -85,5 +87,10 @@ public class WebHook implements Application {
     @Override
     public MetaData getMetaData() {
         return null;
+    }
+
+    @Override
+    public void configure(Map<String, String> properties) {
+        url = properties.get("url");
     }
 }

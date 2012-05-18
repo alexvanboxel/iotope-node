@@ -3,6 +3,7 @@ package org.iotope.node.apps;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -60,5 +61,10 @@ public class TextNotify implements Application {
     @Override
     public MetaData getMetaData() {
         return new TextNotifyMetaData();
+    }
+    
+    @Override
+    public void configure(Map<String, String> properties) {
+        // Nothing to configure
     }
 }

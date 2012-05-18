@@ -54,7 +54,7 @@ public class DefaultConfigurationTest {
         Assert.assertEquals("urn:iotope.app:iotope.org:ndef", application.getURN());
         List<CfgFilter> filters = application.getFilters();
         Assert.assertNotNull(filters);
-        Assert.assertEquals(1, filters.size());
+        Assert.assertEquals(2, filters.size());
         CfgFilter filter = filters.get(0);
         Assert.assertEquals("urn:iotope.filter:iotope.org:ndef", filter.getURN());
     }

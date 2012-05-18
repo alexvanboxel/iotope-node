@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.iotope.node.conf.Configuration;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.web.CometdConfiguration;
@@ -41,13 +42,15 @@ public class Node {
     public void dead(DeadEvent e) {
         System.err.println(e);
     }
-
+    
     /**
      * Wire the application together
      */
     public void wire() throws Exception {
         bus.register(this);
-
+        
+        configuration.init();
+        
         Thread readerThread = new Thread(readers, "Readers Monitor");
         readerThread.start();
         
@@ -59,7 +62,7 @@ public class Node {
         ServletHolder holderCometd = new ServletHolder(new CometdServlet());
         holderCometd.setInitOrder(1);
         holderCometd.setInitParameter("jsonContext", "org.cometd.server.JacksonJSONContextServer");
-//        holderCometd.getServlet().init(servletConfig);
+        //        holderCometd.getServlet().init(servletConfig);
         ServletHolder holderCometdConfig = new ServletHolder(servletCometDConfig);
         holderCometdConfig.setInitOrder(2);
         ServletHolder holderUI = new ServletHolder(servletUI);
@@ -77,6 +80,11 @@ public class Node {
         server.start();
         server.join();
     }
+    
+    
+    public static void setContainer(WeldContainer cdiContainer) {
+        Node.cdiContainer = cdiContainer;
+    }
 
     @Inject
     private NodeBus bus;
@@ -86,7 +94,7 @@ public class Node {
     
     @Inject
     private UIServlet servletUI;
-
+    
     @Inject
     private Readers readers;
     
@@ -95,9 +103,12 @@ public class Node {
     
     @Inject
     private CometdConfiguration servletCometDConfig;
-
+    
+    @Inject
+    private Configuration configuration;
+    
     private static WeldContainer cdiContainer;
-
+    
     public static <T> T instance(Class<T> c) {
         return cdiContainer.instance().select(c).get();
     }

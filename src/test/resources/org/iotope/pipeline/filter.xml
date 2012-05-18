@@ -1,0 +1,10 @@
+<iotope-node name="nameless" group="default" iotope="public">
+	<pipeline>
+		<application urn="urn:iotope.app:test.iotope.org:test">
+			<filter urn="urn:iotope.filter:test.iotope.org:true" type="inclusive">
+			</filter>
+			<filter urn="urn:iotope.filter:test.iotope.org:false" type="exclusive">
+			</filter>
+		</application>
+	</pipeline>
+</iotope-node>

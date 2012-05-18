@@ -16,30 +16,26 @@ public class ExecutionPipeline {
         // Fake a pipeline
         try {
             List<CfgApplication> cfgApps = cfg.getPipeline().getApplications();
-            for(CfgApplication cfgApp : cfgApps) {
-                plan.add(applications.getApplication(cfgApp.getURN()));
+            for (CfgApplication cfgApp : cfgApps) {
+                plan.add(applications.createWrappedApplication(cfgApp));
             }
         } catch (InstantiationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IllegalAccessException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
     
     public void startPipeline() {
-        for(ExecutionWrapper app : plan) {
-            
-            
-            app.execute(executionContext);
+        for (ExecutionWrapper app : plan) {
+            if (app.isExecutable(executionContext)) {
+                app.execute(executionContext);
+            }
         }
-        
-        
     }
     
     ExecutionContextImpl executionContext;
-
+    
     @Inject
     Applications applications;
     

@@ -1,0 +1,10 @@
+<iotope-node name="nameless" group="default" iotope="public">
+	<pipeline>
+		<application urn="urn:iotope.app:iotope.org:ndef">
+			<filter urn="urn:iotope.filter:iotope.org:ndef" type="inclusive">
+			</filter>
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="exclusive">
+			</filter>
+		</application>
+	</pipeline>
+</iotope-node>

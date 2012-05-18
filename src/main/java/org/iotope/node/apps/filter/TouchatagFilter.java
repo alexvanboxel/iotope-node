@@ -1,6 +1,7 @@
 package org.iotope.node.apps.filter;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.iotope.IotopeFilter;
 import org.iotope.context.ExecutionContext;
@@ -12,13 +13,13 @@ import org.iotope.nfc.target.NdefBlock;
 import org.iotope.nfc.target.TargetContent;
 import org.iotope.nfc.target.TargetContent.ContentType;
 
-@IotopeFilter(domain = "iotope.org", name = "touchatag")
+@IotopeFilter(domain = "iotope.org", name = "legacy")
 public class TouchatagFilter implements Filter {
     
     @Override
     public boolean match(ExecutionContext context) {
         TargetContent content = context.getTargetContent();
-        if (content.size() != 3) {
+        if (content.size() != 4) {
             return false;
         }
         Block block = content.getBlock(1);
@@ -48,6 +49,10 @@ public class TouchatagFilter implements Filter {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void configure(Map<String, String> properties) {
     }
     
 }

@@ -1,6 +1,7 @@
 package org.iotope.node.apps.ttag.v12;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.iotope.IotopeApplication;
@@ -47,5 +48,10 @@ public class CallCorrelation12 extends AbstractCallCorrelation implements Applic
     @Override
     public MetaData getMetaData() {
         return null;
+    }
+
+    @Override
+    public void configure(Map<String, String> properties) {
+        // Nothing to do
     }
 }

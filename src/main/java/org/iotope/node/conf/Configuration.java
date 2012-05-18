@@ -29,11 +29,10 @@ public class Configuration {
     
     private Cfg configuration;
     
-    public Configuration() {
+    public void init() {
         try {
             load("/META-INF/config.xml");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

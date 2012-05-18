@@ -32,9 +32,6 @@ public class Correlation {
     
     EntityManagerFactory emf;
     
-    @Inject
-    Configuration configuration;
-    
     public Correlation() {
         super();
         emf = Persistence.createEntityManagerFactory("iotope-node");

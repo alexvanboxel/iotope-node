@@ -77,7 +77,8 @@ public class ConfigReader extends ConfigIO {
                 QName name = reader.getName();
                 if (FILTER.equals(name)) {
                     cfg.addFilter(readFilter());
-                } else if (PLACEHOLDER2.equals(name)) {
+                } else if (PROPERTY.equals(name)) {
+                    cfg.addProperty(getAttr("name"), readProperty());
                 } else {
                     throwUnexpectedElement(name);
                 }
@@ -99,7 +100,8 @@ public class ConfigReader extends ConfigIO {
             if (event == XMLStreamReader.START_ELEMENT) {
                 QName name = reader.getName();
                 if (PLACEHOLDER1.equals(name)) {
-                } else if (PLACEHOLDER2.equals(name)) {
+                } else if (PROPERTY.equals(name)) {
+                    cfg.addProperty(getAttr("name"), readProperty());
                 } else {
                     throwUnexpectedElement(name);
                 }
@@ -160,8 +162,19 @@ public class ConfigReader extends ConfigIO {
         return new CfgTech(getAttr("type"), getAttr("protocol"), getAttr("detect"), getAttr("ndef"), getAttr("cache"), getAttr("meta"));
     }
     
-    private CfgProperty readProperty() throws Exception {
-        return new CfgProperty(getAttr("name"), getAttr("value"));
+    private String readProperty() throws Exception {
+        String text = "";
+        while (reader.hasNext()) {
+            int event = reader.next();
+            if (event == XMLStreamReader.CHARACTERS) {
+                text += reader.getText();
+            } else if (event == XMLStreamReader.END_ELEMENT) {
+                QName name = reader.getName();
+                if (PROPERTY.equals(name))
+                    return text.trim();
+            }
+        }
+        throw new RuntimeException("Unexpected end");
     }
     
     //    private CfgTech readTech() throws Exception {

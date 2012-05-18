@@ -19,11 +19,9 @@
 		<application urn="urn:iotope.app:iotope.org:ndef">
 			<filter urn="urn:iotope.filter:iotope.org:ndef" type="inclusive">
 			</filter>
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="exclusive">
+			</filter>
 		</application>
-		<!-- 
-		<application urn="urn:iotope.app:iotope.org:webhook">
-		</application>
-		 -->
 		<application urn="urn:iotope.app:iotope.org:weblink">
 		</application>
 		<application urn="urn:iotope.app:iotope.org:notify">

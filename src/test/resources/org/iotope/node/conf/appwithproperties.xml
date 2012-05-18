@@ -1,0 +1,7 @@
+<iotope-node name="nameless" group="default" iotope="public">
+	<pipeline>
+		<application urn="urn:iotope.app:iotope.org:webhook">
+			<property name="url">http://localhost:8811/iotopehook</property>
+		</application>
+	</pipeline>
+</iotope-node>
