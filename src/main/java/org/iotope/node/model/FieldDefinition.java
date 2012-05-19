@@ -43,6 +43,12 @@ public class FieldDefinition {
         return fieldName;
     }
 
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return fieldName;
+    }
+
     public String getDisplayName() {
         return displayName;
     }

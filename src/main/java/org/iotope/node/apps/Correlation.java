@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,7 +13,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import org.iotope.node.conf.Configuration;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.Association;
 import org.iotope.node.model.FieldDefinition;
@@ -119,6 +117,10 @@ public class Correlation {
             Association ass;
             try {
                 ass = query.getSingleResult();
+                if(!ass.getApplication().equals(app)) {
+                    ass.setApplication(app);
+                    em.persist(ass);
+                }
             } catch (NoResultException nre) {
                 ass = new Association();
                 ass.setApplication(app);
