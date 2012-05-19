@@ -84,7 +84,7 @@ public class Applications {
                 Class<? extends Filter> cf = createFilter(f);
                 Filter filter = Node.instance(cf);
                 filter.configure(f.getProperties());
-                wrapper.addFilter(filter);
+                wrapper.addFilter(f,filter);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

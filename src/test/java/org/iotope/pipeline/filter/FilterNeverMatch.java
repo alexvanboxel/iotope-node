@@ -12,7 +12,7 @@ public class FilterNeverMatch implements Filter {
     
     @Override
     public boolean match(ExecutionContext context) {
-        return true;
+        return false;
     }
     
     @Override

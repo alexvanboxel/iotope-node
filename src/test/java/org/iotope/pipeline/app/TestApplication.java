@@ -12,7 +12,7 @@ public class TestApplication implements Application {
  
     @Override
     public void execute(ExecutionContext context) {
-        context.setField("result", "true");
+        context.setField("result", "executed");
     }
     
     @Override

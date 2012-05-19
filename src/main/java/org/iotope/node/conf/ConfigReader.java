@@ -94,7 +94,7 @@ public class ConfigReader extends ConfigIO {
     
     private CfgFilter readFilter() throws Exception {
         String inherit = reader.getAttributeValue(null, "inherit");
-        CfgFilter cfg = new CfgFilter(getAttr("urn"));
+        CfgFilter cfg = new CfgFilter(getAttr("urn"),getAttr("filter"));
         while (reader.hasNext()) {
             int event = reader.next();
             if (event == XMLStreamReader.START_ELEMENT) {

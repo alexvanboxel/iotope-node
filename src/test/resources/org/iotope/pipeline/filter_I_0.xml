@@ -1,9 +1,7 @@
 <iotope-node name="nameless" group="default" iotope="public">
 	<pipeline>
 		<application urn="urn:iotope.app:test.iotope.org:test">
-			<filter urn="urn:iotope.filter:test.iotope.org:true" type="include">
-			</filter>
-			<filter urn="urn:iotope.filter:test.iotope.org:false" type="exclude">
+			<filter urn="urn:iotope.filter:test.iotope.org:false" type="include">
 			</filter>
 		</application>
 	</pipeline>
