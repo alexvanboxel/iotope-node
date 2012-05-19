@@ -38,7 +38,6 @@ public class FilterTest {
         test("I_0", false);
     }
     
-    
     @Test
     public void I_1() throws Exception {
         test("I_1", true);
@@ -47,13 +46,74 @@ public class FilterTest {
     
     @Test
     public void E_0() throws Exception {
-        test("E_0", false);
+        test("E_0", true);
     }
     
     
     @Test
     public void E_1() throws Exception {
-        test("E_1", true);
+        test("E_1", false);
     }
     
+    @Test
+    public void I_0_I_0() throws Exception {
+        test("I_0_I_0", false);
+    }
+    
+    @Test
+    public void I_0_I_1() throws Exception {
+        test("I_0_I_1", true);
+    }
+    
+    @Test
+    public void I_1_I_0() throws Exception {
+        test("I_1_I_0", true);
+    }
+    
+    @Test
+    public void I_1_I_1() throws Exception {
+        test("I_1_I_1", true);
+    }
+    
+    
+    @Test
+    public void E_0_E_0() throws Exception {
+        test("E_0_E_0", true);
+    }
+    
+    @Test
+    public void E_0_E_1() throws Exception {
+        test("E_0_E_1", false);
+    }
+    
+    @Test
+    public void E_1_E_0() throws Exception {
+        test("E_1_E_0", false);
+    }
+    
+    @Test
+    public void E_1_E_1() throws Exception {
+        test("E_1_E_1", false);
+    }
+
+    
+    @Test
+    public void E_0_I_0() throws Exception {
+        test("E_0_I_0", false);
+    }
+    
+    @Test
+    public void E_0_I_1() throws Exception {
+        test("E_0_I_1", true);
+    }
+    
+    @Test
+    public void E_1_I_0() throws Exception {
+        test("E_1_I_0", false);
+    }
+    
+    @Test
+    public void E_1_I_1() throws Exception {
+        test("E_1_I_1", false);
+    }
 }

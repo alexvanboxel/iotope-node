@@ -17,9 +17,9 @@
 		</application>
 		 -->
 		<application urn="urn:iotope.app:iotope.org:ndef">
-			<filter urn="urn:iotope.filter:iotope.org:ndef" type="inclusive">
+			<filter urn="urn:iotope.filter:iotope.org:ndef" type="include">
 			</filter>
-			<filter urn="urn:iotope.filter:iotope.org:legacy" type="exclusive">
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="exclude">
 			</filter>
 		</application>
 		<application urn="urn:iotope.app:iotope.org:weblink">

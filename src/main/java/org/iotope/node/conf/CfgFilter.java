@@ -9,7 +9,7 @@ import org.iotope.node.conf.CfgTech.Protocol;
 public class CfgFilter {
     
     public enum FilterType {
-        UNKNOWN("unknown"),INCLUDE("include"),EXCLUDE("ëxclude");
+        UNKNOWN("unknown"),INCLUDE("include"),EXCLUDE("exclude");
         
         private FilterType(String name) {
             this.name = name;
@@ -38,6 +38,9 @@ public class CfgFilter {
     public CfgFilter(String urn,String filterType) {
         this.urn = urn;
         this.filterType = filterLookup.get(filterType);
+        if(this.filterType == null) {
+            throw new RuntimeException("No match found for "+filterType);
+        }
     }
 
     public String getURN() {
@@ -53,6 +56,6 @@ public class CfgFilter {
     }
 
     public FilterType getType() {
-        return FilterType.INCLUDE;
+        return filterType;
     }
 }

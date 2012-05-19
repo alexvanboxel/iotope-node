@@ -11,11 +11,11 @@
 		cache="false" meta="true" />
 	<pipeline>
 		<application urn="urn:iotope.app:iotope.org:touchatag">
-			<filter urn="urn:iotope.filter:iotope.org:legacy">
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="include">
 			</filter>
 		</application>
 		<application urn="urn:iotope.app:iotope.org:ndef">
-			<filter urn="urn:iotope.filter:iotope.org:ndef">
+			<filter urn="urn:iotope.filter:iotope.org:ndef" type="include">
 			</filter>
 		</application>
 		<application urn="urn:iotope.app:iotope.org:associated">
