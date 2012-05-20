@@ -1,21 +1,24 @@
 <html>
 	<head>
 		<!-- link rel="stylesheet" type="text/css" href="iotope.css" -->
-		<link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.8.17.custom.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.8.20.custom.css"/>
 		<script type="text/javascript" src="js/org/cometd.js"></script>
 		<script type="text/javascript" src="js/org/cometd/AckExtension.js"></script>
 		<script type="text/javascript" src="js/org/cometd/ReloadExtension.js"></script>
-		<script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
 		<script type="text/javascript" src="js/jquery/json2.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery.cometd.js"></script>
 		<script type="text/javascript" src="js/jquery/jquery.cometd-reload.js"></script>
-		<script type="text/javascript" src="js/jquery-ui/jquery-ui-1.8.17.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui/jquery-ui-1.8.20.custom.min.js"></script>
 		<script type="text/javascript" src="js/tagapp.js"></script>
 		<style type="text/css">
 			body {
 				background-color: #f9f9f9;
-				font-family: "Tahoma";
+				font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
 			}
+			.ui-widget {
+				font-size: 0.8em;
+			}			
 			.head {
 				display: block;
 				margin: 5px;
@@ -185,6 +188,7 @@
 					<tbody></tbody>
 				</table>
 				<a class="tagsave">Save Values...</a>
+				<a class="tagremove">Remove...</a>
 			</div>
 		</div>
 	</body>

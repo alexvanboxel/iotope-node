@@ -223,7 +223,9 @@ function addTag(tagChange) {
 	// for now only support slot 1
 	if(slot == 0) {
 		var app = $(".app", ".template").clone();
-		$(".tagaction", app).click(function() {
+		var tagaction = $(".tagaction", app);
+		tagaction.button();
+		tagaction.click(function() {
 			$("#tagId", "#context").text(nfcId);
 			$("#readerId", "#context").text(reader.terminalId);
 			$("#app-dialog").dialog('open');
@@ -275,10 +277,14 @@ function assignApp(message) {
 		tableBody.append('<tr><td>' + field.displayName + '</td><td><input name="' + field.name + '"></input></td><td>' + field.description + '</td></tr>');
 	}
 	var savelink = $(".tagsave", "#R" + message.readerId);
+	savelink.botton();
 	savelink.attr("tagId", message.tagId);
 	savelink.attr("appId", message.appId);
 	savelink.attr("readerId", message.readerId);
 	savelink.click(saveApp);
+	var removelink = $(".tagremove", "#R" + message.readerId);
+	removelink.button();
+	removelink.click(function() {alert();});
 }
 
 // TODO: JOIN assignApp and showAppData!
@@ -294,9 +300,13 @@ function showAppData(readerId,nfcId,application,fields) {
 					+ '" value="'+field.value+'"></input></td><td>' + field.description + '</td></tr>');
 		}
 		var savelink = $(".tagsave", "#R" + readerId);
+		savelink.button();
 		savelink.attr("tagId", nfcId);
 		savelink.attr("appId", appId);
 		savelink.attr("readerId", readerId);
 		savelink.click(saveApp);
+		var removelink = $(".tagremove", "#R" + readerId);
+		removelink.button();
+		removelink.click(function() {alert();});
 	}
 }
