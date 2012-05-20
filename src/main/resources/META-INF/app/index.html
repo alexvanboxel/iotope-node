@@ -36,13 +36,10 @@
 				padding: 5px;
 				width: 200px;
 			}
-
 			.explain {
 				color: #666666;
 				font-size: 8pt;
 			}
-
-			
 			.readerrow {
 				display: block;
 				background-color: #ffffff;
@@ -51,6 +48,10 @@
 			.readergroup {
 				display: table-row;
 				width: 100%;
+			}
+			.readername {
+				width: 100%;
+				padding: 5px;
 			}
 			.reader {
 				display: table-cell;
@@ -77,14 +78,25 @@
 				margin: 10px;
 				border-style: solid;
 				border-width: 1px;
-				padding: 5px;
+				padding: 0px;
+				color: #cccccc;
+				background-color: #f6f6f6;
 			}
 			.readerslot {
 				display: block;
-				margin: 10px;
+				margin-bottom: 15px;
+				margin-left: 15px;
+				margin-top: 15px;
+				margin-right: 0px;
 				border-style: dotted;
 				border-width: 1px;
+				border-bottom-width: 1px;
+				border-left-width: 1px;
+				border-right-width: 0px;
+				border-top-width: 1px;
 				padding: 5px;
+				color: #333333;
+				background-color: #fafafa;
 			}			a.appLink {
 				display: block;
 				margin: 10px;
@@ -111,17 +123,13 @@
 		<div class="head">
 		<table><tr><td>
 		<img src="img/iotope.png"/></td><td>
-		<i><b>IOTOPE Node</b> Concept</i>.
-		<span class="explain">Node administration and troubleshooting page. This application
-		is a <b>Proof of Concept</b>, please threat it as is.</span>
+		<b>IOTOPE Node</b>
 		</td></tr></table>
 		</div>
 		<div class="control">
 			<div class="controlblock" id="ctrlearn">
-				<input type="checkbox" class="optchkbox" name="learnMode" value="true">
-				Learn Mode
-				<span class="explain">When learn mode is enabled, it will suppress all
-				action associated (default or explicit) with the target.</span>
+				<input id="learn" type="checkbox" name="learnMode" value="true" />
+				<label for="learn">Learn Mode</label>
 			</div>
 		</div>
 		<div id="readers"></div>
@@ -132,7 +140,6 @@
 			<span id="appId"></span>
 		</div>
 
-
 		<div class="template" style="display:none" >
 			<div id="app-dialog">
 				<div>
@@ -142,11 +149,11 @@
 				</ul>
 			</div>
 			<div class="readerrow">
+			<div class="readername">
+				Ghost Reader 007
+			</div>
 			<div class="readergroup">
 				<div class="reader">
-					<div class="readername">
-						Ghost Reader 007
-					</div>
 					<div class="readerslots"></div>
 				</div>
 				<div class="cnt_app"></div>

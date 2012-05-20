@@ -120,14 +120,9 @@ $(function() {
 
 	setupDialog();
 
+	$("#learn").button();
+
 	$("#learn").click("dat", function(eventObject) {
-		$.cometd.publish("/service/rest/bla", {
-			method : "PUT",
-			type : "setLearnMode",
-			learn : $(this)[0].checked
-		});
-	});
-	$(".optchkbox").click("dat", function(eventObject) {
 		$.cometd.publish("/service/rest/bla", {
 			method : "PUT",
 			type : "setBooleanOption",
