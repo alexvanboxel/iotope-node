@@ -93,7 +93,7 @@ public class Correlation {
      * @param tagId
      * @param fields
      */
-    public void associate(String tagId, String appId, List<?> fields) {
+    public void associate(String tagId, int appId, List<?> fields) {
         
         EntityManager em = emf.createEntityManager();
         try {
@@ -107,7 +107,7 @@ public class Correlation {
                 em.persist(tag);
             }
             
-            Application app = em.find(Application.class, Integer.valueOf(appId));
+            Application app = em.find(Application.class, appId);
             if (app == null) {
                 throw new RuntimeException();
             }

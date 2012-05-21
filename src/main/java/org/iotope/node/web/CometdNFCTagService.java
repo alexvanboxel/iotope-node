@@ -62,7 +62,7 @@ public class CometdNFCTagService extends AbstractService {
      * @param messageId
      */
     public void processRESTRequest(ServerSession remote, String channelName, Map<String, Object> data, String messageId) {
-        String[] path = channelName.split("/");
+        //String[] path = channelName.split("/");
         String type = (String) data.get("type");
         if ("setBooleanOption".equals(type)) {
             configuration.set((String)data.get("name"), ((Boolean)data.get("value")).toString());
@@ -82,7 +82,7 @@ public class CometdNFCTagService extends AbstractService {
 //            String readerId = (String) data.get("readerId");
             String appId = (String) data.get("appId");
             List<?> fields = (List<?>) data.get("fields");
-            correlation.associate(tagId, appId, fields);
+            correlation.associate(tagId, Integer.valueOf(appId), fields);
         } else if ("getApplications".equals(type)) {
             remote.deliver(getServerSession(), channelName, correlation.getApplications(), messageId);
         }

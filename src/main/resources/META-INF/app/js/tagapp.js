@@ -243,15 +243,15 @@ function removeTag(reader, slot) {
 	$(".cnt_app", "#R" + reader.terminalId).text("");
 }
 
-function saveApp(obj) {
-	var tableBody = $("tbody", "#R" + $(obj.srcElement).attr("readerId"));
+function saveApp(nfcId,appId,readerId) {
+	var tableBody = $("tbody", "#R" + readerId);
 	var fields = $("input", tableBody);
 
 	var message = {
 		type : "saveApplication",
-		tagId : $(obj.srcElement).attr("tagId"),
-		readerId : $(obj.srcElement).attr("readerId"),
-		appId : $(obj.srcElement).attr("appId"),
+		tagId : nfcId,
+		readerId : readerId,
+		appId : appId,
 		fields : new Array(fields.length)
 	}
 
@@ -272,18 +272,22 @@ function assignApp(message) {
 		tableBody.append('<tr><td>' + field.displayName + '</td><td><input name="' + field.name + '"></input></td><td>' + field.description + '</td></tr>');
 	}
 	var savelink = $(".tagsave", "#R" + message.readerId);
-	savelink.botton();
-	savelink.attr("tagId", message.tagId);
-	savelink.attr("appId", message.appId);
-	savelink.attr("readerId", message.readerId);
-	savelink.click(saveApp);
+	savelink.unbind("click");
+	savelink.click(function(obj) {
+		saveApp(message.tagId,message.appId,message.readerId);
+	}
+	);
 	var removelink = $(".tagremove", "#R" + message.readerId);
-	removelink.button();
+	removelink.unbind("click");
 	removelink.click(function() {alert();});
 }
 
 // TODO: JOIN assignApp and showAppData!
 function showAppData(readerId,nfcId,application,fields) {
+	var savelink = $(".tagsave", "#R" + readerId);
+	savelink.button();
+	var removelink = $(".tagremove", "#R" + readerId);
+	removelink.button();
 	if (application) {
 		appId = application.appId;
 		var tableBody = $("tbody", "#A" + nfcId);
@@ -294,14 +298,9 @@ function showAppData(readerId,nfcId,application,fields) {
 					+ '</td><td><input name="' + field.name
 					+ '" value="'+field.value+'"></input></td><td>' + field.description + '</td></tr>');
 		}
-		var savelink = $(".tagsave", "#R" + readerId);
-		savelink.button();
-		savelink.attr("tagId", nfcId);
-		savelink.attr("appId", appId);
-		savelink.attr("readerId", readerId);
-		savelink.click(saveApp);
-		var removelink = $(".tagremove", "#R" + readerId);
-		removelink.button();
+		savelink.click(function(obj) {
+			saveApp(nfcId,""+appId,readerId);
+		});
 		removelink.click(function() {alert();});
 	}
 }
