@@ -264,6 +264,17 @@ function saveApp(nfcId,appId,readerId) {
 	$.cometd.publish("/service/rest/app", message);
 }
 
+function removeAssociation(nfcId,appId) {
+	var tableBody = $("tbody", "#A" + nfcId);
+	tableBody.text("");
+	var message = {
+		type : "removeAssociation",
+		tagId : nfcId,
+		appId : appId
+	}
+	$.cometd.publish("/service/rest/app", message);
+}
+
 function assignApp(message) {
 	var tableBody = $("tbody", "#A" + message.tagId);
 	tableBody.text("");
@@ -279,7 +290,9 @@ function assignApp(message) {
 	);
 	var removelink = $(".tagremove", "#R" + message.readerId);
 	removelink.unbind("click");
-	removelink.click(function() {alert();});
+	removelink.click(function() {
+		removeAssociation(message.tagId,message.appId);
+	});
 }
 
 // TODO: JOIN assignApp and showAppData!
@@ -301,6 +314,8 @@ function showAppData(readerId,nfcId,application,fields) {
 		savelink.click(function(obj) {
 			saveApp(nfcId,""+appId,readerId);
 		});
-		removelink.click(function() {alert();});
+		removelink.click(function() {
+			removeAssociation(nfcId,""+appId);
+		});
 	}
 }

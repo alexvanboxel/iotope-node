@@ -117,7 +117,7 @@ public class Correlation {
             Association ass;
             try {
                 ass = query.getSingleResult();
-                if(!ass.getApplication().equals(app)) {
+                if (!ass.getApplication().equals(app)) {
                     ass.setApplication(app);
                     em.persist(ass);
                 }
@@ -130,12 +130,12 @@ public class Correlation {
             }
             // Remove old
             List<FieldValue> toRemove = new ArrayList<FieldValue>();
-            for(FieldValue val : ass.getFields()) {
-                if(!val.getField().getApp().equals(app)) {
+            for (FieldValue val : ass.getFields()) {
+                if (!val.getField().getApp().equals(app)) {
                     toRemove.add(val);
                 }
             }
-            for(FieldValue val : toRemove) {
+            for (FieldValue val : toRemove) {
                 em.remove(val);
                 ass.getFields().remove(val);
             }
@@ -162,7 +162,36 @@ public class Correlation {
         }
     }
     
-    public List<Application> getApplications() {        
+    public void removeAssociation(String tagId, int appId) {
+        
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.setFlushMode(FlushModeType.COMMIT);
+            em.getTransaction().begin();
+            
+            TagId tid = new TagId(tagId);
+            Tag tag = em.find(Tag.class, tid);
+            if (tag == null) {
+                throw new RuntimeException();
+            }
+            
+            TypedQuery<Association> query = em.createNamedQuery("findAssociationByTag", Association.class);
+            query.setParameter("tag", tag);
+            Association ass;
+            try {
+                ass = query.getSingleResult();
+                em.remove(ass);
+            } catch (NoResultException nre) {
+            }
+            em.getTransaction().commit();
+            em.close();
+        } catch (Throwable e) {
+            Log.error(e.getMessage());
+            em.getTransaction().rollback();
+        }
+    }
+    
+    public List<Application> getApplications() {
         EntityManager em = emf.createEntityManager();
         em.setFlushMode(FlushModeType.COMMIT);
         TypedQuery<Application> query = em.createQuery("select app from Application app", Application.class);
@@ -172,7 +201,7 @@ public class Correlation {
             em.close();
         }
     }
-
+    
     public List<Field> getFieldsForApplications(String appId) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -181,7 +210,7 @@ public class Correlation {
                 throw new RuntimeException();
             }
             List<Field> fields = new ArrayList<Field>();
-            for(FieldDefinition def : app.getFieldDefinitions()) {
+            for (FieldDefinition def : app.getFieldDefinitions()) {
                 fields.add(new Field(def));
             }
             return fields;
