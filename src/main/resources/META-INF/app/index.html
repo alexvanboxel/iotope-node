@@ -12,136 +12,237 @@
 		<script type="text/javascript" src="js/jquery-ui/jquery-ui-1.8.20.custom.min.js"></script>
 		<script type="text/javascript" src="js/tagapp.js"></script>
 		<style type="text/css">
-			body {
-				background-color: #f9f9f9;
-				font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
-			}
-			.ui-widget {
-				font-size: 0.8em;
-			}			
-			.head {
-				display: block;
-				margin: 5px;
-				background-color: #ffffff;
-			}
-			.control {
-				display: block;
-				margin: 5px;
-				vertical-align: top;
-				background-color: #ffffff;
-			}
-			.controlblock {
-				display: inline-block;
-				margin: 5px;
-				padding: 5px;
-				width: 200px;
-			}
-			.explain {
-				color: #666666;
-				font-size: 8pt;
-			}
-			.readerrow {
-				display: block;
-				background-color: #ffffff;
-				padding: 0px;
-			}
-			.readergroup {
-				display: table-row;
-				width: 100%;
-			}
-			.readername {
-				width: 100%;
-				padding: 5px;
-			}
-			.reader {
-				display: table-cell;
-				margin: 5px;
-				border-width: 0px;
-				padding: 5px;
-				width: 50%;
-			}
-			.cnt_app {
-				display: table-cell;
-				margin: 5px;
-				border-width: 0px;
-				padding: 5px;
-				width: 50%;
-			}
-			.tagapp {
-				display: table-cell;
-				margin: 10px;
-				border-width: 0px;
-				padding: 5px;
-			}
-			.readerslots {
-				display: block;
-				margin: 10px;
-				border-style: solid;
-				border-width: 1px;
-				padding: 0px;
-				color: #cccccc;
-				background-color: #f6f6f6;
-				min-width: 200px;
-			}
-			.readerslot {
-				display: block;
-				margin-bottom: 15px;
-				margin-left: 15px;
-				margin-top: 15px;
-				margin-right: 0px;
-				border-style: dotted;
-				border-width: 1px;
-				border-bottom-width: 1px;
-				border-left-width: 1px;
-				border-right-width: 0px;
-				border-top-width: 1px;
-				padding: 5px;
-				color: #333333;
-				background-color: #fafafa;
-				min-height: 50px;
-			}			a.appLink {
-				display: block;
-				margin: 10px;
-				border-style: dotted;
-				border-width: 1px;
-				padding: 5px;
-			}
-			a.appSelected {
-				display: block;
-				margin: 10px;
-				border-style: solid;
-				border-width: 2px;
-				padding: 5px;
-			}
+body {
+	background-color: #f9f9f9;
+	font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif;
+	margin: 0px;
+	height: 100%;
+}
 
-			.binhex {
-				display: inline-block;
-				font-family: "Courier New";
-				font-size: 10pt;
-			}
-			
-			.parameters {
-				margin: 10px;
-			}
-			.parameters td {
-				background-color: #fafafa;
-			}
+.ui-widget {
+	font-size: 0.8em;
+}
+
+.controlblock {
+	display: inline-block;
+	padding: 5px;
+	width: 200px;
+}
+
+.explain {
+	color: #666666;
+	font-size: 8pt;
+}
+
+.readerrow {
+	display: block;
+}
+
+.readerinnerrow {
+	display: block;
+	margin: 15px;
+	background-color: #ffffff;
+	padding: 5px;
+	border-radius: 10px;
+}
+
+.readergroup {
+	display: table-row;
+	width: 100%;
+}
+
+.readername {
+	width: 100%;
+	padding: 5px;
+}
+
+.reader {
+	display: table-cell;
+	margin: 5px;
+	border-width: 0px;
+	padding: 5px;
+	width: 50%;
+}
+
+.cnt_app {
+	display: table-cell;
+	margin: 5px;
+	border-width: 0px;
+	padding: 5px;
+	width: 50%;
+}
+
+.tagapp {
+	display: table-cell;
+	margin: 10px;
+	border-width: 0px;
+	padding: 5px;
+}
+
+.readerslots {
+	display: block;
+	margin: 10px;
+	border-style: solid;
+	border-width: 1px;
+	padding: 0px;
+	color: #cccccc;
+	background-color: #f6f6f6;
+	min-width: 200px;
+}
+
+.readerslot {
+	display: block;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-top: 15px;
+	margin-right: 0px;
+	border-style: dotted;
+	border-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-width: 0px;
+	border-top-width: 1px;
+	padding: 5px;
+	color: #333333;
+	background-color: #fafafa;
+	min-height: 50px;
+}
+
+a.appLink {
+	display: block;
+	margin: 10px;
+	border-style: dotted;
+	border-width: 1px;
+	padding: 5px;
+}
+
+a.appSelected {
+	display: block;
+	margin: 10px;
+	border-style: solid;
+	border-width: 2px;
+	padding: 5px;
+}
+
+.binhex {
+	display: inline-block;
+	font-family: "Courier New";
+	font-size: 10pt;
+}
+
+.parameters {
+	margin: 10px;
+}
+
+.parameters td {
+	padding: 3px;
+	background-color: #f6f6f6;
+}
+
+.parameters input {
+	border: 5px;
+	border: 1px solid #1C94C4;
+	background-color: #fcfcfc;
+}
+
+#wrap {
+	min-height: 100%;
+}
+
+.readers {
+	overflow: auto;
+	padding-bottom: 40px;
+}
+
+.footer {
+	background-color: #555555;
+	position: relative;
+	margin-top: -40px;
+	height: 40px;
+	clear: both;
+}
+
+.header,.header td,.header .tr,.header .tbody {
+	border-style: none;
+	border-spacing: 0px;
+	border-width: 0px;
+	padding: 0px;
+}
+
+.header {
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+.header .logo {
+	width: 120px;
+	background-color: #555555;
+	margin: 0px;
+	text-align: center;
+	height: 100px;
+	border-bottom-right-radius: 10px;
+}
+
+.header .r1 {
+	background-color: #555555;
+	height: 70px;
+}
+
+.header .r2 {
+	background-color: #555555;
+	height: 15px;
+}
+
+.header .r3 {
+	background-color: #fcfcfc;
+	height: 15px;
+}
+
+.header .txt {
+	background-color: #555555;
+	font-size: 1.5em;
+	color: white;
+	padding-left: 30px;
+	letter-spacing: 10px;
+	height: 70px;
+}
+
+.header .back {
+	background-color: #555555;
+	height: 70px;
+}
+
+.header .bar {
+	background-color: #f9f9f9;
+	height: 30px;
+	border-top-left-radius: 10px;
+}
 		</style>
 	</head>
 	<body>
-		<div class="head">
-		<table><tr><td>
-		<img src="img/iotope.png"/></td><td>
-		<b>IOTOPE Node</b>
-		</td></tr></table>
-		</div>
-		<div class="control">
+	  <div id="wrap">
+		<table class="header">
+		<tr>
+			<tr class="r1">
+				<td class="logo" rowspan="3"><img src="img/iotope.png"/></td>
+				<td class="txt">IOTOPE Node</td>
+			</tr>
+			<tr class="r2">
+				<td class="bar" rowspan="2">
 			<div class="controlblock" id="ctrlearn">
 				<input id="learn" type="checkbox" name="learnMode" value="true" />
 				<label for="learn">Learn Mode</label>
 			</div>
-		</div>
+				</td>
+			</tr>
+			<tr class="r3">
+				<td></td>
+			</tr>
+		</table>
 		<div id="readers"></div>
+	</div>
+		<div class="footer">footer text</div>
 		<!-- style="display:none" -->
 		<div id="context" style="display:none" >
 			<span id="tagId"></span>
@@ -158,6 +259,7 @@
 				</ul>
 			</div>
 			<div class="readerrow">
+			<div class="readerinnerrow">
 			<div class="readername">
 				Ghost Reader 007
 			</div>
@@ -166,6 +268,7 @@
 					<div class="readerslots"></div>
 				</div>
 				<div class="cnt_app"></div>
+			</div>
 			</div>
 			</div>
 			<div class="readerslot">
