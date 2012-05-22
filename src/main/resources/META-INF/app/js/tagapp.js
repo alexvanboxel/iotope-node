@@ -188,7 +188,7 @@ function tagContent(tc) {
 	}
 	var html = '<li>';
 	html += '<span>' + tc.type + '</span>'
-	html += '<span class="binhex">' + tc.content + '</span>'
+	html += '<span class="binhex">' + tc.block + '</span>'
 	html += '</li>';
 	return html;		
 }
