@@ -1,7 +1,6 @@
 package org.iotope.node.conf;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamReader;
 
 public class ConfigIO {
     protected static final QName IOTOPE_NODE = new QName("iotope-node");

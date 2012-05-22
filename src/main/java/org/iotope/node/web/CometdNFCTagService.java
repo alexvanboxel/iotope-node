@@ -1,7 +1,5 @@
 package org.iotope.node.web;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,12 +12,10 @@ import org.cometd.server.AbstractService;
 import org.iotope.node.Node;
 import org.iotope.node.NodeBus;
 import org.iotope.node.apps.Correlation;
-import org.iotope.node.conf.Configuration;
-import org.iotope.node.model.FieldDefinition;
+import org.iotope.node.conf.Mode;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.reader.TagChange;
-import org.iotope.pipeline.model.Field;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -32,7 +28,7 @@ public class CometdNFCTagService extends AbstractService {
         this.readers = Node.instance(Readers.class);
         this.bus = Node.instance(NodeBus.class);
         this.correlation = Node.instance(Correlation.class);
-        this.configuration = Node.instance(Configuration.class);
+        this.mode = Node.instance(Mode.class);
         
         bus.register(this);
         addService("/info", "processInfoRequest");
@@ -65,7 +61,7 @@ public class CometdNFCTagService extends AbstractService {
         //String[] path = channelName.split("/");
         String type = (String) data.get("type");
         if ("setBooleanOption".equals(type)) {
-            configuration.set((String)data.get("name"), ((Boolean)data.get("value")).toString());
+            mode.set((String)data.get("name"), ((Boolean)data.get("value")).toString());
         } else if ("assignApplication".equals(type)) {
             String tagId = (String) data.get("tagId");
             String readerId = (String) data.get("readerId");
@@ -106,7 +102,7 @@ public class CometdNFCTagService extends AbstractService {
     private ClientSessionChannel tagChannel;
     
     private Correlation correlation;
-    private Configuration configuration;
+    private Mode mode;
     private Readers readers;
     private EventBus bus;
 }

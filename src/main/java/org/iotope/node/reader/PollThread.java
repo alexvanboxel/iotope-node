@@ -16,6 +16,7 @@ import org.iotope.node.conf.Cfg;
 import org.iotope.node.conf.CfgTech;
 import org.iotope.node.conf.CfgTech.Protocol;
 import org.iotope.node.conf.Configuration;
+import org.iotope.node.conf.Mode;
 import org.iotope.pipeline.ExecutionContextImpl;
 import org.iotope.pipeline.ExecutionPipeline;
 import org.iotope.pipeline.model.Field;
@@ -34,6 +35,7 @@ public class PollThread implements Runnable {
     
     Correlation correlation = Node.instance(Correlation.class);
     Configuration configuration = Node.instance(Configuration.class);
+    Mode mode = Node.instance(Mode.class);
     ExecutionPipeline executionPipeline = Node.instance(ExecutionPipeline.class);
     
     ClientSessionChannel cometdChannel;
@@ -113,52 +115,48 @@ public class PollThread implements Runnable {
             Log.trace("Handling new DEP target: " + nfcTarget.toString());
         } else {
             // TAG
-            if (configuration.isReadTagContent()) {
-                Log.debug("Handling new TAG target: " + nfcTarget.toString());
-                try {
-                    CfgTech cfgTech;
-                    switch (nfcTarget.getType()) {
-                    case MIFARE_1K:
-                        cfgTech = cfg.getTechnology(Protocol.MIFARE_CLASSIC);
-                        if (cfgTech != null) {
-                            //readClassicAll(nfcTag);
-                        }
-                        break;
-                    case MIFARE_ULTRALIGHT:
-                        cfgTech = cfg.getTechnology(Protocol.MIFARE_ULTRALIGHT);
-                        if (cfgTech != null) {
-                            if(cfgTech.isNdef()) {
-                                NfcType2 ultraLight = new NfcType2(channel);
-                                targetContent = ultraLight.readNDEF(nfcTarget);
-                                tagChange.addTagContent(targetContent);
-                            }
-                            if(cfgTech.isMeta()) {
-                                correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
-                            }
-                            //writeTest(nfcTag);
-                        }
-                        break;
-                    default:
-                        Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
+            Log.debug("Handling new TAG target: " + nfcTarget.toString());
+            try {
+                CfgTech cfgTech;
+                switch (nfcTarget.getType()) {
+                case MIFARE_1K:
+                    cfgTech = cfg.getTechnology(Protocol.MIFARE_CLASSIC);
+                    if (cfgTech != null) {
+                        //readClassicAll(nfcTag);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    break;
+                case MIFARE_ULTRALIGHT:
+                    cfgTech = cfg.getTechnology(Protocol.MIFARE_ULTRALIGHT);
+                    if (cfgTech != null) {
+                        if (cfgTech.isNdef()) {
+                            NfcType2 ultraLight = new NfcType2(channel);
+                            targetContent = ultraLight.readNDEF(nfcTarget);
+                            tagChange.addTagContent(targetContent);
+                        }
+                        if (cfgTech.isMeta()) {
+                            correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
+                        }
+                        //writeTest(nfcTag);
+                    }
+                    break;
+                default:
+                    Log.error("Can't handle unsupported target type: " + nfcTarget.getType());
                 }
-            } else {
-                Log.debug("New TAG target: " + nfcTarget.toString() + " but content is not read due to configuration.");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-
+        
         executionContext.setTargetContent(targetContent);
         executionContext.setNfcTarget(nfcTarget);
-        pipeline.initPipeline(cfg,executionContext);
+        pipeline.initPipeline(cfg, executionContext);
         tagChange.setApplication(executionContext.getApplication());
         if (executionContext.getFields() != null) {
             for (Field field : executionContext.getFields()) {
                 tagChange.addField(field);
             }
         }
-        if (!configuration.isLearnMode()) {
+        if (!mode.isLearnMode()) {
             pipeline.startPipeline();
         }
         bus.post(tagChange);

@@ -3,9 +3,6 @@ package org.iotope.node.conf;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.iotope.node.conf.CfgFilter.FilterType;
-import org.iotope.node.conf.CfgTech.Protocol;
-
 public class CfgFilter {
     
     public enum FilterType {

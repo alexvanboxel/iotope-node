@@ -47,7 +47,6 @@ public class ConfigReader extends ConfigIO {
     }
     
     private CfgPipeline readPipeline() throws Exception {
-        String inherit = reader.getAttributeValue(null, "inherit");
         CfgPipeline cfg = new CfgPipeline();
         while (reader.hasNext()) {
             int event = reader.next();
@@ -69,7 +68,6 @@ public class ConfigReader extends ConfigIO {
     }
     
     private CfgApplication readApplication() throws Exception {
-        String inherit = reader.getAttributeValue(null, "inherit");
         CfgApplication cfg = new CfgApplication(getAttr("urn"));
         while (reader.hasNext()) {
             int event = reader.next();
@@ -114,7 +112,6 @@ public class ConfigReader extends ConfigIO {
     }
     
     private CfgReader readReader() throws Exception {
-        String inherit = reader.getAttributeValue(null, "inherit");
         CfgReader cfg = new CfgReader();
         while (reader.hasNext()) {
             int event = reader.next();
@@ -136,7 +133,6 @@ public class ConfigReader extends ConfigIO {
     }
     
     private CfgHardware readHardware() throws Exception {
-        String inherit = reader.getAttributeValue(null, "inherit");
         CfgHardware cfg = new CfgHardware();
         while (reader.hasNext()) {
             int event = reader.next();

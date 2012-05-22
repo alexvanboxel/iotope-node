@@ -1,10 +1,9 @@
 package org.iotope.node.conf;
 
-import javax.xml.stream.XMLStreamWriter;
 
 public class ConfigWriter extends ConfigIO {
 
-    private void writeConfiguration(XMLStreamWriter writer,Configuration config) throws Exception {
+//    private void writeConfiguration(XMLStreamWriter writer,Configuration config) throws Exception {
 //        Configuration config = new Configuration();
 //        while (reader.hasNext()) {
 //            int event = reader.next();
@@ -22,7 +21,7 @@ public class ConfigWriter extends ConfigIO {
 //            }
 //        }
 //        return null;
-    }
+//    }
 
     
 }
