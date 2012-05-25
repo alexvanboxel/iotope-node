@@ -2,7 +2,6 @@ package org.iotope.pipeline;
 
 import junit.framework.Assert;
 
-import org.iotope.context.ExecutionContext;
 import org.iotope.node.UnitNode;
 import org.iotope.node.conf.Cfg;
 import org.iotope.node.conf.Configuration;

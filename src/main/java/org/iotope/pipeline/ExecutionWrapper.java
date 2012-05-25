@@ -10,17 +10,22 @@ import org.iotope.node.conf.CfgApplication;
 import org.iotope.node.conf.CfgFilter;
 import org.iotope.node.conf.CfgFilter.FilterType;
 
-public class ExecutionWrapper implements Cloneable {
+public class ExecutionWrapper {
     
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public static class Description {
+        String domain;
+        String name;
+        Class<? extends Application> applicationClass;
+        
+        public Description(String domain, String name, Class<? extends Application> applicationClass) {
+            this.domain = domain;
+            this.name = name;
+            this.applicationClass = applicationClass;
+        }
     }
     
-    public ExecutionWrapper(String domain, String name, Class<? extends Application> applicationClass) {
-        this.domain = domain;
-        this.name = name;
-        this.applicationClass = applicationClass;
+    public ExecutionWrapper(Description description) {
+        this.description = description;
     }
     
     private class FilterWrapper {
@@ -44,7 +49,7 @@ public class ExecutionWrapper implements Cloneable {
     }
     
     public Class<? extends Application> getApplicationClass() {
-        return applicationClass;
+        return description.applicationClass;
     }
     
     public void configure(CfgApplication cfg, Application application) {
@@ -108,7 +113,7 @@ public class ExecutionWrapper implements Cloneable {
     }
     
     public void execute(ExecutionContextImpl executionContext) {
-        executionContext.switchContext(domain, name);
+        executionContext.switchContext(description.domain, description.name);
         application.execute(executionContext);
     }
     
@@ -119,9 +124,7 @@ public class ExecutionWrapper implements Cloneable {
     Application application;
     List<FilterWrapper> filters = new ArrayList<FilterWrapper>();
     
-    String domain;
-    String name;
-    Class<? extends Application> applicationClass;
-    
     CfgApplication cfg;
+    
+    Description description;
 }

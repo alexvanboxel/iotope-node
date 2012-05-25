@@ -7,12 +7,13 @@ public class UnitNode {
     
     private static Node node;
     
+    @SuppressWarnings("static-access")
     public static <T> T instance(Class<T> c) {
         if(node == null) {
             WeldContainer cdiContainer = new Weld().initialize();
             Node.setContainer( new Weld().initialize());
-            Node node = cdiContainer.instance().select(Node.class).get();
+            node = cdiContainer.instance().select(Node.class).get();
         }
-        return Node.instance(c);
+        return node.instance(c);
     }
 }

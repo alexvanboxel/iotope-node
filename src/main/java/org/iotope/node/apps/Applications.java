@@ -26,14 +26,14 @@ public class Applications {
     
     @SuppressWarnings("unchecked")
     public Applications() {
-        Reflections reflections = new Reflections("org.iotope","com.iotope");
+        Reflections reflections = new Reflections("org.iotope","com.iotope","test.iotope.org","ext.iotope");
         Set<Class<?>> applicationClasses = reflections.getTypesAnnotatedWith(IotopeApplication.class);
         for (Class<?> applicationClass : applicationClasses) {
             IotopeApplication info = applicationClass.getAnnotation(IotopeApplication.class);
             String urn = "urn:iotope.app:" + info.domain() + ":" + info.name();
             Log.info("Registered application: " + urn);
             persistApplication(info.domain(), info.name(), (Class<? extends Application>) applicationClass);
-            applications.put(urn, new ExecutionWrapper(info.domain(), info.name(), (Class<? extends Application>) applicationClass));
+            applications.put(urn, new ExecutionWrapper.Description(info.domain(), info.name(), (Class<? extends Application>) applicationClass));
         }
         
         applicationClasses = reflections.getTypesAnnotatedWith(IotopeAction.class);
@@ -42,7 +42,7 @@ public class Applications {
             String urn = "urn:iotope.app:" + info.domain() + ":" + info.name();
             Log.info("Registered action: " + urn);
             persistApplication(info.domain(), info.name(), (Class<? extends Application>) applicationClass);
-            applications.put(urn, new ExecutionWrapper(info.domain(), info.name(), (Class<? extends Application>) applicationClass));
+            applications.put(urn, new ExecutionWrapper.Description(info.domain(), info.name(), (Class<? extends Application>) applicationClass));
         }
         
         Set<Class<?>> filterClasses = reflections.getTypesAnnotatedWith(IotopeFilter.class);
@@ -77,7 +77,7 @@ public class Applications {
     public ExecutionWrapper createWrappedApplication(CfgApplication cfgApp) throws InstantiationException, IllegalAccessException {
         ExecutionWrapper wrapper = null;
         try {
-            wrapper = (ExecutionWrapper) applications.get(cfgApp.getURN()).clone();
+            wrapper = new ExecutionWrapper(applications.get(cfgApp.getURN()));
             Application application = Node.instance(wrapper.getApplicationClass());
             wrapper.configure(cfgApp,application);
             for(CfgFilter f : cfgApp.getFilters()) {
@@ -96,7 +96,7 @@ public class Applications {
     //        return Node.instance(applications.get(urn));
     //    }
     
-    Map<String, ExecutionWrapper> applications = new HashMap<String, ExecutionWrapper>();
+    Map<String, ExecutionWrapper.Description> applications = new HashMap<String, ExecutionWrapper.Description>();
     Map<String, ExecutionWrapper> action = new HashMap<String, ExecutionWrapper>();
     Map<String, Class<? extends Filter>> filters = new HashMap<String, Class<? extends Filter>>();
 }

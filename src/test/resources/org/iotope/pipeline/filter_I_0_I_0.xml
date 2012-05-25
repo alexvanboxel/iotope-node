@@ -3,8 +3,6 @@
 		<application urn="urn:iotope.app:test.iotope.org:test">
 			<filter urn="urn:iotope.filter:test.iotope.org:false" type="include">
 			</filter>
-		</application>
-		<application urn="urn:iotope.app:test.iotope.org:test">
 			<filter urn="urn:iotope.filter:test.iotope.org:false" type="include">
 			</filter>
 		</application>
