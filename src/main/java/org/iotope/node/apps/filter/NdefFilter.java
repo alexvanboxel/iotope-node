@@ -1,15 +1,11 @@
 package org.iotope.node.apps.filter;
 
-import java.net.URI;
 import java.util.Map;
 
 import org.iotope.IotopeFilter;
 import org.iotope.context.ExecutionContext;
 import org.iotope.context.Filter;
-import org.iotope.nfc.ndef.NdefMessage;
-import org.iotope.nfc.ndef.NdefRecord;
 import org.iotope.nfc.target.Block;
-import org.iotope.nfc.target.NdefBlock;
 import org.iotope.nfc.target.TargetContent;
 import org.iotope.nfc.target.TargetContent.ContentType;
 

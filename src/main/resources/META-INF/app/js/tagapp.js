@@ -52,9 +52,12 @@ function loadDialog() {
 $(function() {
 	subscription1 = $.cometd.addListener('/meta/connect', function() {
 		infoChannel = $.cometd.subscribe('/info', function(message) {
-			if(message.data.type == "ReadersInfo") {
+			if(message.data.type == "info") {
 				var readers = message.data.readers;
-				for(var i = 0; i < readers.length; i++)addReader(readers[i]);
+				for(var i = 0; i < readers.length; i++)
+					addReader(readers[i]);
+				var settings = message.data.settings;
+				
 			} else if(message.data.type == "CorrelationMode") {
 				var mode = message.data.mode;
 			}

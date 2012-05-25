@@ -4,10 +4,16 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.iotope.node.NodeBus;
 
 @Singleton
 public class Configuration {
+    
+    @Inject
+    private NodeBus bus;
     
     private Cfg configuration;
     
@@ -18,7 +24,7 @@ public class Configuration {
             e.printStackTrace();
         }
     }
-        
+    
     public void load(String name) throws Exception {
         URL url = getClass().getResource(name);
         URI uri = url.toURI();
@@ -31,6 +37,9 @@ public class Configuration {
     
     synchronized public void setConfig(Cfg configuration) {
         this.configuration = configuration;
+        if (bus != null) {
+            bus.post(configuration);
+        }
     }
     
     synchronized public Cfg getConfig() {

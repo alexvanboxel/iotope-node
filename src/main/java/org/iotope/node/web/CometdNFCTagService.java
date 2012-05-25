@@ -43,8 +43,11 @@ public class CometdNFCTagService extends AbstractService {
         String type = (String) data.get("type");
         if ("ReadersInfo".equals(type)) {
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("type", "ReadersInfo");
+            map.put("type", "info");
             map.put("readers", readers.getReaders());
+            Map<String, Object> settings = new HashMap<String, Object>();
+            map.put("settings",settings);
+            map.put("learnMode", mode.isLearnMode());
             remote.deliver(getServerSession(), "/info", map, null);
         }
     }

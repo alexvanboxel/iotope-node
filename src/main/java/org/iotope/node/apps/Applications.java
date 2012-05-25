@@ -26,7 +26,7 @@ public class Applications {
     
     @SuppressWarnings("unchecked")
     public Applications() {
-        Reflections reflections = new Reflections("");
+        Reflections reflections = new Reflections("org.iotope","com.iotope");
         Set<Class<?>> applicationClasses = reflections.getTypesAnnotatedWith(IotopeApplication.class);
         for (Class<?> applicationClass : applicationClasses) {
             IotopeApplication info = applicationClass.getAnnotation(IotopeApplication.class);

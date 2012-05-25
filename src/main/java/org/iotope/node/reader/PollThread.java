@@ -6,7 +6,6 @@ import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.pn532.PN532InAutoPoll;
 import org.iotope.nfc.reader.pn532.PN532InAutoPollResponse;
 import org.iotope.nfc.reader.pn532.PN532RFConfiguration;
-import org.iotope.nfc.reader.pn532.PN532RFConfigurationResponse;
 import org.iotope.nfc.tag.NfcTarget;
 import org.iotope.nfc.target.TargetContent;
 import org.iotope.nfc.tech.NfcType2;
@@ -51,7 +50,7 @@ public class PollThread implements Runnable {
     public void run() {
         try {
             Cfg prevCfg = null;
-            PN532RFConfigurationResponse initResponse = channel.transmit(new PN532RFConfiguration());
+            channel.transmit(new PN532RFConfiguration());
             while (true) {
                 Cfg cfg = configuration.getConfig();
                 if (prevCfg != cfg) {

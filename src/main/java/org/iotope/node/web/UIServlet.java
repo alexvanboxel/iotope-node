@@ -3,7 +3,6 @@ package org.iotope.node.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.iotope.nfc.reader.ReaderChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +30,7 @@ public class UIServlet extends HttpServlet {
         super();
     }
     
-    protected URI getResource(URI base, String path) {
+    protected String getResource(String base, String path) {
         String[] parts = path.split("/");
         ArrayList<String> list = new ArrayList<String>(Arrays.asList(parts));
         if (path.endsWith("/")) {
@@ -42,7 +40,7 @@ public class UIServlet extends HttpServlet {
         return getResource(base, list);
     }
     
-    protected URI getResource(URI base, List<String> path) {
+    protected String getResource(String base, List<String> path) {
         Log.trace("Loading resource >>> " + base.toString());
         if (path.size() == 0)
             return base;
@@ -53,12 +51,12 @@ public class UIServlet extends HttpServlet {
         }
         
         if (part.length() == 0 && path.size() == 0) {
-            return getResource(base.resolve("index.html"), path);
+            return getResource(base+"index.html", path);
         } else {
             if (path.size() > 0)
-                return getResource(base.resolve(part + "/"), path);
+                return getResource(base+part + "/", path);
             else
-                return getResource(base.resolve(part), path);
+                return getResource(base+part, path);
         }
     }
     
@@ -66,9 +64,8 @@ public class UIServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String path = req.getPathInfo();
-            URL base = getClass().getResource("/META-INF/app/");
-            URL url = getResource(base.toURI(), path).toURL();
-            
+            String resource = getResource("/META-INF/app/", path);
+            URL url = getClass().getResource(resource);
             
             InputStream in = url.openStream();
             if (in != null) {
