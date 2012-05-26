@@ -20,8 +20,11 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.iotope.node.conf.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.eventbus.Subscribe;
 
 @Singleton
 public class NodeTray {
@@ -61,21 +64,27 @@ public class NodeTray {
             }
         }
     }
-    
+
+    @Subscribe
+    public void onModeChange(Mode mode) {
+        miLearnMode.setState(mode.isLearnMode());
+        System.err.println("changed is learn mode: "+mode.isLearnMode());
+    }
+
     private PopupMenu popupMenu() {
         PopupMenu popup = new PopupMenu();
         
-        MenuItem consoleItem = new MenuItem("Node Console");
-        consoleItem.addActionListener(consoleListener);
-        popup.add(consoleItem);
+        miNodeConsole = new MenuItem("Node Console");
+        miNodeConsole.addActionListener(consoleListener);
+        popup.add(miNodeConsole);
         
-        CheckboxMenuItem learnItem = new CheckboxMenuItem("Learn Mode");
-        consoleItem.addActionListener(learnListener);
-        popup.add(learnItem);
+        miLearnMode = new CheckboxMenuItem("Learn Mode");
+        miNodeConsole.addActionListener(learnListener);
+        popup.add(miLearnMode);
         
-        MenuItem exitItem = new MenuItem("Exit");
-        exitItem.addActionListener(exitListener);
-        popup.add(exitItem);
+        miExit = new MenuItem("Exit");
+        miExit.addActionListener(exitListener);
+        popup.add(miExit);
         return popup;
     }
     
@@ -150,6 +159,12 @@ public class NodeTray {
     private ActionListener exitListener;
     
     private MouseListener mouseListener;
+    
+    MenuItem miNodeConsole;
+    CheckboxMenuItem miLearnMode;
+    MenuItem miExit;
+    
+    
     
     TrayIcon trayIcon;
     

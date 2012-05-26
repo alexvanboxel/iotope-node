@@ -48,6 +48,7 @@ public class Node {
      */
     public void wire() throws Exception {
         bus.register(this);
+        bus.register(tray);
         
         configuration.init();
         
