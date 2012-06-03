@@ -27,6 +27,7 @@ public class ConfigReader extends ConfigIO {
             if (event == XMLStreamReader.START_ELEMENT) {
                 QName name = reader.getName();
                 if (IOTOPE_NODE.equals(name)) {
+                    config.setName(getAttr("name"));
                 } else if (PIPELINE.equals(name)) {
                     config.setPipeline(readPipeline());
                 } else if (TECH.equals(name)) {

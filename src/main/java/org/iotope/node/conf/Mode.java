@@ -19,7 +19,6 @@ public class Mode {
         } else {
             throw new RuntimeException("Unknown configuration property : " + key);
         }
-        bus.post(this);
     }
     
     public String get(String key) {
@@ -35,6 +34,9 @@ public class Mode {
     }
     
     public void setLearnMode(boolean learnMode) {
-        this.learnMode = learnMode;
+        if(learnMode != this.learnMode) {
+            this.learnMode = learnMode;
+            bus.post(this);
+        }
     }
 }

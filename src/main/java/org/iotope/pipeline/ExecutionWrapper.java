@@ -114,6 +114,7 @@ public class ExecutionWrapper {
     
     public void execute(ExecutionContextImpl executionContext) {
         executionContext.switchContext(description.domain, description.name);
+        application.configure(cfg.getProperties());
         application.execute(executionContext);
     }
     

@@ -11,6 +11,8 @@ import java.awt.SystemTray;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -79,7 +81,7 @@ public class NodeTray {
         popup.add(miNodeConsole);
         
         miLearnMode = new CheckboxMenuItem("Learn Mode");
-        miNodeConsole.addActionListener(learnListener);
+        miLearnMode.addItemListener(learnListener);
         popup.add(miLearnMode);
         
         miExit = new MenuItem("Exit");
@@ -110,8 +112,10 @@ public class NodeTray {
             }
         };
         
-        learnListener = new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        learnListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                mode.setLearnMode(e.getStateChange() == ItemEvent.SELECTED);
             }
         };
         
@@ -154,7 +158,7 @@ public class NodeTray {
     
     private ActionListener consoleListener;
     
-    private ActionListener learnListener;
+    private ItemListener learnListener;
     
     private ActionListener exitListener;
     
@@ -167,6 +171,9 @@ public class NodeTray {
     
     
     TrayIcon trayIcon;
+    
+    @Inject
+    Mode mode;
     
     @Inject
     private NodeBus bus;

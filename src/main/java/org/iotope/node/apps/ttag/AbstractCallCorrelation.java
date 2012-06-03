@@ -69,22 +69,22 @@ public abstract class AbstractCallCorrelation {
     protected void detectApplications(ExecutionContext context, TagResponse response) throws Exception {
         String name = response.getContainerName();
         if(response.isSoapFault()) {
-            context.executeNext("iotope.org", "weblink", "caption", "System Message");
-            context.executeNext("iotope.org", "weblink", "message", response.getSoapFault());
-            context.executeNext("iotope.org", "weblink", "type", "ERROR");
+            context.executeNext("iotope.org", "notify", "caption", "System Message");
+            context.executeNext("iotope.org", "notify", "message", response.getSoapFault());
+            context.executeNext("iotope.org", "notify", "type", "ERROR");
         }
         else if ("tikitag.standard.url".equals(name)) {
             context.executeNext("iotope.org", "weblink", "url", response.getContainerAttribute("url"));
         } else if ("tikitag.standard.tagManagement".equals(name)) {
-            context.executeNext("iotope.org", "weblink", "caption", "Legacy Tag Management");
-            context.executeNext("iotope.org", "weblink", "message", response.getContainerAttribute("message"));
-            context.executeNext("iotope.org", "weblink", "type", "WARNING");
+            context.executeNext("iotope.org", "notify", "caption", "Legacy Tag Management");
+            context.executeNext("iotope.org", "notify", "message", response.getContainerAttribute("message"));
+            context.executeNext("iotope.org", "notify", "type", "WARNING");
         } else {
             String message = response.getSystemMessage();
             if (message != null) {
-                context.executeNext("iotope.org", "weblink", "caption", "System Message");
-                context.executeNext("iotope.org", "weblink", "message", message);
-                context.executeNext("iotope.org", "weblink", "type", "WARNING");
+                context.executeNext("iotope.org", "notify", "caption", "System Message");
+                context.executeNext("iotope.org", "notify", "message", message);
+                context.executeNext("iotope.org", "notify", "type", "WARNING");
             }
         }
     }

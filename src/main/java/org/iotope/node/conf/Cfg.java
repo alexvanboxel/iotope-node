@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class Cfg {
     
+    private String name;
+    
     private Map<CfgTech.Protocol,CfgTech> tech = new HashMap<CfgTech.Protocol,CfgTech>(); 
 
     private CfgPipeline pipeline;
@@ -23,5 +25,13 @@ public class Cfg {
 
     void setPipeline(CfgPipeline readPipeline) {
         this.pipeline = readPipeline;        
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

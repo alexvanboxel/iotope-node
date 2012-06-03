@@ -16,7 +16,7 @@ public class AppWithProperties {
     @BeforeClass
     public static void before() throws Exception {
         Configuration c = new Configuration();
-        c.load("appwithproperties.xml");
+        c.loadResource("appwithproperties.xml");
         cfg = c.getConfig();
     }
     

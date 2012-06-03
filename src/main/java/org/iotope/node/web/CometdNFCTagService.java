@@ -37,6 +37,7 @@ public class CometdNFCTagService extends AbstractService {
         session.handshake();
         tagChannel = session.getChannel("/tag");
         readerChannel = session.getChannel("/reader");
+        changeChannel = session.getChannel("/change");
     }
     
     public void processInfoRequest(ServerSession remote, String channelName, Map<String, Object> data, String messageId) {
@@ -103,6 +104,7 @@ public class CometdNFCTagService extends AbstractService {
     
     private ClientSessionChannel readerChannel;
     private ClientSessionChannel tagChannel;
+    private ClientSessionChannel changeChannel;
     
     private Correlation correlation;
     private Mode mode;

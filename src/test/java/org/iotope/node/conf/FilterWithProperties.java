@@ -15,7 +15,7 @@ public class FilterWithProperties {
     @BeforeClass
     public static void before() throws Exception {
         Configuration c = new Configuration();
-        c.load("filterwithproperties.xml");
+        c.loadResource("filterwithproperties.xml");
         cfg = c.getConfig();
     }
     

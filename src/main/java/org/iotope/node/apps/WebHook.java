@@ -25,21 +25,21 @@ import org.iotope.gateway.http.HttpGateway;
 
 @IotopeApplication(domain = "iotope.org", name = "webhook")
 public class WebHook implements Application {
- 
+    
     @Inject
     HttpGateway http;
     
     private String url;
-
+    
     @Override
     public void execute(ExecutionContext context) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             String json = mapper.writeValueAsString(context);
-
+            
             System.out.println(json);
-
+            
             URI uri = URI.create(url);
             
             HttpPost post = new HttpPost(uri);
@@ -49,30 +49,28 @@ public class WebHook implements Application {
             post.setEntity(stringEntity);
             
             HttpResponse response = http.execute(post, null);
-            String out = EntityUtils.toString(response.getEntity());
-            
-            
-            JsonNode rootNode = mapper.readValue(out, JsonNode.class);
-            System.out.println(rootNode);
-            
-            
-            Iterator<Entry<String, JsonNode>> apps = rootNode.getFields();
-            while(apps.hasNext()) {
-                Entry<String, JsonNode> app = apps.next();
-                String appURN = app.getKey();
-
-                String[] parts = appURN.split(":");
-                String domainName = parts[2];
-                String appName = parts[3];
+            if (response != null) {
+                String out = EntityUtils.toString(response.getEntity());
+                JsonNode rootNode = mapper.readValue(out, JsonNode.class);
+                System.out.println(rootNode);
                 
-                Iterator<Entry<String, JsonNode>> fields  = app.getValue().getFields();
-                while(fields.hasNext()) {
-                    Entry<String, JsonNode> field = fields.next();
-                    String fieldName = field.getKey();
-                    String fieldValue = field.getValue().asText();
-                    context.setField(domainName, appName, fieldName, fieldValue);
+                Iterator<Entry<String, JsonNode>> apps = rootNode.getFields();
+                while (apps.hasNext()) {
+                    Entry<String, JsonNode> app = apps.next();
+                    String appURN = app.getKey();
+                    
+                    String[] parts = appURN.split(":");
+                    String domainName = parts[2];
+                    String appName = parts[3];
+                    
+                    Iterator<Entry<String, JsonNode>> fields = app.getValue().getFields();
+                    while (fields.hasNext()) {
+                        Entry<String, JsonNode> field = fields.next();
+                        String fieldName = field.getKey();
+                        String fieldValue = field.getValue().asText();
+                        context.setField(domainName, appName, fieldName, fieldValue);
+                    }
                 }
-
             }
             
         } catch (JsonGenerationException e) {
@@ -88,7 +86,7 @@ public class WebHook implements Application {
     public MetaData getMetaData() {
         return null;
     }
-
+    
     @Override
     public void configure(Map<String, String> properties) {
         url = properties.get("url");

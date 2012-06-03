@@ -15,7 +15,7 @@ public class DefaultConfigurationTest {
     @BeforeClass
     public static void before() throws Exception {
         Configuration c = new Configuration();
-        c.load("/META-INF/config.xml");
+        c.loadResource("/META-INF/config.xml");
         cfg = c.getConfig();
     }
     

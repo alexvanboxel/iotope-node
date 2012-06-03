@@ -15,7 +15,7 @@ public class NdefFilter implements Filter {
     @Override
     public boolean match(ExecutionContext context) {
         TargetContent content = context.getTargetContent();
-        if (content.size() == 0) {
+        if (content == null || content.size() == 0) {
             return false;
         }
         Block block = content.getBlock(0);

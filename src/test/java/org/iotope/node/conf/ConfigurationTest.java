@@ -7,7 +7,7 @@ public class ConfigurationTest {
     @Test
     public void configtest1() throws Exception {
         Configuration c = new Configuration();
-        c.load("configtest1.xml");
+        c.loadResource("configtest1.xml");
 
         Cfg cfg = c.getConfig();
         

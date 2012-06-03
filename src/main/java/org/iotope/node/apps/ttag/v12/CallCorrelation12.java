@@ -19,7 +19,10 @@ import org.iotope.util.IOUtil;
 
 @IotopeApplication(domain = "iotope.org", name = "ttag.c12")
 public class CallCorrelation12 extends AbstractCallCorrelation implements Application {
-    
+
+    String user;
+    String password;
+
     @Override
     public void execute(ExecutionContext context) {
         try {
@@ -35,7 +38,8 @@ public class CallCorrelation12 extends AbstractCallCorrelation implements Applic
             if (block.getType() == ContentType.LEGACY_TAGDATA) {
                 String tag64 = javax.xml.bind.DatatypeConverter.printBase64Binary(((ByteBlock) block).getBlock());
                 tagEvent.setTagData(tag64);
-                HttpResponse httpResponse = fireTag(uri, "user", "password", tagEvent);
+
+                HttpResponse httpResponse = fireTag(uri, user, password, tagEvent);
                 Tag12Response response = new Tag12Response(httpResponse);
                 System.out.println(response.toXML());
                 detectApplications(context, response);
@@ -52,6 +56,7 @@ public class CallCorrelation12 extends AbstractCallCorrelation implements Applic
 
     @Override
     public void configure(Map<String, String> properties) {
-        // Nothing to do
+        user = properties.get("user");
+        password = properties.get("password");
     }
 }

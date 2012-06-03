@@ -14,7 +14,7 @@ public class FilterTest {
         ExecutionContextImpl executionContext = new ExecutionContextImpl();
         
         Configuration c = new Configuration();
-        c.load("/org/iotope/pipeline/filter_" + file + ".xml");
+        c.loadResource("/org/iotope/pipeline/filter_" + file + ".xml");
         Cfg cfg = c.getConfig();
         pipeline.initPipeline(cfg, executionContext);
         pipeline.startPipeline();

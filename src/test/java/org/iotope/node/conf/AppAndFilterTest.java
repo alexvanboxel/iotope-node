@@ -15,7 +15,7 @@ public class AppAndFilterTest {
     @BeforeClass
     public static void before() throws Exception {
         Configuration c = new Configuration();
-        c.load("appandfilter.xml");
+        c.loadResource("appandfilter.xml");
         cfg = c.getConfig();
     }
     
