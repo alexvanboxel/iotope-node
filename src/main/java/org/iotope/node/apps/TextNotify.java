@@ -28,6 +28,14 @@ public class TextNotify implements Application {
         String caption = (String) context.getField("caption");
         String message = (String) context.getField("message");
         String type = (String) context.getField("type");
+        if (type != null) {
+            if ("WARNING".equals(type) || "ERROR".equals(type) || "INFO".equals(type)) {
+            } else {
+                type = "INFO";
+            }
+        } else {
+            type = "INFO";
+        }
         if (message != null || caption != null) {
             nodeTray.message(caption, message, type);
         } else {

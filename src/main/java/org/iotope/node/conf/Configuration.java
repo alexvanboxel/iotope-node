@@ -27,14 +27,13 @@ public class Configuration {
     
     public void init() {
         try {
-            String homePath = System.getenv("IOTOPE-NODE-HOME");
+            String homePath = System.getenv("IOTOPE_NODE_HOME");
             if (homePath != null) {
                 home = new File(homePath).getAbsolutePath();
             }
             else {
                 home = ".";
             }
-            
             
             Properties activeProperties = new Properties();
             activeProperties.load(new FileReader(home+"/conf/active-config.properties"));

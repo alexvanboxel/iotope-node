@@ -99,6 +99,7 @@ public class Node {
     @Inject
     private Readers readers;
     
+    @SuppressWarnings("unused")
     @Inject
     private ExecutionPipeline pipe;
     

@@ -3,7 +3,6 @@ package org.iotope.node;
 import java.awt.AWTException;
 import java.awt.CheckboxMenuItem;
 import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -35,7 +34,7 @@ public class NodeTray {
     public NodeTray() {
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
-            Dimension trayIconSize = tray.getTrayIconSize();
+            //Dimension trayIconSize = tray.getTrayIconSize();
             
             initListeners();
             PopupMenu popup = popupMenu();
@@ -175,6 +174,7 @@ public class NodeTray {
     @Inject
     Mode mode;
     
+    @SuppressWarnings("unused")
     @Inject
     private NodeBus bus;
 }
