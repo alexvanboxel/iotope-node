@@ -64,6 +64,10 @@ public class UIServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String path = req.getPathInfo();
+            if(path==null) {
+                resp.sendRedirect("/ui/");
+                return;
+            }
             String resource = getResource("/META-INF/app/", path);
             URL url = getClass().getResource(resource);
             
