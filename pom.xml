@@ -3,7 +3,7 @@
 
 	<groupId>org.iotope</groupId>
 	<artifactId>iotope-node</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>iotope-node</name>
@@ -159,6 +159,6 @@
 		<connection>scm:git:git@github.com:alexvanboxel/iotope-node.git</connection>
 		<url>scm:git:git@github.com:alexvanboxel/iotope-node.git</url>
 		<developerConnection>scm:git:git@github.com:alexvanboxel/iotope-node.git</developerConnection>
-	  <tag>iotope-node-0.1.0</tag>
+	  <tag>HEAD</tag>
   </scm>
 </project>
