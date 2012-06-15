@@ -33,18 +33,18 @@ public class Readers implements Runnable {
     public Readers() throws Exception {
         TerminalFactory factory = TerminalFactory.getDefault();
         terminals = factory.terminals();
-        knownTerminals = Collections.synchronizedMap(new HashMap<CardTerminal, Reader>());
+        knownTerminals = Collections.synchronizedMap(new HashMap<String, Reader>());
     }
     
     private Reader addTerminal(CardTerminal terminal) throws CardException {
         Reader reader = new Reader(String.valueOf(terminal.hashCode()), //
                 terminal.getName(), 2);
-        knownTerminals.put(terminal, reader);
         poll(terminal, reader);
+        knownTerminals.put(terminal.getName(), reader);
         return reader;
     }
     
-    private Reader removeTerminal(CardTerminal terminal) {
+    private Reader removeTerminal(String terminal) {
         return knownTerminals.remove(terminal);
     }
     
@@ -56,10 +56,12 @@ public class Readers implements Runnable {
         return readers;
     }
     
-    private void removeAll(List<CardTerminal> toRemove) {
-        for (CardTerminal t : toRemove) {
+    private void removeAll(List<String> toRemove) {
+        for (String t : toRemove) {
             Reader removed = removeTerminal(t);
-            bus.post(new ReaderChange(Event.REMOVED, removed));
+            if(removed != null) {
+                bus.post(new ReaderChange(Event.REMOVED, removed));
+            }
         }
     }
     
@@ -71,23 +73,29 @@ public class Readers implements Runnable {
             try {
                 Log.trace("Start sync to search for new Readers");
                 tlist = terminals.list();
+                List<String> toRemove = new ArrayList<String>();
                 for (CardTerminal t : tlist) {
-                    Log.trace("Card API returns the current reader: "+t.getName());
-                    if (!knownTerminals.containsKey(t)) {
-                        bus.post(new ReaderChange(Event.ADDED, addTerminal(t)));
-                        Log.info("Found new reader: "+t.getName());
+                    Log.trace("Card API returns the current reader: " + t.getName());
+                    if (!knownTerminals.containsKey(t.getName())) {
+                        try {
+                            bus.post(new ReaderChange(Event.ADDED, addTerminal(t)));
+                            Log.info("Found new reader: " + t.getName());
+                        } catch (CardException ce) {
+                            Log.warn("Reader with name: " + t.getName() + " failed with message "+ce.getMessage());
+                            toRemove.add(t.getName());
+                        }
                     }
                 }
-                List<CardTerminal> toRemove = new ArrayList<CardTerminal>();
-                for (CardTerminal t : knownTerminals.keySet()) {
-                    if (null == terminals.getTerminal(t.getName())) {
+                for (String t : knownTerminals.keySet()) {
+                    if (null == terminals.getTerminal(t)) {
                         toRemove.add(t);
                     }
                 }
                 removeAll(toRemove);
             } catch (CardException ce) {
-                List<CardTerminal> toRemove = new ArrayList<CardTerminal>();
-                for (CardTerminal t : knownTerminals.keySet()) {
+                Log.error("Error with card readers "+ce.getMessage());
+                List<String> toRemove = new ArrayList<String>();
+                for (String t : knownTerminals.keySet()) {
                     toRemove.add(t);
                 }
                 removeAll(toRemove);
@@ -100,22 +108,16 @@ public class Readers implements Runnable {
         }
     }
     
-    public void pollAll() throws CardException {
-        for (Map.Entry<CardTerminal, Reader> reader : knownTerminals.entrySet()) {
-            poll(reader.getKey(), reader.getValue());
-        }
-    }
-    
     private void poll(CardTerminal card, Reader reader) throws CardException {
         ReaderConnection connection = new ReaderConnection();
         ReaderChannel channel = new ReaderChannel(connection, card.connect("*").getBasicChannel());
-        new Thread(new PollThread(bus, channel, reader), "Poll Thread " + reader.getTerminalId()).start();
+        new Thread(new PollThread(bus, channel, reader), "Poll Thread " + reader.getName()).start();
     }
     
     
     private AtomicBoolean running = new AtomicBoolean(true);
     private CardTerminals terminals;
-    private Map<CardTerminal, Reader> knownTerminals;
+    private Map<String, Reader> knownTerminals;
     
     @Inject
     private NodeBus bus;

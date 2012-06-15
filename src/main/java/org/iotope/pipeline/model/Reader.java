@@ -14,6 +14,10 @@ public class Reader {
         return terminalId;
     }
         
+    public String getName() {
+        return pcscName;
+    }
+        
     @JsonProperty
     private String terminalId;
     @JsonProperty

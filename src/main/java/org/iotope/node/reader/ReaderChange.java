@@ -12,6 +12,11 @@ public class ReaderChange implements JSON.Convertible {
         ADDED, REMOVED
     };
     
+    @Override
+    public String toString() {
+        return "ReaderChange on "+reader+ " : " + event;
+    }
+
     public ReaderChange(Event event,Reader reader) {
         this.event = event;
         this.reader = reader;

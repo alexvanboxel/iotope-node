@@ -156,4 +156,9 @@
 			</plugin>
 		</plugins>
 	</build>
+	<scm>
+		<connection>scm:git:git@github.com:alexvanboxel/iotope-node.git</connection>
+		<url>scm:git:git@github.com:alexvanboxel/iotope-node.git</url>
+		<developerConnection>scm:git:git@github.com:alexvanboxel/iotope-node.git</developerConnection>
+	</scm>
 </project>

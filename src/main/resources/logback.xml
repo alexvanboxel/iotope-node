@@ -7,7 +7,7 @@
     </layout>
   </appender>
    
-  <logger name="org.iotope" level="DEBUG"/>
+  <logger name="org.iotope" level="INFO"/>
    
  
   <root level="info">
