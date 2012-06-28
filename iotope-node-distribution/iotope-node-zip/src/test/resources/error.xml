@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+	<env:Header />
+	<env:Body>
+		<env:Fault>
+			<faultcode>env:Server</faultcode>
+			<faultstring>Unable to Serve the request</faultstring>
+			<detail>
+				<ns2:correlationFault
+					xmlns:ns2="http://www.touchatag.com/acs/api/correlation-1.1">
+					<faultInfo>
+						<message>A null object was provided where a non-null object is
+							required (non-null index 0). Thread stack trace:
+							getStackTrace(Thread.java:1436) /
+							ensureNotNull(Validator.java:60) / &lt;init&gt;(DN.java:217) /
+							convert(AbstractIdentityManager.java:75) /
+							findByIdentityDN(AbstractIdentityManager.java:61) /
+							getBaseIdentity(AbstractIdentityManager.java:33) /
+							getIdentity(ACSIdentityManagerBean.java:174) / invoke(null) /
+							invoke(DelegatingMethodAccessorImpl.java:25) /
+							invoke(Method.java:597) / invokeNext(MethodInvocation.java:112) /
+							proceed(InvocationContextImpl.java:166) /
+							invoke(EJB3InterceptorsInterceptor.java:63) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(TransactionScopedEntityManagerInterceptor.java:54) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AllowedOperationsInterceptor.java:47) /
+							invokeNext(MethodInvocation.java:101) /
+							invokeInCallerTx(TxPolicy.java:126) /
+							invoke(TxInterceptor.java:195) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(TxPropagationInterceptor.java:95) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AuthenticationInterceptor.java:77) /
+							invoke(Ejb3AuthenticationInterceptor.java:110) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(ENCPropagationInterceptor.java:46) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AsynchronousInterceptor.java:106) /
+							invokeNext(MethodInvocation.java:101) /
+							localInvoke(ServiceContainer.java:329) /
+							invoke(ServiceLocalProxy.java:77) / getIdentity(null) /
+							createCorrelationContext(CorrelationFacadeBean.java:162) /
+							getTagEventFeedback(CorrelationFacadeBean.java:235) /
+							handleTagEvent(CorrelationFacadeBean.java:123) / invoke(null) /
+							invoke(DelegatingMethodAccessorImpl.java:25) /
+							invoke(Method.java:597) / invokeNext(MethodInvocation.java:112) /
+							proceed(InvocationContextImpl.java:166) /
+							invoke(EJB3InterceptorsInterceptor.java:63) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(TransactionScopedEntityManagerInterceptor.java:54) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AllowedOperationsInterceptor.java:47) /
+							invokeNext(MethodInvocation.java:101) /
+							invokeInCallerTx(TxPolicy.java:126) /
+							invoke(TxInterceptor.java:195) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(TxPropagationInterceptor.java:95) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(StatelessInstanceInterceptor.java:62) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(RoleBasedAuthorizationInterceptor.java:166) /
+							invoke(RoleBasedAuthorizationInterceptor.java:115) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AuthenticationInterceptor.java:77) /
+							invoke(Ejb3AuthenticationInterceptor.java:110) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(ENCPropagationInterceptor.java:46) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AsynchronousInterceptor.java:106) /
+							invokeNext(MethodInvocation.java:101) /
+							localInvoke(StatelessContainer.java:240) /
+							localInvoke(StatelessContainer.java:210) /
+							invoke(StatelessLocalProxy.java:84) / handleTagEvent(null) /
+							handleTagEvent(CorrelationProxyBeanV1_2.java:41) / invoke(null) /
+							invoke(DelegatingMethodAccessorImpl.java:25) /
+							invoke(Method.java:597) / invokeNext(MethodInvocation.java:112) /
+							proceed(InvocationContextImpl.java:166) /
+							invoke(EJB3InterceptorsInterceptor.java:63) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(TransactionScopedEntityManagerInterceptor.java:54) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AllowedOperationsInterceptor.java:47) /
+							invokeNext(MethodInvocation.java:101) /
+							invokeInOurTx(TxPolicy.java:79) / invoke(TxInterceptor.java:191)
+							/ invokeNext(MethodInvocation.java:101) /
+							invoke(TxPropagationInterceptor.java:95) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(StatelessInstanceInterceptor.java:62) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(RoleBasedAuthorizationInterceptor.java:166) /
+							invoke(RoleBasedAuthorizationInterceptor.java:115) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AuthenticationInterceptor.java:77) /
+							invoke(Ejb3AuthenticationInterceptor.java:110) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(ENCPropagationInterceptor.java:46) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(AsynchronousInterceptor.java:106) /
+							invokeNext(MethodInvocation.java:101) /
+							invoke(InvocationHandlerEJB3.java:103) /
+							invoke(ServiceEndpointInvoker.java:221) /
+							processRequest(RequestHandlerImpl.java:466) /
+							handleRequest(RequestHandlerImpl.java:284) /
+							doPost(RequestHandlerImpl.java:201) /
+							handleHttpRequest(RequestHandlerImpl.java:134) /
+							service(EndpointServlet.java:84) / service(HttpServlet.java:803)
+							/ internalDoFilter(ApplicationFilterChain.java:290) /
+							doFilter(ApplicationFilterChain.java:206) /
+							doFilter(ReplyHeaderFilter.java:96) /
+							internalDoFilter(ApplicationFilterChain.java:235) /
+							doFilter(ApplicationFilterChain.java:206) /
+							invoke(StandardWrapperValve.java:230) /
+							invoke(StandardContextValve.java:175) /
+							invoke(SecurityAssociationValve.java:182) /
+							invoke(AuthenticatorBase.java:524) /
+							invoke(JaccContextValve.java:84) /
+							invoke(StandardHostValve.java:127) /
+							invoke(ErrorReportValve.java:102) /
+							invoke(CachedConnectionValve.java:157) /
+							invoke(StandardEngineValve.java:109) /
+							service(CoyoteAdapter.java:262) /
+							process(Http11Processor.java:844) /
+							process(Http11Protocol.java:583) / run(JIoEndpoint.java:446) /
+							run(Thread.java:619)</message>
+						<errorCode>500</errorCode>
+					</faultInfo>
+					<message>Unable to Serve the request</message>
+				</ns2:correlationFault>
+			</detail>
+		</env:Fault>
+	</env:Body>
+</env:Envelope>

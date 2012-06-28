@@ -1,0 +1,10 @@
+Dry Fish Release
+----------------
+0.1.0 June 15th 2012 
+- Fixed Windows batch when IO:Node was installed in a path with spaces
+- Fixed NPE when the localhost:4242/ui was used without trailing slash
+- Fixed Unstable reader when a none-NFC reader was available
+- Added Untested Unix/Mac bash script
+
+0.0.1-SNAPSHOT June 3th 2012
+- First Pre-release

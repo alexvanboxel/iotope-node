@@ -1,0 +1,9 @@
+Dry Fish Release
+${project.version}
+-----------------------------------------------------------
+
+- ACS122U only supports ONE tag per reader
+- Learn mode is not updated  in web UI
+- Reconfiguration needs to restart the node
+- Untested Unix/Mac script for startup
+

@@ -1,0 +1,28 @@
+{
+	"application":{"appId":1},
+	"fields":[],
+	"targetContent":
+		{
+			"tagType":"LEGACY",
+			"blocks":[
+			          {"type":"NDEF",
+			        	  	"ndef":{
+			        	  		"records":[
+			        	  		           {
+			        	  		        	   "payload":"AXR0YWcuYmUvbS8wNEQxMDBCMjM0MjM4NA==",
+			        	  		        	   "uri":"http://www.ttag.be/m/04D100B2342384",
+			        	  		        	   "length":0,
+			        	  		        	   "id":null,
+			        	  		        	   "content":"http://www.ttag.be/m/04D100B2342384",
+			        	  		        	   "rtd":"urn:nfc:wkt:U","representation":"http://www.ttag.be/m/04D100B2342384"
+			        	  		           }
+			        	  		]	
+			        	  	}
+			          },
+			          {"type":"LEGACY_HASH","block":"hGDrpO9aQGB6n5sRZA=="},
+			          {"type":"MEMORY_RW_BLOCK","block":"AAAAAA=="},
+			          {"type":"LEGACY_TAGDATA","block":"BNEAXbI0I4QhSP9/4RAGAAMd0QEZVQF0dGFnLmJlL20vMDREMTAwQjIzNDIzODSEYOuk71pAYHqfmxFkAAAAAA=="}
+			          ]
+	},
+	"nfcTarget":{"type":"MIFARE_ULTRALIGHT","nfc1Id":"BNEAsjQjhA==","nfc3Id":null,"nfcId":"BNEAsjQjhA==","dep":false}
+}

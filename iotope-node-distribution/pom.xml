@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.iotope</groupId>
+		<artifactId>iotope-node-pom</artifactId>
+		<version>0.2.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>iotope-node-distribution</artifactId>
+	<name>iotope-node-distribution</name>
+	<packaging>pom</packaging>
+	<url>http://www.iotope.org</url>
+	<modules>
+		<module>iotope-node-zip</module>
+	</modules>
+</project>

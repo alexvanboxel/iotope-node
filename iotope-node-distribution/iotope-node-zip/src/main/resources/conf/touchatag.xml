@@ -1,0 +1,30 @@
+<iotope-node name="touchatag" group="default" iotope="public">
+	<tech type="2" protocol="mifare-ultralight" detect="true" ndef="true"
+		cache="false" meta="true" />
+	<tech type="2" protocol="mifare-classic" detect="true" ndef="false"
+		cache="false" meta="true" />
+	<pipeline>
+		<!-- First step in the pipeline is connecting to the Touchatag Community 
+			service, but only if we detect that it's a legacy tag (the Touchatag stickers) -->
+		<application urn="urn:iotope.app:iotope.org:ttag.c12">
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="include">
+			</filter>
+			<property name="user">USER</property>
+			<property name="password">PASSWORD</property>
+		</application>
+		<!-- Let's try and read the NDEF information on the tag, but only if it's 
+			NOT a legacy tag -->
+		<application urn="urn:iotope.app:iotope.org:ndef">
+			<filter urn="urn:iotope.filter:iotope.org:ndef" type="include">
+			</filter>
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="exclude">
+			</filter>
+		</application>
+		<!-- Active the weblink application -->
+		<application urn="urn:iotope.app:iotope.org:weblink">
+		</application>
+		<!-- Active the notify application -->
+		<application urn="urn:iotope.app:iotope.org:notify">
+		</application>
+	</pipeline>
+</iotope-node>

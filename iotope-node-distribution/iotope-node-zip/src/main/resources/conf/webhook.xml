@@ -1,0 +1,23 @@
+<iotope-node name="webhook" group="default" iotope="public">
+	<tech type="2" protocol="mifare-ultralight" detect="true" ndef="true"
+		cache="false" meta="true" />
+	<tech type="2" protocol="mifare-classic" detect="true" ndef="false"
+		cache="false" meta="true" />
+	<pipeline>
+		<application urn="urn:iotope.app:iotope.org:ndef">
+			<filter urn="urn:iotope.filter:iotope.org:ndef" type="include">
+			</filter>
+			<filter urn="urn:iotope.filter:iotope.org:legacy" type="exclude">
+			</filter>
+		</application>
+		<application urn="urn:iotope.app:iotope.org:webhook">
+			<property name="url">http://localhost:4800/test2/api/events/</property>
+		</application>
+		<!-- Active the weblink application -->
+		<application urn="urn:iotope.app:iotope.org:weblink">
+		</application>
+		<!-- Active the notify application -->
+		<application urn="urn:iotope.app:iotope.org:notify">
+		</application>
+	</pipeline>
+</iotope-node>
