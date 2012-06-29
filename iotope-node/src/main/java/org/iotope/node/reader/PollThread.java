@@ -107,7 +107,7 @@ public class PollThread implements Runnable {
         
         ExecutionPipeline pipeline = Node.instance(ExecutionPipeline.class);
         ExecutionContextImpl executionContext = new ExecutionContextImpl();
-        TargetContent targetContent = null;
+        executionContext.setNfcTarget(nfcTarget);
         
         if (nfcTarget.isDEP()) {
             // DEP
@@ -129,8 +129,7 @@ public class PollThread implements Runnable {
                     if (cfgTech != null) {
                         if (cfgTech.isNdef()) {
                             NfcType2 ultraLight = new NfcType2(channel);
-                            targetContent = ultraLight.readNDEF(nfcTarget);
-                            tagChange.addTagContent(targetContent);
+                            executionContext.setTargetContent(ultraLight.readNDEF(nfcTarget));
                         }
                         if (cfgTech.isMeta()) {
                             correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
@@ -146,8 +145,6 @@ public class PollThread implements Runnable {
             }
         }
         
-        executionContext.setTargetContent(targetContent);
-        executionContext.setNfcTarget(nfcTarget);
         pipeline.initPipeline(cfg, executionContext);
         tagChange.setApplication(executionContext.getApplication());
         if (executionContext.getFields() != null) {
