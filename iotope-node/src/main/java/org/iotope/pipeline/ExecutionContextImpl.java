@@ -115,6 +115,6 @@ public class ExecutionContextImpl implements ExecutionContext {
     private App entityApplication;
     private List<Field> fieldMeta;
     private Map<String, Object> fields = new HashMap<String, Object>();
-    private TargetContent targetContent;
+    private TargetContent targetContent = new TargetContent();
     private NfcTarget target;
 }

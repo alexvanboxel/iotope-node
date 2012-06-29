@@ -17,7 +17,6 @@
 		<dependency>
 			<groupId>org.iotope</groupId>
 			<artifactId>iotope-nfc</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>
