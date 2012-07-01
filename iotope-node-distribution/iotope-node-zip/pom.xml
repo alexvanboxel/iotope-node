@@ -9,6 +9,7 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>iotope-node-zip</artifactId>
+        <name>iotope-node-zip</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.iotope</groupId>

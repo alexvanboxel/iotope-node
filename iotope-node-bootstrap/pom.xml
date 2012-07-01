@@ -8,6 +8,8 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>iotope-node-bootstrap</artifactId>
+    <name>iotope-node-bootstrap</name>
+    
 	<dependencies>
 		<dependency>
 			<groupId>org.iotope</groupId>
