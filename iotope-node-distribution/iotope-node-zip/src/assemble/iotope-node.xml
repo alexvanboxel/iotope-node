@@ -7,11 +7,23 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>target/resources/</directory>
+			<directory>${project.build.directory}/resources/</directory>
 			<outputDirectory>/</outputDirectory>
+			<excludes>
+				<exclude>**/*.sh</exclude>
+			</excludes>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}/resources/</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>**/*.sh</include>
+			</includes>
+			<fileMode>0755</fileMode>
 		</fileSet>
 	</fileSets>
-
+	
+	
 	<dependencySets>
 		<dependencySet>
 			<outputDirectory>/lib</outputDirectory>

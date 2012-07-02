@@ -2,8 +2,8 @@ Dry Fish Release
 ${project.version}
 -----------------------------------------------------------
 
-- ACR122U only supports ONE tag per reader
+- Software currently only supports ONE tag per reader
 - Learn mode is not updated  in web UI
-- Reconfiguration needs to restart the node
-- Untested Unix/Mac script for startup
-
+- Reconfiguration requires restart of the node
+- Sh script untested on Unix/Linux
+- Text Notifications render unpleasantly on Mac (in seperate window)
