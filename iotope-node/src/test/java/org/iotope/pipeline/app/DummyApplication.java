@@ -8,7 +8,7 @@ import org.iotope.context.ExecutionContext;
 import org.iotope.context.MetaData;
 
 @IotopeApplication(domain = "test.iotope.org", name = "test")
-public class TestApplication implements Application {
+public class DummyApplication implements Application {
  
     @Override
     public void execute(ExecutionContext context) {
