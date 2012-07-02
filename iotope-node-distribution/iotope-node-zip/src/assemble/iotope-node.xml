@@ -26,13 +26,7 @@
 	
 	<dependencySets>
 		<dependencySet>
-			<outputDirectory>/lib</outputDirectory>
-			<includes>
-				<include>iotope.org:iotope-node</include>
-			</includes>
-		</dependencySet>
-		<dependencySet>
-			<useProjectArtifact>true</useProjectArtifact>
+			<useProjectArtifact>false</useProjectArtifact>
 			<useTransitiveDependencies>true</useTransitiveDependencies>
 			<includes>
 				<include>*:jar</include>
