@@ -129,7 +129,9 @@ public class PollThread implements Runnable {
                     if (cfgTech != null) {
                         if (cfgTech.isNdef()) {
                             NfcType2 ultraLight = new NfcType2(channel);
-                            executionContext.setTargetContent(ultraLight.readNDEF(nfcTarget));
+                            TargetContent targetContent = ultraLight.readNDEF(nfcTarget);
+                            executionContext.setTargetContent(targetContent);
+                            tagChange.addTagContent(targetContent);
                         }
                         if (cfgTech.isMeta()) {
                             correlation.getAssociateDataForTag(tagChange.getNfcId(), executionContext);
