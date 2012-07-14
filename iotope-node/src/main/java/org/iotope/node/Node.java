@@ -11,6 +11,7 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.iotope.exception.IotopeException;
 import org.iotope.node.conf.Configuration;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
@@ -26,10 +27,18 @@ import com.google.common.eventbus.Subscribe;
 @Singleton
 public class Node {
     
-    public static void main(String[] args) throws Exception {
-        cdiContainer = new Weld().initialize();
-        Node node = cdiContainer.instance().select(Node.class).get();
-        node.wire();
+    public static void main(String[] args) {
+        try {
+            cdiContainer = new Weld().initialize();
+            Node node = cdiContainer.instance().select(Node.class).get();
+            node.wire();
+        } catch (Exception e) {
+            // There is no clean shutdown procedure (the exit action also just shoots down)
+            // This should be fixed and perform a robust and safe shutdown, but for now, will
+            // at least ensure the application terminates if an exception occurs.
+            e.printStackTrace(); // To ensure we display what went wrong before we commit suicide
+            System.exit(-1);
+        }
     }
     
     @Subscribe
@@ -46,7 +55,7 @@ public class Node {
     /**
      * Wire the application together
      */
-    public void wire() throws Exception {
+    public void wire() {
         bus.register(this);
         bus.register(tray);
         
@@ -63,7 +72,6 @@ public class Node {
         ServletHolder holderCometd = new ServletHolder(new CometdServlet());
         holderCometd.setInitOrder(1);
         holderCometd.setInitParameter("jsonContext", "org.cometd.server.JacksonJSONContextServer");
-        //        holderCometd.getServlet().init(servletConfig);
         ServletHolder holderCometdConfig = new ServletHolder(servletCometDConfig);
         holderCometdConfig.setInitOrder(2);
         ServletHolder holderUI = new ServletHolder(servletUI);
@@ -78,8 +86,12 @@ public class Node {
         handlers.setHandlers(new Handler[] { context, new DefaultHandler() });
         server.setHandler(handlers);
         
-        server.start();
-        server.join();
+        try {
+            server.start();
+            server.join();
+        } catch (Exception e) {
+            throw new IotopeException("Failed to start node instance", e);
+        }
     }
     
     
@@ -99,7 +111,7 @@ public class Node {
     @Inject
     private Readers readers;
     
-    @SuppressWarnings("unused")
+    @SuppressWarnings("unused") // Just for Weld to know it should instantiate the Execution Pipeline
     @Inject
     private ExecutionPipeline pipe;
     

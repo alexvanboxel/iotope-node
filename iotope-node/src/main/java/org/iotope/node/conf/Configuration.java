@@ -12,6 +12,7 @@ import java.util.Properties;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.iotope.exception.ConfigurationException;
 import org.iotope.node.NodeBus;
 import org.iotope.util.IOUtil;
 
@@ -26,23 +27,27 @@ public class Configuration {
     private String home;
     
     public void init() {
+        String configPath = determineConfigPath();
         try {
-            String homePath = System.getenv("IOTOPE_NODE_HOME");
-            if (homePath != null) {
-                home = new File(homePath).getAbsolutePath();
-            }
-            else {
-                home = ".";
-            }
-            
             Properties activeProperties = new Properties();
-            activeProperties.load(new FileReader(home+"/conf/active-config.properties"));
-            String active = (String) activeProperties.get("ACTIVE");
-            //loadResource("/META-INF/config.xml");
+            activeProperties.load(new FileReader(configPath));
+            String active = activeProperties.getProperty("ACTIVE");
             loadFile(active);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ConfigurationException("Failed to load configuration from "+configPath, e);
         }
+    }
+
+    private String determineConfigPath() {
+        String homePath = System.getenv("IOTOPE_NODE_HOME");
+        if (homePath != null) {
+            home = new File(homePath).getAbsolutePath();
+        }
+        else {
+            home = ".";
+        }
+        String configPath = home+"/conf/active-config.properties";
+        return configPath;
     }
     
     public void loadResource(String name) throws Exception {
@@ -65,7 +70,7 @@ public class Configuration {
         Cfg cfg = reader.read();
         
         if (!name.equals(cfg.getName())) {
-            throw new RuntimeException("Config file: Name " + cfg.getName() + " doesn't match the filename " + name);
+            throw new ConfigurationException("Config file: Name " + cfg.getName() + " doesn't match the filename " + name);
         }
         
         long time = conf.lastModified();

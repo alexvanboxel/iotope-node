@@ -34,7 +34,6 @@ public class NodeTray {
     public NodeTray() {
         if (SystemTray.isSupported()) {
             SystemTray tray = SystemTray.getSystemTray();
-            //Dimension trayIconSize = tray.getTrayIconSize();
             
             initListeners();
             PopupMenu popup = popupMenu();
@@ -43,19 +42,12 @@ public class NodeTray {
             try {
                 image = ImageIO.read(getClass().getResourceAsStream("/META-INF/app/img/iotope.png"));
             } catch (IOException e) {
-                // Something has gone really wrong, dye!
-                throw new RuntimeException(e);
+                // Something has gone really wrong, die!
+                throw new RuntimeException("Failed to load system tray icon", e);
             }
             
             trayIcon = new TrayIcon(image, "IOTOPE Node", popup);
-            //            ActionListener actionListener = new ActionListener() {
-            //                public void actionPerformed(ActionEvent e) {
-            //                    trayIcon.displayMessage("Action Event", "An Action Event Has Been Performed!", TrayIcon.MessageType.INFO);
-            //                }
-            //            };
-            
             trayIcon.setImageAutoSize(true);
-            //            trayIcon.addActionListener(actionListener);
             trayIcon.addMouseListener(mouseListener);
             
             try {
@@ -163,16 +155,16 @@ public class NodeTray {
     
     private MouseListener mouseListener;
     
-    MenuItem miNodeConsole;
-    CheckboxMenuItem miLearnMode;
-    MenuItem miExit;
+    private MenuItem miNodeConsole;
+    private CheckboxMenuItem miLearnMode;
+    private MenuItem miExit;
     
     
     
-    TrayIcon trayIcon;
+    private TrayIcon trayIcon;
     
     @Inject
-    Mode mode;
+    private Mode mode;
     
     @SuppressWarnings("unused")
     @Inject
