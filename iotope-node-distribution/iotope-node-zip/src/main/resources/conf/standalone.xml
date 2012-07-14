@@ -12,6 +12,8 @@
 		</application>
 		<application urn="urn:iotope.app:iotope.org:weblink">
 		</application>
+		<application urn="urn:iotope.app:iotope.org:process">
+		</application>
 		<application urn="urn:iotope.app:iotope.org:notify">
 		</application>
 	</pipeline>
