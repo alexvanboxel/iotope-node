@@ -1,4 +1,4 @@
-package org.iotope.node.apps;
+package org.iotope.node.persistence;
 
 import java.util.ArrayList;
 import java.util.Collection;

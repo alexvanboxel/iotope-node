@@ -15,6 +15,7 @@ import org.iotope.context.MetaData;
 import org.iotope.node.Node;
 import org.iotope.node.conf.CfgApplication;
 import org.iotope.node.conf.CfgFilter;
+import org.iotope.node.persistence.Correlation;
 import org.iotope.pipeline.ExecutionWrapper;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
