@@ -15,7 +15,7 @@ import org.iotope.node.conf.CfgTech;
 import org.iotope.node.conf.CfgTech.Protocol;
 import org.iotope.node.conf.Configuration;
 import org.iotope.node.conf.Mode;
-import org.iotope.node.persistence.Correlation;
+import org.iotope.node.persistence.ApplicationRepository;
 import org.iotope.pipeline.ExecutionContextImpl;
 import org.iotope.pipeline.ExecutionPipeline;
 import org.iotope.pipeline.model.Field;
@@ -32,7 +32,7 @@ public class PollThread implements Runnable {
     private Reader reader;
     private EventBus bus;
     
-    Correlation correlation = Node.instance(Correlation.class);
+    ApplicationRepository correlation = Node.instance(ApplicationRepository.class);
     Configuration configuration = Node.instance(Configuration.class);
     Mode mode = Node.instance(Mode.class);
     ExecutionPipeline executionPipeline = Node.instance(ExecutionPipeline.class);

@@ -22,36 +22,39 @@ import org.iotope.pipeline.model.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Correlation {
-    private static Logger Log = LoggerFactory.getLogger(Correlation.class);
+public class ApplicationRepository {
+    private static Logger Log = LoggerFactory.getLogger(ApplicationRepository.class);
     
     @Inject
     PersistenceManager manager;
     
-    public Correlation() {
+    public ApplicationRepository() {
         super();
     }
     
     public void addApplication(String domain, String name, String displayName, String description, Collection<Field> fields) {
         EntityManager em = manager.createEntityManager();
-        em.setFlushMode(FlushModeType.COMMIT);
-        em.getTransaction().begin();
-        
-        TypedQuery<Application> query = em.createNamedQuery("findApplicationByName", Application.class);
-        query.setParameter("domain", domain);
-        query.setParameter("name", name);
-        Application app;
         try {
-            app = query.getSingleResult();
-        } catch (NoResultException nre) {
-            app = new Application(domain, name, displayName, description);
-            for (Field field : fields) {
-                app.addDefinition(field.getName(), field.getType(), field.getDisplayName(), field.getDescription());
+            em.setFlushMode(FlushModeType.COMMIT);
+            em.getTransaction().begin();
+            
+            TypedQuery<Application> query = em.createNamedQuery("findApplicationByName", Application.class);
+            query.setParameter("domain", domain);
+            query.setParameter("name", name);
+            Application app;
+            try {
+                app = query.getSingleResult();
+            } catch (NoResultException nre) {
+                app = new Application(domain, name, displayName, description);
+                for (Field field : fields) {
+                    app.addDefinition(field.getName(), field.getType(), field.getDisplayName(), field.getDescription());
+                }
+                em.persist(app);
             }
-            em.persist(app);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
         }
-        em.getTransaction().commit();
-        em.close();
     }
     
     /**
@@ -80,7 +83,8 @@ public class Correlation {
             }
             
             ec.setFields(ass.getApplication(), ass.getFields());
-        } catch (Throwable ex) {
+        } finally {
+            em.close();
         }
     }
     

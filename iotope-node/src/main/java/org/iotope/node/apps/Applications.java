@@ -15,7 +15,7 @@ import org.iotope.context.MetaData;
 import org.iotope.node.Node;
 import org.iotope.node.conf.CfgApplication;
 import org.iotope.node.conf.CfgFilter;
-import org.iotope.node.persistence.Correlation;
+import org.iotope.node.persistence.ApplicationRepository;
 import org.iotope.pipeline.ExecutionWrapper;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
@@ -61,7 +61,7 @@ public class Applications {
             Application application = applicationClass.newInstance();
             MetaData metadata = application.getMetaData();
             if (metadata != null) {
-                Correlation correlation = Node.instance(Correlation.class);
+                ApplicationRepository correlation = Node.instance(ApplicationRepository.class);
                 correlation.addApplication(domain, name, metadata.getDisplayName(), metadata.getDescription(), metadata.getFields());
             }
         } catch (InstantiationException e) {

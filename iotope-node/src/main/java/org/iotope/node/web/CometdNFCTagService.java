@@ -12,7 +12,7 @@ import org.cometd.server.AbstractService;
 import org.iotope.node.Node;
 import org.iotope.node.NodeBus;
 import org.iotope.node.conf.Mode;
-import org.iotope.node.persistence.Correlation;
+import org.iotope.node.persistence.ApplicationRepository;
 import org.iotope.node.reader.ReaderChange;
 import org.iotope.node.reader.Readers;
 import org.iotope.node.reader.TagChange;
@@ -27,7 +27,7 @@ public class CometdNFCTagService extends AbstractService {
         // Annoying, we need this hack to get our instances from CDI
         this.readers = Node.instance(Readers.class);
         this.bus = Node.instance(NodeBus.class);
-        this.correlation = Node.instance(Correlation.class);
+        this.correlation = Node.instance(ApplicationRepository.class);
         this.mode = Node.instance(Mode.class);
         
         bus.register(this);
@@ -106,7 +106,7 @@ public class CometdNFCTagService extends AbstractService {
     private ClientSessionChannel tagChannel;
     private ClientSessionChannel changeChannel;
     
-    private Correlation correlation;
+    private ApplicationRepository correlation;
     private Mode mode;
     private Readers readers;
     private EventBus bus;
