@@ -164,7 +164,6 @@ public class ApplicationRepository {
     }
     
     public void removeAssociation(String tagId, int appId) {
-        
         EntityManager em = manager.createEntityManager();
         try {
             em.setFlushMode(FlushModeType.COMMIT);
@@ -185,10 +184,12 @@ public class ApplicationRepository {
             } catch (NoResultException nre) {
             }
             em.getTransaction().commit();
-            em.close();
         } catch (Throwable e) {
             Log.error(e.getMessage());
             em.getTransaction().rollback();
+        }
+        finally {
+            em.close();
         }
     }
     
