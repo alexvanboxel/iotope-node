@@ -5,12 +5,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.inject.Singleton;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import org.iotope.node.model.Application;
@@ -24,19 +22,18 @@ import org.iotope.pipeline.model.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Singleton
 public class Correlation {
     private static Logger Log = LoggerFactory.getLogger(Correlation.class);
     
-    EntityManagerFactory emf;
+    @Inject
+    PersistenceManager manager;
     
     public Correlation() {
         super();
-        emf = Persistence.createEntityManagerFactory("iotope-node");
     }
     
     public void addApplication(String domain, String name, String displayName, String description, Collection<Field> fields) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = manager.createEntityManager();
         em.setFlushMode(FlushModeType.COMMIT);
         em.getTransaction().begin();
         
@@ -65,7 +62,7 @@ public class Correlation {
      * @return
      */
     public void getAssociateDataForTag(String nfcid, ExecutionContextImpl ec) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = manager.createEntityManager();
         try {
             TagId tid = new TagId(nfcid);
             Tag tag = em.find(Tag.class, tid);
@@ -94,8 +91,7 @@ public class Correlation {
      * @param fields
      */
     public void associate(String tagId, int appId, List<?> fields) {
-        
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = manager.createEntityManager();
         try {
             em.setFlushMode(FlushModeType.COMMIT);
             em.getTransaction().begin();
@@ -155,16 +151,17 @@ public class Correlation {
             }
             em.persist(ass);
             em.getTransaction().commit();
-            em.close();
         } catch (Throwable e) {
             Log.error(e.getMessage());
             em.getTransaction().rollback();
+        } finally {
+            em.close();
         }
     }
     
     public void removeAssociation(String tagId, int appId) {
         
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = manager.createEntityManager();
         try {
             em.setFlushMode(FlushModeType.COMMIT);
             em.getTransaction().begin();
@@ -192,7 +189,7 @@ public class Correlation {
     }
     
     public List<Application> getApplications() {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = manager.createEntityManager();
         em.setFlushMode(FlushModeType.COMMIT);
         TypedQuery<Application> query = em.createQuery("select app from Application app", Application.class);
         try {
@@ -203,7 +200,7 @@ public class Correlation {
     }
     
     public List<Field> getFieldsForApplications(String appId) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = manager.createEntityManager();
         try {
             Application app = em.find(Application.class, Integer.valueOf(appId));
             if (app == null) {
