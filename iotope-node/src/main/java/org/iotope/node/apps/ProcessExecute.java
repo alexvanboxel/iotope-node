@@ -24,7 +24,12 @@ public class ProcessExecute implements Application {
         String workdir = (String) context.getField("workdir");
         
         List<String> cmdlist = new ArrayList<String>();
-        cmdlist.add((String) context.getField("process"));
+        String process = (String) context.getField("process");
+        if(process == null) {
+            // nothing to do
+            return;
+        }
+        cmdlist.add(process);
         for(int i=0;i<10;i++) {
             String arg = (String) context.getField("arg"+i);
             if(arg!=null && arg.length() > 0) {
@@ -34,7 +39,7 @@ public class ProcessExecute implements Application {
                 break;
             }
         }
-
+        
         File work = null;
         if(workdir != null && workdir.length() != 0) {
             work = new File(workdir);
