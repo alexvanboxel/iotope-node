@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>iotope-node-pom</artifactId>
 		<groupId>org.iotope</groupId>
-		<version>0.2.0-SNAPSHOT</version>
+		<version>0.2.0</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>iotope-node</artifactId>

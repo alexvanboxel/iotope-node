@@ -3,7 +3,7 @@
 
 	<groupId>org.iotope</groupId>
 	<artifactId>iotope-node-pom</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
 
 	<name>iotope-node-pom</name>
@@ -21,7 +21,7 @@
 			<dependency>
 				<groupId>org.iotope</groupId>
 				<artifactId>iotope-nfc</artifactId>
-				<version>0.2.0-SNAPSHOT</version>
+				<version>0.2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.guava</groupId>
@@ -169,6 +169,6 @@
 		<connection>scm:git:git@github.com:alexvanboxel/iotope-node.git</connection>
 		<url>scm:git:git@github.com:alexvanboxel/iotope-node.git</url>
 		<developerConnection>scm:git:git@github.com:alexvanboxel/iotope-node.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>iotope-node-pom-0.2.0</tag>
 	</scm>
 </project>
