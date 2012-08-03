@@ -1,10 +1,10 @@
 Dry Fish Release
 ----------------
 
-0.2.0 July ?th 2012
+0.2.0 August 3th 2012
 - Bash script now comes with interpreter line, unix line-endings and execute flag set
 - Fixed various typos in README.txt and clarified NFC reader compatibility
-- Alex to complete...
+- New Application to execute a local file
 
 0.1.0 June 15th 2012 
 - Fixed Windows batch when IO:Node was installed in a path with spaces

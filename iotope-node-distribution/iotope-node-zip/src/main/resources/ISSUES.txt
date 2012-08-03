@@ -5,5 +5,6 @@ ${project.version}
 - Software currently only supports ONE tag per reader
 - Learn mode is not updated  in web UI
 - Reconfiguration requires restart of the node
-- Sh script untested on Unix/Linux
 - Text Notifications render unpleasantly on Mac (in seperate window)
+- UI is not tested on Firefox/Safari/IE (main target is Chrome for now)
+
