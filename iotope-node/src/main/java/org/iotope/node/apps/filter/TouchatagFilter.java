@@ -6,8 +6,8 @@ import java.util.Map;
 import org.iotope.IotopeFilter;
 import org.iotope.context.ExecutionContext;
 import org.iotope.context.Filter;
-import org.iotope.nfc.ndef.NdefMessage;
-import org.iotope.nfc.ndef.NdefRecord;
+import org.iotope.nfc.ndef.NdefParsedMessage;
+import org.iotope.nfc.ndef.NdefParsedRecord;
 import org.iotope.nfc.target.Block;
 import org.iotope.nfc.target.NdefBlock;
 import org.iotope.nfc.target.TargetContent;
@@ -31,11 +31,11 @@ public class TouchatagFilter implements Filter {
             return false;
         }
         NdefBlock ndef = (NdefBlock) block;
-        NdefMessage message = ndef.getNdef();
+        NdefParsedMessage message = ndef.getNdef();
         if (message.size() != 1) {
             return false;
         }
-        NdefRecord record = message.getRecord(0);
+        NdefParsedRecord record = message.getRecord(0);
         if (!"urn:nfc:wkt:U".equals(record.getRTD())) {
             return false;
         }

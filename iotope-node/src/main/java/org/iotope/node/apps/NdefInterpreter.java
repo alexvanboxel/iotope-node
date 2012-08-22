@@ -7,8 +7,8 @@ import org.iotope.IotopeApplication;
 import org.iotope.context.Application;
 import org.iotope.context.ExecutionContext;
 import org.iotope.context.MetaData;
-import org.iotope.nfc.ndef.NdefMessage;
-import org.iotope.nfc.ndef.NdefRecord;
+import org.iotope.nfc.ndef.NdefParsedMessage;
+import org.iotope.nfc.ndef.NdefParsedRecord;
 import org.iotope.nfc.target.Block;
 import org.iotope.nfc.target.NdefBlock;
 import org.iotope.nfc.target.TargetContent;
@@ -25,8 +25,8 @@ public class NdefInterpreter implements Application {
             for (Block block : blocks) {
                 if (block.getType() == ContentType.NDEF) {
                     NdefBlock ndef = (NdefBlock) block;
-                    NdefMessage message = ndef.getNdef();
-                    for (NdefRecord record : message.getRecords()) {
+                    NdefParsedMessage message = ndef.getNdef();
+                    for (NdefParsedRecord record : message.getRecords()) {
                         String rtd = record.getRTD();
                         if ("urn:nfc:wkt:U".equals(rtd)) {
                             context.executeNext("iotope.org", "weblink", "url", record.getContent());
