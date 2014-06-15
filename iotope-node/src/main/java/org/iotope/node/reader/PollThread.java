@@ -1,13 +1,14 @@
 package org.iotope.node.reader;
 
 
+import com.google.common.eventbus.EventBus;
 import org.cometd.bayeux.client.ClientSessionChannel;
 import org.iotope.nfc.reader.ReaderChannel;
 import org.iotope.nfc.reader.pn532.PN532InAutoPoll;
 import org.iotope.nfc.reader.pn532.PN532InAutoPollResponse;
 import org.iotope.nfc.reader.pn532.PN532RFConfiguration;
 import org.iotope.nfc.tag.NfcTarget;
-import org.iotope.nfc.target.TargetContent;
+import org.iotope.nfc.target.NfcTlv;
 import org.iotope.nfc.tech.NfcType2;
 import org.iotope.node.Node;
 import org.iotope.node.conf.Cfg;
@@ -22,8 +23,6 @@ import org.iotope.pipeline.model.Field;
 import org.iotope.pipeline.model.Reader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.eventbus.EventBus;
 
 public class PollThread implements Runnable {
     private static Logger Log = LoggerFactory.getLogger(PollThread.class);
@@ -129,7 +128,7 @@ public class PollThread implements Runnable {
                     if (cfgTech != null) {
                         if (cfgTech.isNdef()) {
                             NfcType2 ultraLight = new NfcType2(channel);
-                            TargetContent targetContent = ultraLight.readNDEF(nfcTarget);
+                            NfcTlv targetContent = ultraLight.readNDEF(nfcTarget);
                             executionContext.setTargetContent(targetContent);
                             tagChange.addTagContent(targetContent);
                         }

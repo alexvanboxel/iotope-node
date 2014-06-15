@@ -1,20 +1,20 @@
 package org.iotope.node.apps.ttag.v12;
 
-import java.net.URI;
-import java.util.Map;
-
 import org.apache.http.HttpResponse;
 import org.iotope.IotopeApplication;
 import org.iotope.context.Application;
 import org.iotope.context.ExecutionContext;
 import org.iotope.context.MetaData;
-import org.iotope.nfc.target.Block;
-import org.iotope.nfc.target.ByteBlock;
-import org.iotope.nfc.target.TargetContent.ContentType;
+import org.iotope.nfc.target.NfcTlv.ContentType;
+import org.iotope.nfc.target.TlvBlock;
+import org.iotope.nfc.target.TlvByteBlock;
 import org.iotope.node.apps.ttag.AbstractCallCorrelation;
 import org.iotope.node.apps.ttag.AbstractTagEvent;
 import org.iotope.node.apps.ttag.TagType;
 import org.iotope.util.IOUtil;
+
+import java.net.URI;
+import java.util.Map;
 
 
 @IotopeApplication(domain = "iotope.org", name = "ttag.c12")
@@ -34,9 +34,9 @@ public class CallCorrelation12 extends AbstractCallCorrelation implements Applic
             tagEvent.setLocation("iotope");
             URI uri = URI.create("https://acs.touchatag.com/soap/correlation-1.2");
             
-            Block block = context.getTargetContent().getBlock(3);
+            TlvBlock block = context.getTargetContent().getBlock(3);
             if (block.getType() == ContentType.LEGACY_TAGDATA) {
-                String tag64 = javax.xml.bind.DatatypeConverter.printBase64Binary(((ByteBlock) block).getBlock());
+                String tag64 = javax.xml.bind.DatatypeConverter.printBase64Binary(((TlvByteBlock) block).getBlock());
                 tagEvent.setTagData(tag64);
 
                 HttpResponse httpResponse = fireTag(uri, user, password, tagEvent);

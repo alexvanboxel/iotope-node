@@ -1,18 +1,14 @@
 package org.iotope.pipeline;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.iotope.context.ExecutionContext;
 import org.iotope.nfc.tag.NfcTarget;
-import org.iotope.nfc.target.TargetContent;
+import org.iotope.nfc.target.NfcTlv;
 import org.iotope.node.model.Application;
 import org.iotope.node.model.FieldValue;
 import org.iotope.pipeline.model.App;
 import org.iotope.pipeline.model.Field;
+
+import java.util.*;
 
 public class ExecutionContextImpl implements ExecutionContext {
     
@@ -27,7 +23,7 @@ public class ExecutionContextImpl implements ExecutionContext {
         }
     }
     
-    public void setTargetContent(TargetContent targetContent) {
+    public void setTargetContent(NfcTlv targetContent) {
         this.targetContent = targetContent;
     }
     
@@ -87,7 +83,7 @@ public class ExecutionContextImpl implements ExecutionContext {
     }
     
     @Override
-    public TargetContent getTargetContent() {
+    public NfcTlv getTargetContent() {
         return targetContent;
     }
     
@@ -115,6 +111,6 @@ public class ExecutionContextImpl implements ExecutionContext {
     private App entityApplication;
     private List<Field> fieldMeta;
     private Map<String, Object> fields = new HashMap<String, Object>();
-    private TargetContent targetContent = new TargetContent();
+    private NfcTlv targetContent = new NfcTlv();
     private NfcTarget target;
 }

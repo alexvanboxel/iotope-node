@@ -1,30 +1,30 @@
 package org.iotope.node.apps;
 
-import java.util.List;
-import java.util.Map;
-
 import org.iotope.IotopeApplication;
 import org.iotope.context.Application;
 import org.iotope.context.ExecutionContext;
 import org.iotope.context.MetaData;
 import org.iotope.nfc.ndef.NdefParsedMessage;
 import org.iotope.nfc.ndef.NdefParsedRecord;
-import org.iotope.nfc.target.Block;
-import org.iotope.nfc.target.NdefBlock;
-import org.iotope.nfc.target.TargetContent;
-import org.iotope.nfc.target.TargetContent.ContentType;
+import org.iotope.nfc.target.NfcTlv;
+import org.iotope.nfc.target.NfcTlv.ContentType;
+import org.iotope.nfc.target.TlvBlock;
+import org.iotope.nfc.target.TlvNdefBlock;
+
+import java.util.List;
+import java.util.Map;
 
 @IotopeApplication(domain = "iotope.org", name = "ndef")
 public class NdefInterpreter implements Application {
     
     @Override
     public void execute(ExecutionContext context) {
-        TargetContent content = context.getTargetContent();
+        NfcTlv content = context.getTargetContent();
         if (content != null) {
-            List<Block> blocks = content.getBlocks();
-            for (Block block : blocks) {
+            List<TlvBlock> blocks = content.getBlocks();
+            for (TlvBlock block : blocks) {
                 if (block.getType() == ContentType.NDEF) {
-                    NdefBlock ndef = (NdefBlock) block;
+                    TlvNdefBlock ndef = (TlvNdefBlock) block;
                     NdefParsedMessage message = ndef.getNdef();
                     for (NdefParsedRecord record : message.getRecords()) {
                         String rtd = record.getRTD();
